@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vehicle Delete Wizard Form View -->
+    <record id="view_vehicle_delete_wizard_form" model="ir.ui.view">
+        <field name="name">vehicle.delete.wizard.form</field>
+        <field name="model">vehicle.delete.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Delete Vehicles">
+                <div class="alert alert-warning" role="alert">
+                    <strong>Warning!</strong> This action cannot be undone. Please be careful when deleting vehicles.
+                </div>
+                
+                <group>
+                    <field name="delete_type" widget="radio"/>
+                    <field name="vehicle_count" readonly="1" 
+                           string="Vehicles that will be deleted" 
+                           class="oe_stat_value"/>
+                </group>
+                
+                <group>
+                    <field name="confirm_delete" required="1"/>
+                </group>
+                
+                <footer>
+                    <button name="action_delete_vehicles" 
+                            string="Delete Vehicles" 
+                            type="object" 
+                            class="btn-danger"
+                            confirm="Are you sure you want to delete these vehicles? This action cannot be undone!"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Delete Wizard Action -->
+    <record id="action_vehicle_delete_wizard" model="ir.actions.act_window">
+        <field name="name">Delete Vehicles</field>
+        <field name="res_model">vehicle.delete.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_vehicle_delete_wizard_form"/>
+    </record>
+
+    <!-- Server Action for Delete Button -->
+    <record id="action_vehicle_delete_server" model="ir.actions.server">
+        <field name="name">Delete Vehicles</field>
+        <field name="model_id" ref="model_vehicle_vehicle"/>
+        <field name="binding_model_id" ref="model_vehicle_vehicle"/>
+        <field name="binding_type">action</field>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Delete Vehicles',
+    'res_model': 'vehicle.delete.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+}
+        </field>
+    </record>
+</odoo>

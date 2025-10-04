@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sample Vehicle Data -->
+        <record id="vehicle_001" model="vehicle.vehicle">
+            <field name="name">Toyota Camry 2020</field>
+            <field name="make">Toyota</field>
+            <field name="model">Camry</field>
+            <field name="year">2020</field>
+            <field name="color">White</field>
+            <field name="engine_type">gasoline</field>
+            <field name="transmission">automatic</field>
+            <field name="condition">excellent</field>
+            <field name="purchase_price">25000.00</field>
+
+            <field name="status">available</field>
+            <field name="engine_size">2.5</field>
+            <field name="mileage">15000</field>
+            <field name="doors">4</field>
+            <field name="seats">5</field>
+            <field name="purchase_date" eval="(DateTime.today() - timedelta(days=30)).strftime('%Y-%m-%d')"/>
+            <field name="description">Well-maintained Toyota Camry with low mileage. Perfect for family use.</field>
+        </record>
+
+        <record id="vehicle_002" model="vehicle.vehicle">
+            <field name="name">Honda Civic 2019</field>
+            <field name="make">Honda</field>
+            <field name="model">Civic</field>
+            <field name="year">2019</field>
+            <field name="color">Blue</field>
+            <field name="engine_type">gasoline</field>
+            <field name="transmission">manual</field>
+            <field name="condition">good</field>
+            <field name="purchase_price">20000.00</field>
+            <field name="status">reserved</field>
+            <field name="engine_size">1.5</field>
+            <field name="mileage">25000</field>
+            <field name="doors">4</field>
+            <field name="seats">5</field>
+            <field name="purchase_date" eval="(DateTime.today() - timedelta(days=60)).strftime('%Y-%m-%d')"/>
+            <field name="description">Sporty Honda Civic with manual transmission. Great fuel economy.</field>
+        </record>
+
+        <record id="vehicle_003" model="vehicle.vehicle">
+            <field name="name">Tesla Model 3 2021</field>
+            <field name="make">Tesla</field>
+            <field name="model">Model 3</field>
+            <field name="year">2021</field>
+            <field name="color">Black</field>
+            <field name="engine_type">electric</field>
+            <field name="transmission">automatic</field>
+            <field name="condition">excellent</field>
+            <field name="purchase_price">35000.00</field>
+            <field name="status">available</field>
+            <field name="mileage">8000</field>
+            <field name="doors">4</field>
+            <field name="seats">5</field>
+            <field name="purchase_date" eval="(DateTime.today() - timedelta(days=15)).strftime('%Y-%m-%d')"/>
+            <field name="description">Premium electric vehicle with autopilot features. Very low mileage.</field>
+        </record>
+
+        <record id="vehicle_004" model="vehicle.vehicle">
+            <field name="name">Ford F-150 2018</field>
+            <field name="make">Ford</field>
+            <field name="model">F-150</field>
+            <field name="year">2018</field>
+            <field name="color">Red</field>
+            <field name="engine_type">gasoline</field>
+            <field name="transmission">automatic</field>
+            <field name="condition">good</field>
+            <field name="purchase_price">28000.00</field>
+            <field name="status">maintenance</field>
+            <field name="engine_size">5.0</field>
+            <field name="mileage">45000</field>
+            <field name="doors">4</field>
+            <field name="seats">6</field>
+            <field name="purchase_date" eval="(DateTime.today() - timedelta(days=90)).strftime('%Y-%m-%d')"/>
+            <field name="description">Powerful pickup truck perfect for work and recreation. Currently in maintenance.</field>
+        </record>
+
+        <record id="vehicle_005" model="vehicle.vehicle">
+            <field name="name">BMW X5 2020</field>
+            <field name="make">BMW</field>
+            <field name="model">X5</field>
+            <field name="year">2020</field>
+            <field name="color">Silver</field>
+            <field name="engine_type">gasoline</field>
+            <field name="transmission">automatic</field>
+            <field name="condition">excellent</field>
+            <field name="purchase_price">45000.00</field>
+            <field name="status">available</field>
+            <field name="engine_size">3.0</field>
+            <field name="mileage">12000</field>
+            <field name="doors">4</field>
+            <field name="seats">7</field>
+            <field name="purchase_date" eval="(DateTime.today() - timedelta(days=20)).strftime('%Y-%m-%d')"/>
+            <field name="description">Luxury SUV with premium features and low mileage. Perfect condition.</field>
+        </record>
+    </data>
+</odoo>

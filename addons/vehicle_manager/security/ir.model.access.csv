@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vehicle_vehicle_user,vehicle.vehicle.user,model_vehicle_vehicle,base.group_user,1,1,1,1
+access_vehicle_vehicle_portal,vehicle.vehicle.portal,model_vehicle_vehicle,base.group_portal,1,0,0,0
+access_vehicle_import_wizard_user,vehicle.import.wizard.user,model_vehicle_import_wizard,base.group_user,1,1,1,1
+access_vehicle_delete_wizard_user,vehicle.delete.wizard.user,model_vehicle_delete_wizard,base.group_user,1,1,1,1

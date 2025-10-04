@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vehicle Import Wizard Action -->
+    <record id="action_vehicle_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Vehicles</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">vehicle.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Vehicle Import Wizard Form View -->
+    <record id="view_vehicle_import_wizard_form" model="ir.ui.view">
+        <field name="name">vehicle.import.wizard.form</field>
+        <field name="model">vehicle.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Vehicles">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Import Vehicles from Excel/CSV</h1>
+                        <p>Upload an Excel (.xlsx) or CSV file to import vehicles into the system.</p>
+                    </div>
+                    
+                    <group>
+                        <group name="file_upload" string="File Upload">
+                            <field name="file_data" filename="file_name"/>
+                            <field name="file_name" invisible="1"/>
+                            <field name="file_type" readonly="1"/>
+                        </group>
+                        
+                        <group name="options" string="Import Options">
+                            <field name="has_header"/>
+                            <field name="delimiter" invisible="file_type != 'csv'"/>
+                            <field name="update_existing"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page name="column_mapping" string="Column Mapping">
+                            <p class="text-muted">
+                                Map the columns in your file to vehicle fields. Leave blank to skip a field.
+                                Column names are case-insensitive and partial matches are supported.
+                            </p>
+                            
+                            <group>
+                                <group name="basic_mapping" string="Basic Information">
+                                    <field name="col_make" placeholder="e.g., make, brand, manufacturer"/>
+                                    <field name="col_model" placeholder="e.g., model, vehicle_model"/>
+                                    <field name="col_year" placeholder="e.g., year, model_year"/>
+                                    <field name="col_vin" placeholder="e.g., vin, chassis"/>
+                                    <field name="col_license_plate" placeholder="e.g., license_plate, plate, registration"/>
+                                    <field name="col_color" placeholder="e.g., color, colour"/>
+                                    <field name="col_body_type" placeholder="e.g., body_type, type, category"/>
+                                </group>
+                                
+                                <group name="details_mapping" string="Vehicle Details">
+                                    <field name="col_doors" placeholder="e.g., doors, door_count"/>
+                                    <field name="col_seats" placeholder="e.g., seats, seating, capacity"/>
+                                    <field name="col_engine_size" placeholder="e.g., engine_size, displacement"/>
+                                    <field name="col_engine_type" placeholder="e.g., fuel_type, engine_type, fuel"/>
+                                    <field name="col_transmission" placeholder="e.g., transmission, gearbox"/>
+                                    <field name="col_drivetrain" placeholder="e.g., drivetrain, drive, 4wd"/>
+                                </group>
+                            </group>
+                            
+                            <group>
+                                <group name="condition_mapping" string="Condition &amp; Status">
+                                    <field name="col_mileage" placeholder="e.g., mileage, odometer, km"/>
+                                    <field name="col_mileage_unit" placeholder="e.g., unit, mileage_unit"/>
+                                    <field name="col_condition" placeholder="e.g., condition, state"/>
+                                    <field name="col_status" placeholder="e.g., status, availability"/>
+                                    <field name="col_location" placeholder="e.g., location, lot, parking"/>
+                                </group>
+                                
+                                <group name="financial_mapping" string="Financial Information">
+                                    <field name="col_purchase_price" placeholder="e.g., purchase_price, cost"/>
+                                    <field name="col_current_value" placeholder="e.g., current_value, market_value"/>
+                                    <field name="col_purchase_date" placeholder="e.g., purchase_date, acquired_date"/>
+                                </group>
+                            </group>
+                            
+                            <group>
+                                <group name="notes_mapping" string="Additional Information">
+                                    <field name="col_features" placeholder="e.g., features, options, equipment"/>
+                                    <field name="col_notes" placeholder="e.g., notes, comments, description"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page name="import_log" string="Import Results" invisible="not import_log">
+                            <field name="import_log" readonly="1" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <footer>
+                    <button name="action_import_vehicles" string="Import Vehicles" 
+                            type="object" class="btn-primary"/>
+                    <button name="action_download_template" string="Download Template" 
+                            type="object" class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

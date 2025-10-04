@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vehicle Management Menu -->
+    <menuitem id="menu_vehicle_management_root" 
+              name="Vehicle Management" 
+              sequence="50"
+              web_icon="vehicle_manager,static/description/icon.png"/>
+
+    <!-- Main Vehicles Action -->
+    <record id="action_vehicle_vehicle" model="ir.actions.act_window">
+        <field name="name">Vehicles</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">vehicle.vehicle</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{
+            'default_status': 'available',
+            'group_by': 'status'
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first vehicle!
+            </p>
+            <p>
+                Start building your vehicle inventory by adding vehicles manually 
+                or importing them from an Excel/CSV file.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Delete Vehicles Action Window for Direct Button -->
+    <record id="action_delete_vehicles_button" model="ir.actions.act_window">
+        <field name="name">🗑️ Delete Vehicles</field>
+        <field name="res_model">vehicle.delete.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Delete Vehicles Action Button -->
+    <record id="action_vehicle_delete_button" model="ir.actions.act_window">
+        <field name="name">Delete Vehicles</field>
+        <field name="res_model">vehicle.delete.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+
+
+
+    <!-- Menu Items -->
+    <menuitem id="menu_vehicle_all" 
+              name="All Vehicles" 
+              parent="menu_vehicle_management_root"
+              action="action_vehicle_vehicle" 
+              sequence="10"/>
+
+
+
+    <!-- Import Menu -->
+    <menuitem id="menu_vehicle_import" 
+              name="Import Vehicles" 
+              parent="menu_vehicle_management_root"
+              action="action_vehicle_import_wizard" 
+              sequence="40"/>
+
+    <!-- Delete Vehicles Menu -->
+    <menuitem id="menu_vehicle_delete" 
+              name="🗑️ Delete Vehicles" 
+              parent="menu_vehicle_management_root"
+              action="action_delete_vehicles_button" 
+              sequence="50"/>
+
+    <!-- Configuration Menu -->
+    <menuitem id="menu_vehicle_config" 
+              name="Configuration" 
+              parent="menu_vehicle_management_root"
+              sequence="90"/>
+</odoo>
