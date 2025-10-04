@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="via_verde_sheet_view_tree" model="ir.ui.view">
+            <field name="name">via.verde.sheet.tree</field>
+            <field name="model">via.verde.sheet</field>
+            <field name="arch" type="xml">
+                <list string="Via Verde Statements" sample="1" decoration-success="total_outstanding_amount == 0">
+                    <field name="name"/>
+                    <field name="reference" optional="show"/>
+                    <field name="date"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                    <field name="total_gross_amount" widget="monetary" optional="show"/>
+                    <field name="total_liquid_amount" widget="monetary" optional="show"/>
+                    <field name="total_outstanding_amount" widget="monetary" optional="show"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="via_verde_sheet_view_search" model="ir.ui.view">
+            <field name="name">via.verde.sheet.search</field>
+            <field name="model">via.verde.sheet</field>
+            <field name="arch" type="xml">
+                <search string="Search Via Verde Statements">
+                    <field name="name"/>
+                    <field name="reference"/>
+                    <filter name="unpaid" string="With Outstanding" domain="[('total_outstanding_amount', '>', 0)]"/>
+                    <filter name="filter_date" date="date"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Company" name="group_company" context="{'group_by': 'company_id'}"/>
+                        <filter string="Date" name="group_date" context="{'group_by': 'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="via_verde_line_view_tree" model="ir.ui.view">
+            <field name="name">via.verde.line.tree</field>
+            <field name="model">via.verde.line</field>
+            <field name="arch" type="xml">
+                <list string="Via Verde Lines" editable="bottom" multi_edit="1" create="1" delete="1" sample="1">
+                    <field name="vehicle_id" optional="show" widget="many2one_avatar"/>
+                    <field name="license_plate"/>
+                    <field name="entry_datetime"/>
+                    <field name="exit_datetime" optional="show"/>
+                    <field name="entry_point" optional="show"/>
+                    <field name="exit_point" optional="show"/>
+                    <field name="liquid_amount" widget="monetary"/>
+                    <field name="is_paid" widget="boolean_toggle" optional="show"/>
+                    <field name="amount_due" widget="monetary" optional="show"/>
+                    <field name="service" optional="hide"/>
+                    <field name="service_description" optional="hide"/>
+                    <field name="market" optional="hide"/>
+                    <field name="market_description" optional="hide"/>
+                    <field name="amount" widget="monetary" optional="hide"/>
+                    <field name="discount_amount" widget="monetary" optional="hide"/>
+                    <field name="discount_percentage" optional="hide"/>
+                    <field name="discount_balance" widget="monetary" optional="hide"/>
+                    <field name="payment_date" optional="hide"/>
+                    <field name="payment_method" optional="hide"/>
+                    <field name="contract_number" optional="hide"/>
+                    <field name="mobility_account" optional="hide"/>
+                    <field name="iai" optional="hide"/>
+                    <field name="obu" optional="hide"/>
+                    <button name="action_view_details" type="object" icon="fa-plus" title="Show full details" string=""/>
+                </list>
+            </field>
+        </record>
+
+        <record id="via_verde_line_view_search" model="ir.ui.view">
+            <field name="name">via.verde.line.search</field>
+            <field name="model">via.verde.line</field>
+            <field name="arch" type="xml">
+                <search string="Search Via Verde Lines">
+                    <field name="license_plate"/>
+                    <field name="vehicle_id"/>
+                    <filter name="unpaid" string="Pending Payment" domain="[('is_paid', '=', False)]"/>
+                    <filter name="paid" string="Paid" domain="[('is_paid', '=', True)]"/>
+                    <filter name="entry_date" date="entry_datetime"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Vehicle" name="group_vehicle" context="{'group_by': 'vehicle_id'}"/>
+                        <filter string="License Plate" name="group_plate" context="{'group_by': 'license_plate'}"/>
+                        <filter string="Service" name="group_service" context="{'group_by': 'service'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="via_verde_line_view_form" model="ir.ui.view">
+            <field name="name">via.verde.line.form</field>
+            <field name="model">via.verde.line</field>
+            <field name="arch" type="xml">
+                <form string="Via Verde Line">
+                    <sheet>
+                        <group col="4">
+                            <field name="sheet_id" readonly="1"/>
+                            <field name="vehicle_id" widget="many2one_avatar"/>
+                            <field name="license_plate"/>
+                            <field name="is_paid" widget="boolean_toggle"/>
+                        </group>
+                        <group col="2" string="Trip">
+                            <field name="entry_datetime"/>
+                            <field name="exit_datetime"/>
+                            <field name="entry_point"/>
+                            <field name="exit_point"/>
+                        </group>
+                        <group col="2" string="Amounts">
+                            <field name="amount" widget="monetary"/>
+                            <field name="discount_amount" widget="monetary"/>
+                            <field name="discount_percentage"/>
+                            <field name="discount_balance" widget="monetary"/>
+                            <field name="liquid_amount" widget="monetary"/>
+                            <field name="amount_due" widget="monetary" readonly="1"/>
+                        </group>
+                        <group col="2" string="Payment">
+                            <field name="payment_date"/>
+                            <field name="payment_method"/>
+                            <field name="mobility_account"/>
+                            <field name="contract_number"/>
+                        </group>
+                        <group col="2" string="Metadata">
+                            <field name="iai"/>
+                            <field name="obu"/>
+                            <field name="service"/>
+                            <field name="service_description"/>
+                            <field name="market"/>
+                            <field name="market_description"/>
+                        </group>
+                        <group>
+                            <field name="notes" colspan="4"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="via_verde_sheet_view_form" model="ir.ui.view">
+            <field name="name">via.verde.sheet.form</field>
+            <field name="model">via.verde.sheet</field>
+            <field name="arch" type="xml">
+                <form string="Via Verde Statement">
+                    <header>
+                        <button string="Mark All Paid" type="object" name="action_mark_paid" class="btn-primary" attrs="{'invisible': [('total_outstanding_amount', '=', 0)]}"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group col="4">
+                            <field name="reference"/>
+                            <field name="date"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="total_gross_amount" widget="monetary" readonly="1"/>
+                            <field name="total_liquid_amount" widget="monetary" readonly="1"/>
+                            <field name="total_outstanding_amount" widget="monetary" readonly="1"/>
+                        </group>
+                        <field name="line_ids" mode="tree,form">
+                            <tree editable="bottom" multi_edit="1">
+                                <field name="vehicle_id" optional="show" widget="many2one_avatar"/>
+                                <field name="license_plate"/>
+                                <field name="entry_datetime"/>
+                                <field name="exit_datetime" optional="show"/>
+                                <field name="entry_point" optional="show"/>
+                                <field name="exit_point" optional="show"/>
+                                <field name="liquid_amount" widget="monetary"/>
+                                <field name="is_paid" widget="boolean_toggle" optional="show"/>
+                                <field name="amount_due" widget="monetary" optional="show"/>
+                                <field name="service" optional="hide"/>
+                                <field name="service_description" optional="hide"/>
+                                <field name="market" optional="hide"/>
+                                <field name="market_description" optional="hide"/>
+                                <field name="amount" widget="monetary" optional="hide"/>
+                                <field name="discount_amount" widget="monetary" optional="hide"/>
+                                <field name="discount_percentage" optional="hide"/>
+                                <field name="discount_balance" widget="monetary" optional="hide"/>
+                                <field name="payment_date" optional="hide"/>
+                                <field name="payment_method" optional="hide"/>
+                                <field name="contract_number" optional="hide"/>
+                                <field name="mobility_account" optional="hide"/>
+                                <field name="iai" optional="hide"/>
+                                <field name="obu" optional="hide"/>
+                                <button name="action_view_details" type="object" icon="fa-plus" title="Show full details" string=""/>
+                            </tree>
+                        </field>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="via_verde_action_sheets" model="ir.actions.act_window">
+            <field name="name">Via Verde Statements</field>
+            <field name="res_model">via.verde.sheet</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="via_verde_sheet_view_tree"/>
+            <field name="search_view_id" ref="via_verde_sheet_view_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Import your Via Verde lines or add them manually.
+                </p>
+                <p>
+                    Use the import button to upload an XLSX file exported from Via Verde or create entries manually to track toll usage and payments.
+                </p>
+            </field>
+        </record>
+
+        <record id="via_verde_action_lines" model="ir.actions.act_window">
+            <field name="name">Via Verde Lines</field>
+            <field name="res_model">via.verde.line</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="via_verde_line_view_tree"/>
+            <field name="search_view_id" ref="via_verde_line_view_search"/>
+        </record>
+    </data>
+</odoo>

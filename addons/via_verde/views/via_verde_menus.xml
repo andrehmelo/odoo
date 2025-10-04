@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="via_verde_menu_root" model="ir.ui.menu">
+            <field name="name">Via Verde</field>
+            <field name="parent_id" ref="fleet.fleet_menu_root"/>
+            <field name="sequence" eval="50"/>
+        </record>
+
+        <record id="via_verde_menu_sheet" model="ir.ui.menu">
+            <field name="name">Statements</field>
+            <field name="parent_id" ref="via_verde_menu_root"/>
+            <field name="action" ref="via_verde_action_sheets"/>
+            <field name="sequence" eval="10"/>
+        </record>
+
+        <record id="via_verde_menu_lines" model="ir.ui.menu">
+            <field name="name">All Lines</field>
+            <field name="parent_id" ref="via_verde_menu_root"/>
+            <field name="action" ref="via_verde_action_lines"/>
+            <field name="sequence" eval="20"/>
+        </record>
+    </data>
+</odoo>
