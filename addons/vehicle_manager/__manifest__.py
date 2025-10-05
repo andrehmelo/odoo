@@ -45,6 +45,7 @@ Features:
             'vehicle_manager/static/src/css/vehicle_manager.css',
             'vehicle_manager/static/src/js/vehicle_delete_button.js',
             'vehicle_manager/static/src/js/vehicle_kanban.js',
+            'vehicle_manager/static/src/js/vehicle_appsbar_integration.js',
         ],
     },
     'installable': True,

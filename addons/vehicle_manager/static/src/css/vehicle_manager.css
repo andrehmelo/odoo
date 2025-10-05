@@ -51,3 +51,134 @@
     max-width: none !important;
     margin: 0 !important;
 }
+
+/* Adjust vehicle form view to account for MuK AppsBar sidebar */
+/* The MuK appsbar uses CSS Grid, so we need to ensure proper content spacing */
+
+/* Ensure proper padding for vehicle forms when appsbar is present */
+.o_web_client:has(.mk_apps_sidebar_panel) .o_action_manager .o_form_view .o_content {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+/* Specific styling for vehicle form to ensure it's not cramped */
+.o_vehicle_form {
+    width: 100% !important;
+    min-width: 800px !important;
+}
+
+/* Ensure the form sheet has proper spacing */
+.o_vehicle_form .o_form_sheet {
+    padding: 24px 32px !important;
+    margin: 0 auto !important;
+    max-width: 1200px !important;
+}
+
+/* Adjust form groups for better layout with sidebar */
+.o_vehicle_form .o_group {
+    margin-bottom: 16px !important;
+}
+
+/* Ensure notebook tabs are properly spaced */
+.o_vehicle_form .o_notebook {
+    margin-top: 16px !important;
+}
+
+/* Make sure the action manager content area is properly sized */
+.mk_sidebar_type_large ~ .o_action_manager,
+.mk_sidebar_type_small ~ .o_action_manager {
+    width: 100% !important;
+    max-width: none !important;
+}
+
+/* Responsive adjustments for different screen sizes */
+@media (min-width: 1200px) {
+    .o_vehicle_form .o_form_sheet {
+        max-width: 1400px !important;
+        padding: 32px 40px !important;
+    }
+}
+
+@media (max-width: 991px) {
+    .o_vehicle_form .o_form_sheet {
+        padding: 20px 16px !important;
+        min-width: 600px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .o_vehicle_form {
+        min-width: 100% !important;
+    }
+    
+    .o_vehicle_form .o_form_sheet {
+        padding: 16px 12px !important;
+        min-width: 320px !important;
+    }
+}
+
+/* Fix any potential overflow issues */
+.o_web_client .o_action_manager {
+    overflow-x: auto !important;
+}
+
+/* Ensure proper scrolling behavior for the form */
+.o_form_view .o_content {
+    overflow-y: auto !important;
+    height: 100% !important;
+}
+
+/* Classes added by JavaScript for appsbar integration */
+.mk-appsbar-layout .o_action_manager {
+    padding-left: 8px !important;
+}
+
+.mk-appsbar-adjusted.o_form_view {
+    margin-right: 8px !important;
+}
+
+.mk-appsbar-adjusted .o_vehicle_form .o_form_sheet {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+    background: white !important;
+}
+
+/* Ensure header buttons are properly positioned with appsbar */
+.mk-appsbar-adjusted .o_form_view .o_form_statusbar {
+    margin-right: 0 !important;
+}
+
+/* Better responsive behavior for title section */
+.o_vehicle_form .oe_title h1 {
+    margin-bottom: 16px !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+}
+
+/* Improve button box spacing */
+.o_vehicle_form .oe_button_box {
+    margin-bottom: 16px !important;
+}
+
+/* Additional safety measure - detect if grid layout is being used */
+.o_web_client[style*="grid-template"] .o_action_manager {
+    padding: 0 16px !important;
+}
+
+.o_web_client[style*="grid-template"] .o_form_view .o_content {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+}
+
+/* Force proper layout when MuK sidebar classes are present */
+.mk_sidebar_type_large,
+.mk_sidebar_type_small {
+    .o_action_manager {
+        padding: 0 20px 0 8px !important;
+    }
+    
+    .o_form_view .o_content {
+        margin: 0 !important;
+        padding: 20px !important;
+    }
+}
