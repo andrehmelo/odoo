@@ -1,0 +1,468 @@
+2025-10-05 18:30:17,356 40294 DEBUG ? odoo.netsvc: logger level set: "odoo.http.rpc.request:INFO" 
+2025-10-05 18:30:17,356 40294 DEBUG ? odoo.netsvc: logger level set: "odoo.http.rpc.response:INFO" 
+2025-10-05 18:30:17,356 40294 DEBUG ? odoo.netsvc: logger level set: ":INFO" 
+2025-10-05 18:30:17,356 40294 DEBUG ? odoo.netsvc: logger level set: "odoo:DEBUG" 
+2025-10-05 18:30:17,356 40294 DEBUG ? odoo.netsvc: logger level set: "odoo.sql_db:INFO" 
+2025-10-05 18:30:17,356 40294 DEBUG ? odoo.netsvc: logger level set: ":INFO" 
+2025-10-05 18:30:17,357 40294 INFO ? odoo: Odoo version 18.0 
+2025-10-05 18:30:17,357 40294 INFO ? odoo: Using configuration file at /Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo.conf 
+2025-10-05 18:30:17,357 40294 INFO ? odoo: addons paths: ['/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/addons', '/Users/miguelmonteiro/Library/Application Support/Odoo/addons/18.0', '/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/addons'] 
+2025-10-05 18:30:17,357 40294 INFO ? odoo: database: odoo_dev@localhost:5432 
+2025-10-05 18:30:17,753 40294 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltopdf to print a pdf version of the reports. 
+2025-10-05 18:30:17,754 40294 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltoimage to generate images from html. 
+2025-10-05 18:30:18,335 40294 DEBUG ? odoo.service.server: Setting signal handlers 
+2025-10-05 18:30:18,432 40294 INFO ? odoo.service.server: HTTP service (werkzeug) running on 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa:8069 
+2025-10-05 18:30:18,498 40294 DEBUG odoo_db odoo.modules.registry: Multiprocess load registry signaling: [Registry: 1] [Cache default: 1] [Cache assets: 1] [Cache templates: 1] [Cache routing: 1] [Cache groups: 1] 
+2025-10-05 18:30:18,501 40294 ERROR odoo_db odoo.modules.loading: Database odoo_db not initialized, you can force it with `-i base` 
+2025-10-05 18:30:18,501 40294 INFO odoo_db odoo.modules.registry: Registry loaded in 0.068s 
+2025-10-05 18:30:18,502 40294 DEBUG odoo_db odoo.service.server: cron0 started! 
+2025-10-05 18:30:18,502 40294 DEBUG odoo_db odoo.service.server: cron1 started! 
+2025-10-05 18:31:04,225 40294 DEBUG ? odoo.http: HTTP sessions stored in: /Users/miguelmonteiro/Library/Application Support/Odoo/sessions 
+2025-10-05 18:31:04,233 40294 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-05 18:31:04,243 40294 INFO odoo_db werkzeug: 127.0.0.1 - - [05/Oct/2025 18:31:04] "GET / HTTP/1.1" 500 - 1 0.002 0.018
+2025-10-05 18:31:04,522 40294 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-05 18:31:04,523 40294 INFO odoo_db werkzeug: 127.0.0.1 - - [05/Oct/2025 18:31:04] "GET /favicon.ico HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-05 18:31:18,512 40294 DEBUG ? odoo.service.server: cron0 polling for jobs 
+2025-10-05 18:31:18,526 40294 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-05 18:31:18,527 40294 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-05 18:31:19,241 40294 INFO odoo_db odoo.service.server: Initiating server reload 
+2025-10-05 18:32:35,420 40947 DEBUG ? odoo.netsvc: logger level set: "odoo.http.rpc.request:INFO" 
+2025-10-05 18:32:35,420 40947 DEBUG ? odoo.netsvc: logger level set: "odoo.http.rpc.response:INFO" 
+2025-10-05 18:32:35,420 40947 DEBUG ? odoo.netsvc: logger level set: ":INFO" 
+2025-10-05 18:32:35,420 40947 DEBUG ? odoo.netsvc: logger level set: "odoo:DEBUG" 
+2025-10-05 18:32:35,420 40947 DEBUG ? odoo.netsvc: logger level set: "odoo.sql_db:INFO" 
+2025-10-05 18:32:35,420 40947 DEBUG ? odoo.netsvc: logger level set: ":INFO" 
+2025-10-05 18:32:35,421 40947 INFO ? odoo: Odoo version 18.0 
+2025-10-05 18:32:35,421 40947 INFO ? odoo: Using configuration file at /Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo.conf 
+2025-10-05 18:32:35,421 40947 INFO ? odoo: addons paths: ['/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/addons', '/Users/miguelmonteiro/Library/Application Support/Odoo/addons/18.0', '/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/addons'] 
+2025-10-05 18:32:35,421 40947 INFO ? odoo: database: odoo_dev@localhost:5432 
+2025-10-05 18:32:35,536 40947 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltopdf to print a pdf version of the reports. 
+2025-10-05 18:32:35,536 40947 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltoimage to generate images from html. 
+2025-10-05 18:32:35,646 40947 DEBUG ? odoo.service.server: Setting signal handlers 
+2025-10-05 18:32:35,710 40947 INFO ? odoo.service.server: HTTP service (werkzeug) running on 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa:8069 
+2025-10-05 18:32:35,734 40947 DEBUG odoo_db odoo.modules.registry: Multiprocess load registry signaling: [Registry: 1] [Cache default: 1] [Cache assets: 1] [Cache templates: 1] [Cache routing: 1] [Cache groups: 1] 
+2025-10-05 18:32:35,735 40947 ERROR odoo_db odoo.modules.loading: Database odoo_db not initialized, you can force it with `-i base` 
+2025-10-05 18:32:35,736 40947 INFO odoo_db odoo.modules.registry: Registry loaded in 0.025s 
+2025-10-05 18:32:35,736 40947 DEBUG odoo_db odoo.service.server: cron0 started! 
+2025-10-05 18:32:35,737 40947 DEBUG odoo_db odoo.service.server: cron1 started! 
+2025-10-05 18:32:42,023 40947 INFO odoo_db odoo.service.server: Initiating server reload 
+2025-10-05 18:32:50,435 41320 INFO ? odoo: Odoo version 18.0 
+2025-10-05 18:32:50,435 41320 INFO ? odoo: Using configuration file at /Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo.conf 
+2025-10-05 18:32:50,435 41320 INFO ? odoo: addons paths: ['/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/addons', '/Users/miguelmonteiro/Library/Application Support/Odoo/addons/18.0', '/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/addons'] 
+2025-10-05 18:32:50,435 41320 INFO ? odoo: database: odoo_dev@localhost:5432 
+2025-10-05 18:32:50,513 41320 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltopdf to print a pdf version of the reports. 
+2025-10-05 18:32:50,513 41320 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltoimage to generate images from html. 
+2025-10-05 18:32:50,651 41320 INFO ? odoo.service.server: HTTP service (werkzeug) running on 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa:8069 
+2025-10-05 18:32:50,672 41320 ERROR odoo_db odoo.modules.loading: Database odoo_db not initialized, you can force it with `-i base` 
+2025-10-05 18:32:50,672 41320 INFO odoo_db odoo.modules.registry: Registry loaded in 0.020s 
+2025-10-05 18:33:50,834 41701 INFO ? odoo: Odoo version 18.0 
+2025-10-05 18:33:50,834 41701 INFO ? odoo: Using configuration file at /Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo.conf 
+2025-10-05 18:33:50,834 41701 INFO ? odoo: addons paths: ['/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/addons', '/Users/miguelmonteiro/Library/Application Support/Odoo/addons/18.0', '/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/addons'] 
+2025-10-05 18:33:50,834 41701 INFO ? odoo: database: odoo_dev@localhost:5432 
+2025-10-05 18:33:50,923 41701 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltopdf to print a pdf version of the reports. 
+2025-10-05 18:33:50,923 41701 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltoimage to generate images from html. 
+2025-10-05 18:33:51,093 41701 INFO ? odoo.service.server: HTTP service (werkzeug) running on 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa:8069 
+2025-10-05 18:33:51,120 41701 ERROR odoo_db odoo.modules.loading: Database odoo_db not initialized, you can force it with `-i base` 
+2025-10-05 18:33:51,121 41701 INFO odoo_db odoo.modules.registry: Registry loaded in 0.027s 
+2025-10-05 18:33:57,826 41701 INFO odoo_db odoo.service.server: Initiating shutdown 
+2025-10-05 18:33:57,827 41701 INFO odoo_db odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2025-10-05 18:33:58,111 41701 INFO odoo_db odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 3 connections  
+2025-10-06 11:51:40,434 6131 INFO ? odoo: Odoo version 18.0 
+2025-10-06 11:51:40,434 6131 INFO ? odoo: Using configuration file at /Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo.conf 
+2025-10-06 11:51:40,434 6131 INFO ? odoo: addons paths: ['/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/addons', '/Users/miguelmonteiro/Library/Application Support/Odoo/addons/18.0', '/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/addons'] 
+2025-10-06 11:51:40,434 6131 INFO ? odoo: database: odoo_dev@localhost:5432 
+2025-10-06 11:51:40,639 6131 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltopdf to print a pdf version of the reports. 
+2025-10-06 11:51:40,639 6131 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltoimage to generate images from html. 
+2025-10-06 11:51:40,773 6131 INFO ? odoo.service.server: HTTP service (werkzeug) running on 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa:8069 
+2025-10-06 11:51:40,825 6131 ERROR odoo_db odoo.modules.loading: Database odoo_db not initialized, you can force it with `-i base` 
+2025-10-06 11:51:40,826 6131 INFO odoo_db odoo.modules.registry: Registry loaded in 0.052s 
+2025-10-06 11:52:19,179 6131 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:52:19,182 6131 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:52:19,188 6131 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:52:19] "GET / HTTP/1.1" 500 - 1 0.001 0.011
+2025-10-06 11:52:19,464 6131 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:52:19,466 6131 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:52:19,468 6131 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:52:19] "GET /favicon.ico HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-06 11:52:30,716 6131 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:52:30,718 6131 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:52:30,720 6131 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:52:30] "GET / HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-06 11:52:31,258 6131 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:52:31,260 6131 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:52:31,261 6131 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:52:31] "GET / HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-06 11:52:31,521 6131 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:52:31,523 6131 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:52:31,524 6131 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:52:31] "GET /favicon.ico HTTP/1.1" 500 - 1 0.001 0.002
+2025-10-06 11:52:34,525 6131 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:52:34,527 6131 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:52:34,528 6131 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:52:34] "GET /odoo HTTP/1.1" 500 - 1 0.001 0.004
+2025-10-06 11:52:34,624 6131 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:52:34,626 6131 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:52:34,627 6131 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:52:34] "GET /favicon.ico HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-06 11:52:40,836 6131 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:52:40,837 6131 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:52:41,853 6131 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:52:41,854 6131 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:53:16,388 6131 INFO odoo_db odoo.service.server: Initiating server reload 
+2025-10-06 11:53:47,596 6675 INFO ? odoo: Odoo version 18.0 
+2025-10-06 11:53:47,596 6675 INFO ? odoo: Using configuration file at /Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo.conf 
+2025-10-06 11:53:47,596 6675 INFO ? odoo: addons paths: ['/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/addons', '/Users/miguelmonteiro/Library/Application Support/Odoo/addons/18.0', '/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/addons'] 
+2025-10-06 11:53:47,596 6675 INFO ? odoo: database: odoo_dev@localhost:5432 
+2025-10-06 11:53:47,664 6675 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltopdf to print a pdf version of the reports. 
+2025-10-06 11:53:47,664 6675 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltoimage to generate images from html. 
+2025-10-06 11:53:47,748 6675 INFO ? odoo.service.server: HTTP service (werkzeug) running on 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa:8069 
+2025-10-06 11:53:47,763 6675 ERROR odoo_db odoo.modules.loading: Database odoo_db not initialized, you can force it with `-i base` 
+2025-10-06 11:53:47,763 6675 INFO odoo_db odoo.modules.registry: Registry loaded in 0.015s 
+2025-10-06 11:54:47,791 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:54:47,793 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:54:48,789 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:54:48,790 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:55:47,805 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:55:47,808 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:55:49,809 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:55:49,810 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:56:47,819 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:56:47,821 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:56:50,829 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:56:50,829 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:57:47,843 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:57:47,844 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:57:51,845 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:57:51,846 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:58:47,848 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:58:47,849 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:58:52,862 6675 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 11:58:52,863 6675 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 11:58:57,685 6675 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:58:57,719 6675 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:58:57,731 6675 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:58:57] "GET / HTTP/1.1" 500 - 1 0.032 0.020
+2025-10-06 11:58:58,163 6675 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:58:58,166 6675 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:58:58,168 6675 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:58:58] "GET / HTTP/1.1" 500 - 1 0.001 0.005
+2025-10-06 11:58:58,430 6675 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 11:58:58,432 6675 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 11:58:58,433 6675 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 11:58:58] "GET /favicon.ico HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-06 11:59:04,514 6675 INFO odoo_db odoo.service.server: Initiating server reload 
+2025-10-06 12:03:55,628 8687 INFO ? odoo: Odoo version 18.0 
+2025-10-06 12:03:55,628 8687 INFO ? odoo: Using configuration file at /Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo.conf 
+2025-10-06 12:03:55,628 8687 INFO ? odoo: addons paths: ['/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/addons', '/Users/miguelmonteiro/Library/Application Support/Odoo/addons/18.0', '/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/addons'] 
+2025-10-06 12:03:55,628 8687 INFO ? odoo: database: odoo_dev@localhost:5432 
+2025-10-06 12:03:55,721 8687 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltopdf to print a pdf version of the reports. 
+2025-10-06 12:03:55,721 8687 INFO ? odoo.addons.base.models.ir_actions_report: You need Wkhtmltoimage to generate images from html. 
+2025-10-06 12:03:55,838 8687 INFO ? odoo.service.server: HTTP service (werkzeug) running on 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa:8069 
+2025-10-06 12:03:55,864 8687 ERROR odoo_db odoo.modules.loading: Database odoo_db not initialized, you can force it with `-i base` 
+2025-10-06 12:03:55,865 8687 INFO odoo_db odoo.modules.registry: Registry loaded in 0.027s 
+2025-10-06 12:04:36,461 8687 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 12:04:36,465 8687 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 12:04:36,472 8687 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 12:04:36] "GET / HTTP/1.1" 500 - 1 0.001 0.016
+2025-10-06 12:04:36,683 8687 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 12:04:36,685 8687 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 12:04:36,686 8687 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 12:04:36] "GET / HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-06 12:04:36,954 8687 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 12:04:36,956 8687 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 12:04:36,957 8687 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 12:04:36] "GET /favicon.ico HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-06 12:04:55,878 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:04:55,878 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:04:56,891 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:04:56,891 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:05:48,473 8687 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 12:05:48,475 8687 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 12:05:48,476 8687 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 12:05:48] "GET / HTTP/1.1" 500 - 1 0.001 0.003
+2025-10-06 12:05:48,763 8687 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 12:05:48,766 8687 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 12:05:48,767 8687 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 12:05:48] "GET / HTTP/1.1" 500 - 1 0.001 0.005
+2025-10-06 12:05:49,030 8687 WARNING ? odoo.http: Logged into database 'odoo_dev', but dbfilter rejects it; logging session out. 
+2025-10-06 12:05:49,032 8687 ERROR odoo_db odoo.http: Exception during request handling. 
+Traceback (most recent call last):
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2554, in __call__
+    response = request._serve_db()
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/http.py", line 2062, in _serve_db
+    rule, args = self.registry['ir.http']._match(self.httprequest.path)
+                 ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/Users/miguelmonteiro/Desktop/PrismaFleet/odoo/odoo/modules/registry.py", line 244, in __getitem__
+    return self.models[model_name]
+           ~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'ir.http'
+2025-10-06 12:05:49,034 8687 INFO odoo_db werkzeug: 127.0.0.1 - - [06/Oct/2025 12:05:49] "GET /favicon.ico HTTP/1.1" 500 - 1 0.001 0.004
+2025-10-06 12:05:55,883 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:05:55,884 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:05:57,911 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:05:57,912 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:06:55,892 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:06:55,892 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:06:58,928 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:06:58,929 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:07:55,900 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:07:55,901 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:07:59,949 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:07:59,949 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:08:55,909 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:08:55,910 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:09:00,988 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:09:00,989 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
+2025-10-06 12:09:55,918 8687 ERROR odoo_db odoo.sql_db: bad query: b"\n            SELECT latest_version\n            FROM ir_module_module\n             WHERE name='base'\n        "
+ERROR: relation "ir_module_module" does not exist
+LINE 3:             FROM ir_module_module
+                         ^
+ 
+2025-10-06 12:09:55,919 8687 WARNING odoo_db odoo.addons.base.models.ir_cron: Tried to poll an undefined table on database odoo_db. 
