@@ -13,7 +13,6 @@
                 <field name="vin"/>
                 <field name="license_plate"/>
                 <field name="color"/>
-                <field name="body_type"/>
                 <field name="mileage"/>
                 <field name="mileage_unit"/>
                 <field name="condition"/>
@@ -21,8 +20,7 @@
                        decoration-success="status in ['available']"
                        decoration-info="status in ['reserved']"
                        decoration-warning="status in ['maintenance']"/>
-                <field name="current_value" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="currency_id" invisible="1"/>
+                <field name="current_value"/>
                 <field name="location"/>
                 <field name="purchase_date"/>
                 <field name="age" string="Age (Years)"/>
@@ -38,16 +36,19 @@
             <form string="Vehicle" class="o_vehicle_form">
                 <header>
                     <!-- Status buttons -->
-                    <button name="action_set_available" string="Set Available" 
+                    <button name="action_set_available" string="✅ Complete Maintenance" 
                             type="object" class="btn-success"
-                            invisible="status == 'available'"/>
-                    <button name="action_set_reserved" string="Set Reserved" 
+                            invisible="status != 'maintenance'"
+                            help="Complete maintenance and make vehicle available"/>
+                    <button name="action_set_reserved" string="📋 Set Reserved" 
                             type="object" class="btn-warning"
-                            invisible="status == 'reserved'"/>
+                            invisible="status == 'reserved' or status == 'maintenance'"
+                            help="Mark vehicle as reserved"/>
 
-                    <button name="action_set_maintenance" string="Send to Maintenance" 
+                    <button name="action_set_maintenance" string="🔧 Send to Maintenance" 
                             type="object" class="btn-info"
-                            invisible="status == 'maintenance'"/>
+                            invisible="status != 'available'"
+                            help="Send vehicle to maintenance workshop"/>
                     
                     <field name="status" widget="statusbar" 
                            statusbar_visible="available,reserved,maintenance"/>
@@ -59,65 +60,90 @@
                     </div>
                     
                     <div class="oe_title">
+                        <label for="name" string="Car Name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" readonly="1" class="oe_inline"/>
+                            <field name="name" class="oe_inline" placeholder="Enter vehicle name..."/>
                         </h1>
                     </div>
                     
                     <group>
                         <group name="basic_info" string="Basic Information">
-                            <field name="make" required="1"/>
-                            <field name="model" required="1"/>
-                            <field name="year" required="1"/>
-                            <field name="vin"/>
-                            <field name="license_plate"/>
-                            <field name="color"/>
-                            <field name="body_type"/>
+                            <field name="make" placeholder="e.g. Toyota, BMW, Ford..."/>
+                            <field name="model" placeholder="e.g. Camry, 320i, F-150..."/>
+                            <field name="vin" placeholder="Vehicle Identification Number"/>
+                            <field name="license_plate" class="oe_inline" placeholder="License Plate"/>
+                            <field name="color" class="oe_inline" placeholder="e.g. Blue, Red, Silver..."/>
+                            <field name="year" class="oe_inline"/>
                         </group>
                         
-                        <group name="physical" string="Physical Details">
-                            <field name="doors"/>
-                            <field name="seats"/>
-                            <field name="condition"/>
-                            <field name="age" readonly="1"/>
+                        <group name="driver_fees" string="Driver Fees">
+                            <field name="weekly_rent" class="oe_inline" placeholder="0.00"/>
+                            <field name="entry_deposit" class="oe_inline" placeholder="0.00"/>
+                            <field name="reserve_fee" class="oe_inline" placeholder="0.00"/>
+                            <field name="reserve_fee_max" class="oe_inline" placeholder="0.00"/>
                         </group>
                     </group>
                     
                     <group>
-                        <group name="engine" string="Engine &amp; Performance">
-                            <field name="engine_size"/>
-                            <field name="engine_type"/>
-                            <field name="transmission"/>
-                            <field name="drivetrain"/>
+                        <group name="financial" string="Financial Information">
+                            <field name="purchase_price" class="oe_inline" placeholder="0.00"/>
+                            <field name="current_value" class="oe_inline" placeholder="0.00"/>
+                            <field name="purchase_date" class="oe_inline"/>
                         </group>
                         
+                                                <group name="physical" string="Car Details">
+                            <field name="via_verde_card" class="oe_inline" placeholder="Via Verde card number"/>
+                            <field name="gas_card" class="oe_inline" placeholder="Gas payment card number"/>
+                            <field name="fire_extinguisher" class="oe_inline" placeholder="Fire extinguisher ID"/>
+                            <field name="insurance_date" class="oe_inline"/>
+                            <field name="ipo_date" class="oe_inline"/>
+                            <field name="condition" class="oe_inline"/>
+                            <field name="age" class="oe_inline" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group>
                         <group name="mileage_condition" string="Mileage &amp; Usage">
                             <label for="mileage"/>
                             <div class="o_row">
                                 <field name="mileage" class="oe_inline"/>
                                 <field name="mileage_unit" class="oe_inline" nolabel="1"/>
                             </div>
-                            <field name="location"/>
-                        </group>
-                    </group>
-                    
-                    <group>
-                        <group name="financial" string="Financial Information">
-                            <field name="currency_id" invisible="1"/>
-                            <field name="purchase_price" widget="monetary" 
-                                   options="{'currency_field': 'currency_id'}"/>
-                            <field name="current_value" widget="monetary" 
-                                   options="{'currency_field': 'currency_id'}"/>
-
+                            <field name="location" placeholder="Current location or address"/>
                         </group>
                         
-                        <group name="dates" string="Important Dates">
-                            <field name="purchase_date"/>
-                        </group>
+                        <group></group>
                     </group>
                     
                     <group name="contact" string="Contact Information">
                         <field name="owner_id"/>
+                    </group>
+                    
+                    <!-- Current Intervention Information (only visible when in maintenance) -->
+                    <group name="current_intervention" string="Current Intervention" invisible="status != 'maintenance'">
+                        <field name="current_intervention_id" invisible="1"/>
+                        <group name="intervention_details" string="Intervention Details" invisible="not current_intervention_id">
+                            <field name="current_intervention_id" readonly="1" options="{'no_create': True}"/>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="current_intervention_id" string="Entry Date"/>
+                                    <field name="current_intervention_id" widget="related" 
+                                           options="{'field': 'entry_date'}" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="col-6">
+                                    <label for="current_intervention_id" string="Days in Maintenance"/>
+                                    <field name="current_intervention_id" widget="related" 
+                                           options="{'field': 'days_in_maintenance'}" readonly="1" nolabel="1"/>
+                                </div>
+                            </div>
+                            <field name="current_intervention_id" widget="related" 
+                                   options="{'field': 'location'}" string="Maintenance Location" readonly="1"/>
+                            <field name="current_intervention_id" widget="related" 
+                                   options="{'field': 'description'}" string="Intervention Notes" readonly="1"/>
+                        </group>
+                        <div invisible="current_intervention_id" class="alert alert-info" role="alert">
+                            <p>No active intervention found. This might indicate a data inconsistency.</p>
+                        </div>
                     </group>
                     
                     <notebook>
@@ -128,71 +154,184 @@
                         <page name="notes" string="Notes">
                             <field name="notes" placeholder="Additional notes about the vehicle..."/>
                         </page>
+                        
+                        <page name="intervention_history" string="Intervention History">
+                            <field name="intervention_ids"/>
+                        </page>
+                        
+                        <page name="history" string="Car History">
+                            <group>
+                                <group name="creation_info" string="Creation Information">
+                                    <field name="created_by_name" readonly="1"/>
+                                    <field name="create_date" string="Created On" readonly="1"/>
+                                </group>
+                                
+                                <group name="modification_info" string="Last Modification">
+                                    <field name="last_modified_by_name" readonly="1"/>
+                                    <field name="write_date" string="Last Modified On" readonly="1"/>
+                                </group>
+                            </group>
+                            
+                            <separator string="Record Information"/>
+                            <group>
+                                <group>
+                                    <field name="id" string="Record ID" readonly="1"/>
+                                    <field name="active" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
-                
-                <div class="oe_chatter" style="min-width: 100%;">
-                    <field name="message_follower_ids" options="{'open_attachments': True}"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids" options="{'post_refresh': 'recipients', 'display_log_button': True}"/>
-                </div>
             </form>
         </field>
     </record>
 
-    <!-- Vehicle Kanban View -->
+    <!-- Vehicle Kanban View with Tabbed Layout -->
     <record id="view_vehicle_kanban" model="ir.ui.view">
         <field name="name">vehicle.vehicle.kanban</field>
         <field name="model">vehicle.vehicle</field>
         <field name="arch" type="xml">
-                    <kanban default_group_by="status" class="o_kanban_small_column" group_create="false" group_edit="false" group_delete="false" groups_limit="200">
-            <field name="color"/>
-            <field name="id"/>
-            <field name="name"/>
-            <field name="make"/>
-            <field name="model"/>
-            <field name="year"/>
-            <field name="status"/>
-            <field name="purchase_price"/>
-            <field name="mileage"/>
-            <field name="condition"/>
-            <field name="description"/>
-            <progressbar field="status" colors='{"available": "success", "reserved": "warning", "maintenance": "danger"}'/>
-            <templates>
-                <t t-name="kanban-box">
-                    <div class="oe_kanban_global_click">
-                        <div class="o_kanban_record_top mb16">
-                            <div class="o_kanban_record_headings">
-                                <strong class="o_kanban_record_title">
-                                    <span><field name="name"/></span>
-                                </strong>
+            <kanban class="o_vehicle_kanban_view" default_order="sequence, name desc, id desc" records_draggable="false">
+                <field name="sequence"/>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="make"/>
+                <field name="model"/>
+                <field name="year"/>
+                <field name="status"/>
+                <field name="purchase_price"/>
+                <field name="mileage"/>
+                <field name="condition"/>
+                <field name="description"/>
+                <field name="current_value"/>
+                <field name="license_plate"/>
+                <field name="color"/>
+                
+                <templates>
+                    <!-- Status Tab Navigation -->
+                    <t t-name="view">
+                        <div class="o_vehicle_status_tabs">
+                            <div class="d-flex border-bottom mb-3 btn-group" role="group">
+                                <button class="btn btn-success flex-fill status-tab" data-status="available" name="available_tab" type="button">
+                                    <i class="fa fa-check-circle me-2" title="Available"/>
+                                    Available
+                                    <span class="badge bg-light text-dark ms-2" t-att-data-count="available">0</span>
+                                </button>
+                                <button class="btn btn-warning flex-fill status-tab" data-status="reserved" name="reserved_tab" type="button">
+                                    <i class="fa fa-clock-o me-2" title="Reserved"/>
+                                    Reserved  
+                                    <span class="badge bg-light text-dark ms-2" t-att-data-count="reserved">0</span>
+                                </button>
+                                <button class="btn btn-danger flex-fill status-tab" data-status="maintenance" name="maintenance_tab" type="button">
+                                    <i class="fa fa-wrench me-2" title="In Maintenance"/>
+                                    In Maintenance
+                                    <span class="badge bg-light text-dark ms-2" t-att-data-count="maintenance">0</span>
+                                </button>
                             </div>
                         </div>
-                        <div class="o_kanban_record_body">
-                            <div class="text-muted">
-                                <field name="make"/> <field name="model"/> (<field name="year"/>)
-                            </div>
-                            <div class="text-muted">
-                                Condition: <field name="condition"/>
-                            </div>
-                            <div class="text-muted">
-                                Mileage: <field name="mileage"/> km
-                            </div>
-                            <div class="text-muted">
-                                Price: €<field name="purchase_price"/>
+                        <div class="o_vehicle_cards_container">
+                            <t t-call="default"/>
+                        </div>
+                    </t>
+                    
+                    <!-- Vehicle Card Template -->
+                    <t t-name="card">
+                        <div class="o_vehicle_card" t-att-data-status="record.status.raw_value">
+                            <div class="card h-100">
+                                <!-- Card Header -->
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="card-title mb-0 text-primary">
+                                        <field name="name"/>
+                                    </h6>
+                                    <!-- Action Buttons -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button" name="action_dropdown">
+                                            <i class="fa fa-cog" title="Actions"/>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" role="menu">
+                                            <!-- Available Status Actions -->
+                                            <button name="action_set_maintenance" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'available'">
+                                                <i class="fa fa-wrench text-info me-2"/>
+                                                Send to Maintenance
+                                            </button>
+                                            <button name="action_set_reserved" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'available'">
+                                                <i class="fa fa-clock-o text-warning me-2"/>
+                                                Set Reserved
+                                            </button>
+                                            
+                                            <!-- Reserved Status Actions -->
+                                            <button name="action_set_available" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'reserved'">
+                                                <i class="fa fa-check-circle text-success me-2"/>
+                                                Set Available
+                                            </button>
+                                            
+                                            <!-- Maintenance Status Actions -->
+                                            <button name="action_set_available" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'maintenance'">
+                                                <i class="fa fa-check-circle text-success me-2"/>
+                                                Complete Maintenance
+                                            </button>
+                                            
+                                            <!-- Common Actions -->
+                                            <div class="dropdown-divider"></div>
+                                            <button name="open_form_view" type="object" 
+                                                    class="dropdown-item btn-link text-start">
+                                                <i class="fa fa-eye text-primary me-2"/>
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <p class="text-muted mb-1">
+                                                <strong><field name="make"/> <field name="model"/></strong> (<field name="year"/>)
+                                            </p>
+                                            <p class="text-muted mb-1">
+                                                <i class="fa fa-car me-1" title="Condition"/>
+                                                Condition: <field name="condition"/>
+                                            </p>
+                                            <p class="text-muted mb-1">
+                                                <i class="fa fa-tachometer me-1" title="Mileage"/>
+                                                <field name="mileage"/> km
+                                            </p>
+                                            <p class="text-muted mb-0" t-if="record.license_plate.raw_value">
+                                                <i class="fa fa-id-card me-1" title="License Plate"/>
+                                                <field name="license_plate"/>
+                                            </p>
+                                        </div>
+                                        <div class="col-5 text-end">
+                                            <h5 class="text-success mb-1">
+                                                €<field name="current_value" t-if="record.current_value.raw_value"/>
+                                                <span t-if="!record.current_value.raw_value">€<field name="purchase_price"/></span>
+                                            </h5>
+                                            <div t-att-class="'badge ' + (record.status.raw_value == 'available' ? 'bg-success' : record.status.raw_value == 'reserved' ? 'bg-warning' : 'bg-danger')">
+                                                <field name="status"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-2" t-if="record.description.raw_value">
+                                        <p class="text-muted small mb-0">
+                                            <field name="description"/>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="o_kanban_record_bottom">
-                            <div class="oe_kanban_bottom_left text-muted">
-                                <span t-if="record.description.raw_value">
-                                    <field name="description"/>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </t>
-            </templates>
-        </kanban>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
@@ -246,8 +385,6 @@
                             context="{'group_by': 'year'}"/>
                     <filter name="group_condition" string="Condition" 
                             context="{'group_by': 'condition'}"/>
-                    <filter name="group_body_type" string="Body Type" 
-                            context="{'group_by': 'body_type'}"/>
                     <filter name="group_location" string="Location" 
                             context="{'group_by': 'location'}"/>
                 </group>

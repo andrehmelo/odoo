@@ -8,7 +8,7 @@ import re
 class Vehicle(models.Model):
     _name = 'vehicle.vehicle'
     _description = 'Vehicle'
-    _order = 'name desc, id desc'
+    _order = 'sequence, name desc, id desc'
     _rec_name = 'name'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     
@@ -37,7 +37,7 @@ class Vehicle(models.Model):
     
     # Identification
     vin = fields.Char(
-        string='VIN (Vehicle Identification Number)',
+        string='VIN',
         size=17,
         help="17-character Vehicle Identification Number"
     )
@@ -51,55 +51,6 @@ class Vehicle(models.Model):
         string='Color',
         help="Primary exterior color"
     )
-    body_type = fields.Selection([
-        ('sedan', 'Sedan'),
-        ('hatchback', 'Hatchback'),
-        ('suv', 'SUV'),
-        ('truck', 'Truck'),
-        ('coupe', 'Coupe'),
-        ('convertible', 'Convertible'),
-        ('wagon', 'Station Wagon'),
-        ('van', 'Van'),
-        ('motorcycle', 'Motorcycle'),
-        ('other', 'Other'),
-    ], string='Body Type')
-    
-    doors = fields.Integer(
-        string='Number of Doors',
-        help="Number of doors (2, 4, etc.)"
-    )
-    seats = fields.Integer(
-        string='Seating Capacity',
-        help="Number of seats/passengers"
-    )
-    
-    # Engine & Performance
-    engine_size = fields.Float(
-        string='Engine Size (L)',
-        digits=(4, 1),
-        help="Engine displacement in liters"
-    )
-    engine_type = fields.Selection([
-        ('gasoline', 'Gasoline'),
-        ('diesel', 'Diesel'),
-        ('hybrid', 'Hybrid'),
-        ('electric', 'Electric'),
-        ('other', 'Other'),
-    ], string='Fuel Type')
-    
-    transmission = fields.Selection([
-        ('manual', 'Manual'),
-        ('automatic', 'Automatic'),
-        ('cvt', 'CVT'),
-        ('semi_automatic', 'Semi-Automatic'),
-    ], string='Transmission')
-    
-    drivetrain = fields.Selection([
-        ('fwd', 'Front-Wheel Drive (FWD)'),
-        ('rwd', 'Rear-Wheel Drive (RWD)'),
-        ('awd', 'All-Wheel Drive (AWD)'),
-        ('4wd', '4-Wheel Drive (4WD)'),
-    ], string='Drivetrain')
     
     # Mileage & Condition
     mileage = fields.Float(
@@ -112,6 +63,28 @@ class Vehicle(models.Model):
         ('miles', 'Miles'),
     ], string='Mileage Unit', default='km')
     
+    # Car Details & Equipment
+    via_verde_card = fields.Integer(
+        string='Via Verde Card',
+        help="Via Verde card number for highway tolls and parking payments"
+    )
+    gas_card = fields.Integer(
+        string='Gas Card',
+        help="Gas payment card number associated with this vehicle"
+    )
+    fire_extinguisher = fields.Integer(
+        string='Fire Extinguisher ID',
+        help="Fire extinguisher identification number for this car"
+    )
+    insurance_date = fields.Date(
+        string='Insurance Expiry',
+        help="Car insurance expiration date"
+    )
+    ipo_date = fields.Date(
+        string='IPO Expiry',
+        help="Car IPO (inspection) expiration date"
+    )
+    
     condition = fields.Selection([
         ('new', 'New'),
         ('excellent', 'Excellent'),
@@ -122,15 +95,15 @@ class Vehicle(models.Model):
     ], string='Condition', default='good')
     
     # Financial Information
-    purchase_price = fields.Monetary(
-        string='Purchase Price',
-        currency_field='currency_id',
-        help="Price paid when vehicle was acquired"
+    purchase_price = fields.Float(
+        string='Purchase Price (€)',
+        digits=(12, 2),
+        help="Price paid when vehicle was acquired in Euros"
     )
-    current_value = fields.Monetary(
-        string='Current Value',
-        currency_field='currency_id',
-        help="Current estimated market value"
+    current_value = fields.Float(
+        string='Current Value (€)',
+        digits=(12, 2),
+        help="Current estimated market value in Euros"
     )
 
     currency_id = fields.Many2one(
@@ -139,12 +112,37 @@ class Vehicle(models.Model):
         default=lambda self: self.env.company.currency_id
     )
     
+    # Driver Fees Information
+    weekly_rent = fields.Float(
+        string='Weekly Rent (€)',
+        digits=(8, 2),
+        help="Amount driver pays per week to rent this vehicle in Euros"
+    )
+    entry_deposit = fields.Float(
+        string='Entry Deposit (€)',
+        digits=(8, 2),
+        help="Upfront deposit paid by driver, reimbursed when returning car in good condition in Euros"
+    )
+    reserve_fee = fields.Float(
+        string='Reserve Fee (€)',
+        digits=(8, 2),
+        help="Weekly fee deducted from driver's paycheck, returned when car is returned in Euros"
+    )
+    reserve_fee_max = fields.Float(
+        string='Reserve Fee Max (€)',
+        digits=(8, 2),
+        help="Maximum amount of reserve fee that can be accumulated in Euros"
+    )
+    
     # Status & Availability
     status = fields.Selection([
-        ('available', 'Available'),
+        ('available', 'Available'), 
         ('reserved', 'Reserved'),
         ('maintenance', 'In Maintenance'),
     ], string='Status', default='available', required=True)
+    
+    # Sequence field for drag & drop ordering
+    sequence = fields.Integer(string='Sequence', default=10, help="Used for ordering vehicles in kanban view")
     
     # Dates
     purchase_date = fields.Date(
@@ -180,6 +178,21 @@ class Vehicle(models.Model):
         help="Current owner or contact person"
     )
     
+    # Intervention History Relationship
+    intervention_ids = fields.One2many(
+        'car.intervention.history',
+        'vehicle_id',
+        string='Intervention History',
+        help="History of maintenance interventions for this vehicle"
+    )
+    
+    current_intervention_id = fields.Many2one(
+        'car.intervention.history',
+        string='Current Intervention',
+        compute='_compute_current_intervention',
+        help="Current active intervention (if vehicle is in maintenance)"
+    )
+    
     # Computed fields
     age = fields.Integer(
         string='Age (Years)',
@@ -211,6 +224,43 @@ class Vehicle(models.Model):
                 vehicle.age = max(0, current_year - vehicle.year)
             else:
                 vehicle.age = 0
+    
+    # Audit Information (computed fields)
+    created_by_name = fields.Char(
+        string='Created By',
+        compute='_compute_audit_info',
+        help="Name of the user who created this vehicle record"
+    )
+    last_modified_by_name = fields.Char(
+        string='Last Modified By', 
+        compute='_compute_audit_info',
+        help="Name of the user who last modified this vehicle record"
+    )
+    
+    @api.depends('create_uid', 'write_uid')
+    def _compute_audit_info(self):
+        """Compute audit information - who created and last modified the record"""
+        for vehicle in self:
+            # Created by
+            if vehicle.create_uid:
+                vehicle.created_by_name = vehicle.create_uid.name
+            else:
+                vehicle.created_by_name = 'Unknown'
+                
+            # Last modified by
+            if vehicle.write_uid:
+                vehicle.last_modified_by_name = vehicle.write_uid.name
+            else:
+                vehicle.last_modified_by_name = 'Unknown'
+    
+    @api.depends('intervention_ids.state')
+    def _compute_current_intervention(self):
+        """Find the current active intervention for this vehicle"""
+        for vehicle in self:
+            current_intervention = vehicle.intervention_ids.filtered(
+                lambda i: i.state == 'in_maintenance' and not i.exit_date
+            )
+            vehicle.current_intervention_id = current_intervention[0] if current_intervention else False
     
     @api.model_create_multi
     def create(self, vals_list):
@@ -269,18 +319,42 @@ class Vehicle(models.Model):
                 raise ValidationError(_("Mileage cannot be negative."))
     
     def action_set_available(self):
-        """Set vehicle status to available"""
-        self.write({'status': 'available'})
+        """Open wizard to set vehicle status to available"""
+        self.ensure_one()
+        
+        # Check if vehicle is in maintenance
+        if self.status != 'maintenance':
+            raise ValidationError(_("Vehicle must be in maintenance to use this action."))
+        
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Set Vehicle Available',
+            'res_model': 'vehicle.available.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_vehicle_id': self.id},
+        }
     
     def action_set_reserved(self):
         """Set vehicle status to reserved"""
         self.write({'status': 'reserved'})
     
-
-    
     def action_set_maintenance(self):
-        """Set vehicle status to maintenance"""
-        self.write({'status': 'maintenance'})
+        """Open wizard to set vehicle status to maintenance"""
+        self.ensure_one()
+        
+        # Check if vehicle is available
+        if self.status != 'available':
+            raise ValidationError(_("Vehicle must be available to send to maintenance."))
+        
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Send Vehicle to Maintenance',
+            'res_model': 'vehicle.maintenance.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_vehicle_id': self.id},
+        }
     
     def action_open_delete_wizard(self):
         """Open the delete wizard"""
@@ -309,8 +383,9 @@ class Vehicle(models.Model):
         """Override write to handle VIN normalization"""
         if vals.get('vin'):
             vals['vin'] = vals['vin'].upper()
+        
         return super().write(vals)
-    
+
     @api.model
     def read_group(self, domain, fields, groupby, offset=0, limit=None, orderby=False, lazy=True):
         """Override read_group to ensure all status groups are shown"""
@@ -342,3 +417,84 @@ class Vehicle(models.Model):
             result.sort(key=lambda x: status_order.get(x.get('status'), 999))
         
         return result
+    
+    @api.model
+    def _init_sequence_values(self):
+        """Initialize sequence values for existing records"""
+        vehicles_without_sequence = self.search([('sequence', '=', 0)])
+        for i, vehicle in enumerate(vehicles_without_sequence):
+            vehicle.sequence = (i + 1) * 10
+
+    def action_set_maintenance(self):
+        """Action to send vehicle to maintenance - shows wizard for maintenance vehicles"""
+        if self.status != 'available':
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': f'Vehicle is currently {self.status}. Only available vehicles can be sent to maintenance.',
+                    'type': 'warning',
+                    'sticky': False,
+                }
+            }
+        
+        return {
+            'name': 'Send to Maintenance',
+            'type': 'ir.actions.act_window',
+            'res_model': 'vehicle.maintenance.wizard',
+            'view_mode': 'form',
+            'view_id': self.env.ref('vehicle_manager.view_vehicle_maintenance_wizard_form').id,
+            'target': 'new',
+            'context': {
+                'default_vehicle_id': self.id,
+                'default_new_status': 'maintenance',
+            }
+        }
+
+    def action_set_available(self):
+        """Action to set vehicle as available - shows wizard when coming from maintenance"""
+        if self.status == 'maintenance':
+            # Show wizard for maintenance to available transition
+            return {
+                'name': 'Set as Available',
+                'type': 'ir.actions.act_window',
+                'res_model': 'vehicle.available.wizard',
+                'view_mode': 'form',
+                'view_id': self.env.ref('vehicle_manager.view_vehicle_available_wizard_form').id,
+                'target': 'new',
+                'context': {
+                    'default_vehicle_id': self.id,
+                    'default_new_status': 'available',
+                }
+            }
+        else:
+            # Simple status change for other transitions
+            self.write({'status': 'available'})
+            return True
+
+    def action_set_reserved(self):
+        """Action to set vehicle as reserved - simple status change"""
+        if self.status == 'maintenance':
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': 'Vehicles in maintenance cannot be reserved directly. Please set as available first.',
+                    'type': 'warning',
+                    'sticky': False,
+                }
+            }
+        
+        self.write({'status': 'reserved'})
+        return True
+
+    def open_form_view(self):
+        """Action to open the vehicle form view"""
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'vehicle.vehicle',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'views': [[False, 'form']],
+            'target': 'current',
+        }

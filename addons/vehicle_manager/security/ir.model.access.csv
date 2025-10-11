@@ -3,3 +3,7 @@ access_vehicle_vehicle_user,vehicle.vehicle.user,model_vehicle_vehicle,base.grou
 access_vehicle_vehicle_portal,vehicle.vehicle.portal,model_vehicle_vehicle,base.group_portal,1,0,0,0
 access_vehicle_import_wizard_user,vehicle.import.wizard.user,model_vehicle_import_wizard,base.group_user,1,1,1,1
 access_vehicle_delete_wizard_user,vehicle.delete.wizard.user,model_vehicle_delete_wizard,base.group_user,1,1,1,1
+access_vehicle_maintenance_wizard_user,vehicle.maintenance.wizard.user,model_vehicle_maintenance_wizard,base.group_user,1,1,1,1
+access_vehicle_available_wizard_user,vehicle.available.wizard.user,model_vehicle_available_wizard,base.group_user,1,1,1,1
+access_car_intervention_history_user,car.intervention.history.user,model_car_intervention_history,base.group_user,1,1,1,1
+access_car_intervention_history_portal,car.intervention.history.portal,model_car_intervention_history,base.group_portal,1,0,0,0

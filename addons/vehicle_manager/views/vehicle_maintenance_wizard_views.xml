@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vehicle Maintenance Wizard Views -->
+    <record id="view_vehicle_maintenance_wizard_form" model="ir.ui.view">
+        <field name="name">vehicle.maintenance.wizard.form</field>
+        <field name="model">vehicle.maintenance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send Vehicle to Maintenance">
+                <div class="alert alert-info" role="alert">
+                    <h4>Send to Maintenance</h4>
+                    <p>Please fill in the maintenance details for this vehicle. All fields are required.</p>
+                </div>
+                
+                <group>
+                    <group name="vehicle_info" string="VEHICLE INFORMATION">
+                        <field name="vehicle_id" readonly="1" options="{'no_open': True}"/>
+                        <field name="license_plate" readonly="1"/>
+                    </group>
+                    
+                    <group name="maintenance_details" string="MAINTENANCE DETAILS">
+                        <field name="entry_date"/>
+                        <field name="location" placeholder="e.g., Main Workshop, External Garage, etc."/>
+                    </group>
+                </group>
+                
+                <group>
+                    <field name="description" placeholder="Describe the reason for maintenance: What needs to be fixed? What symptoms were observed? Any special instructions?"/>
+                </group>
+                
+                <footer>
+                    <button string="Send to Maintenance" name="action_send_to_maintenance" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vehicle Available Wizard Views -->
+    <record id="view_vehicle_available_wizard_form" model="ir.ui.view">
+        <field name="name">vehicle.available.wizard.form</field>
+        <field name="model">vehicle.available.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Complete Maintenance">
+                <div class="alert alert-success" role="alert">
+                    <h4>Complete Maintenance</h4>
+                    <p>Complete the maintenance intervention for this vehicle.</p>
+                </div>
+                
+                <group>
+                    <group name="vehicle_info" string="VEHICLE INFORMATION">
+                        <field name="vehicle_id" readonly="1" options="{'no_open': True}"/>
+                        <field name="license_plate" readonly="1"/>
+                    </group>
+                    
+                    <group name="intervention_info" string="INTERVENTION DETAILS">
+                        <field name="current_intervention_id" readonly="1" options="{'no_open': True}"/>
+                        <field name="entry_date" readonly="1"/>
+                        <field name="exit_date"/>
+                        <field name="days_in_maintenance" readonly="1"/>
+                    </group>
+                </group>
+                
+                <group>
+                    <field name="description" placeholder="Final notes about the completed maintenance work..."/>
+                </group>
+                
+                <footer>
+                    <button string="Complete Maintenance" name="action_send_to_available" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

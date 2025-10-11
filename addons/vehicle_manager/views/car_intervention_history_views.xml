@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Car Intervention History Form View -->
+    <record id="view_car_intervention_history_form" model="ir.ui.view">
+        <field name="name">car.intervention.history.form</field>
+        <field name="model">car.intervention.history</field>
+        <field name="arch" type="xml">
+            <form string="Car Intervention">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="in_maintenance,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group name="basic_info" string="Basic Information">
+                            <field name="vehicle_id" options="{'no_create': True}"/>
+                            <field name="license_plate" readonly="1"/>
+                            <field name="location" placeholder="Maintenance workshop location"/>
+                        </group>
+                        
+                        <group name="dates" string="Intervention Dates">
+                            <field name="entry_date"/>
+                            <field name="exit_date"/>
+                            <field name="days_in_maintenance" readonly="1"/>
+                            <field name="is_active_intervention" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <group>
+                        <field name="description" placeholder="Describe the reason for maintenance, what needs to be fixed, or what was done..."/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Car Intervention History Tree View -->
+    <record id="view_car_intervention_history_tree" model="ir.ui.view">
+        <field name="name">car.intervention.history.tree</field>
+        <field name="model">car.intervention.history</field>
+        <field name="arch" type="xml">
+            <list string="Car Intervention History" decoration-info="state=='in_maintenance'" decoration-muted="state=='completed'">
+                <field name="license_plate"/>
+                <field name="vehicle_id"/>
+                <field name="entry_date"/>
+                <field name="exit_date"/>
+                <field name="days_in_maintenance"/>
+                <field name="location"/>
+                <field name="state" widget="badge" decoration-info="state=='in_maintenance'" decoration-success="state=='completed'"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Car Intervention History Kanban View -->
+    <record id="view_car_intervention_history_kanban" model="ir.ui.view">
+        <field name="name">car.intervention.history.kanban</field>
+        <field name="model">car.intervention.history</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="vehicle_id"/>
+                <field name="license_plate"/>
+                <field name="entry_date"/>
+                <field name="exit_date"/>
+                <field name="location"/>
+                <field name="state"/>
+                <field name="days_in_maintenance"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top mb16">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="license_plate"/>
+                                    </strong>
+                                    <br/>
+                                    <small class="o_kanban_record_subtitle text-muted">
+                                        <field name="vehicle_id"/>
+                                    </small>
+                                </div>
+                                <div class="o_kanban_manage_button_section" groups="base.group_user">
+                                    <a class="o_kanban_manage_toggle_button" href="#" tabindex="-1" aria-label="Manage" role="img" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="o_kanban_record_body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span><i class="fa fa-calendar" title="Entry Date"/> Entry: <field name="entry_date"/></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span t-if="record.exit_date.raw_value"><i class="fa fa-calendar-check-o" title="Exit Date"/> Exit: <field name="exit_date"/></span>
+                                        <span t-else="" class="text-muted"><i class="fa fa-clock-o" title="Status"/> In progress...</span>
+                                    </div>
+                                </div>
+                                <div class="row mt8" t-if="record.location.raw_value">
+                                    <div class="col-12">
+                                        <span><i class="fa fa-map-marker" title="Location"/> <field name="location"/></span>
+                                    </div>
+                                </div>
+                                <div class="row mt8">
+                                    <div class="col-12">
+                                        <span><i class="fa fa-clock-o" title="Duration"/> <field name="days_in_maintenance"/> days</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="o_kanban_record_bottom" t-if="record.description.raw_value">
+                                <div class="oe_kanban_bottom_left">
+                                    <small class="text-muted">
+                                        <field name="description"/>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Car Intervention History Search View -->
+    <record id="view_car_intervention_history_search" model="ir.ui.view">
+        <field name="name">car.intervention.history.search</field>
+        <field name="model">car.intervention.history</field>
+        <field name="arch" type="xml">
+            <search string="Search Car Interventions">
+                <field name="license_plate" string="License Plate"/>
+                <field name="vehicle_id" string="Vehicle"/>
+                <field name="location" string="Location"/>
+                <field name="description" string="Description"/>
+                <field name="entry_date" string="Entry Date"/>
+                <field name="exit_date" string="Exit Date"/>
+                
+                <filter string="Active Interventions" name="active_interventions" domain="[('state', '=', 'in_maintenance')]"/>
+                <filter string="Completed Interventions" name="completed_interventions" domain="[('state', '=', 'completed')]"/>
+                <filter string="This Month" name="this_month" domain="[('entry_date', '&gt;=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                <filter string="This Year" name="this_year" domain="[('entry_date', '&gt;=', datetime.datetime.now().strftime('%Y-01-01'))]"/>
+                
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Vehicle" name="group_vehicle" context="{'group_by': 'vehicle_id'}"/>
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}"/>
+                    <filter string="Entry Date" name="group_entry_date" context="{'group_by': 'entry_date:month'}"/>
+                    <filter string="Location" name="group_location" context="{'group_by': 'location'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for Car Intervention History -->
+    <record id="action_car_intervention_history" model="ir.actions.act_window" forcecreate="1">
+        <field name="name">Car Intervention History</field>
+        <field name="res_model">car.intervention.history</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_car_intervention_history_search"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No intervention records found!
+            </p>
+            <p>
+                Car interventions are created automatically when you send a vehicle to maintenance.
+                You can also create manual intervention records to track maintenance history.
+            </p>
+        </field>
+    </record>
+
+</odoo>

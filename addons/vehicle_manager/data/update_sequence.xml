@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Update existing vehicles with proper sequence values -->
+        <function model="vehicle.vehicle" name="_init_sequence_values"/>
+    </data>
+</odoo>

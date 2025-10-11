@@ -1,16 +1,96 @@
 /* Vehicle Manager Styles */
 
+/* Reset any problematic styles that might affect control panel */
+.o_web_client .o_action_manager .o_control_panel {
+    margin-left: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure control panel buttons are properly displayed */
+.o_control_panel .o_cp_buttons {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Ensure New/Edit/Save buttons are visible */
+.o_control_panel .o_cp_buttons .btn {
+    display: inline-block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ensure breadcrumb is properly displayed */
+.o_control_panel .breadcrumb {
+    margin-bottom: 0 !important;
+    background: transparent !important;
+    display: flex !important;
+}
+
+/* Make sure the action buttons (New, Edit, Save) are properly styled */
+.o_control_panel .o_form_button_create,
+.o_control_panel .o_form_button_edit,
+.o_control_panel .o_form_button_save {
+    display: inline-block !important;
+    margin-right: 8px !important;
+}
+
+/* Vehicle Form specific adjustments - only apply to content area */
+.o_action[data-res-model="vehicle.vehicle"] .o_form_view .o_form_sheet_bg {
+    padding: 16px !important;
+}
+
+/* Vehicle form sheet styling */
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 32px !important;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Vehicle form title styling */
+.o_action[data-res-model="vehicle.vehicle"] .oe_title h1 {
+    font-size: 1.8rem !important;
+    margin-bottom: 16px !important;
+    color: #2c3e50 !important;
+    font-weight: 600 !important;
+}
+
+/* Style the group sections in vehicle forms */
+.o_action[data-res-model="vehicle.vehicle"] .o_group .o_group > .o_group_title {
+    font-weight: 600 !important;
+    color: #34495e !important;
+    margin-bottom: 8px !important;
+    font-size: 1rem !important;
+}
+
+/* Improve field spacing in vehicle forms */
+.o_action[data-res-model="vehicle.vehicle"] .o_field_widget {
+    margin-bottom: 8px !important;
+}
+
+/* Remove chatter completely for vehicle forms */
+.o_action[data-res-model="vehicle.vehicle"] .oe_chatter {
+    display: none !important;
+}
+
+/* Style the notebook tabs */
+.o_vehicle_form .nav-tabs .nav-link {
+    font-weight: 500 !important;
+    color: #495057 !important;
+}
+
+.o_vehicle_form .nav-tabs .nav-link.active {
+    background-color: #fff !important;
+    border-color: #007bff !important;
+    color: #007bff !important;
+}
+
 /* Fix general chatter button overflow issues */
-.oe_chatter {
-    width: 100% !important;
-}
-
-/* Ensure message thread has proper width */
-.oe_chatter .o_mail_thread {
-    width: 100% !important;
-}
-
-/* Fix message sidebar width - prevent button cutoff */
 .oe_chatter .o_mail_thread .o_thread_message_sidebar {
     min-width: 140px !important;
     width: 140px !important;
@@ -36,149 +116,124 @@
     margin-bottom: 2px !important;
 }
 
-/* Fix dropdown menus in message actions */
-.oe_chatter .o_mail_thread .o_thread_message_sidebar .dropdown-menu {
-    white-space: nowrap !important;
-    min-width: 120px !important;
-}
-
-/* Ensure form has proper responsive behavior */
-.o_form_view .o_form_sheet_bg {
-    padding: 0 !important;
-}
-
-.o_form_view .o_form_sheet_bg .o_form_sheet {
-    max-width: none !important;
-    margin: 0 !important;
-}
-
-/* Adjust vehicle form view to account for MuK AppsBar sidebar */
-/* The MuK appsbar uses CSS Grid, so we need to ensure proper content spacing */
-
-/* Ensure proper padding for vehicle forms when appsbar is present */
-.o_web_client:has(.mk_apps_sidebar_panel) .o_action_manager .o_form_view .o_content {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-}
-
-/* Specific styling for vehicle form to ensure it's not cramped */
-.o_vehicle_form {
-    width: 100% !important;
-    min-width: 800px !important;
-}
-
-/* Ensure the form sheet has proper spacing */
-.o_vehicle_form .o_form_sheet {
-    padding: 24px 32px !important;
-    margin: 0 auto !important;
-    max-width: 1200px !important;
-}
-
-/* Adjust form groups for better layout with sidebar */
-.o_vehicle_form .o_group {
-    margin-bottom: 16px !important;
-}
-
-/* Ensure notebook tabs are properly spaced */
-.o_vehicle_form .o_notebook {
-    margin-top: 16px !important;
-}
-
-/* Make sure the action manager content area is properly sized */
-.mk_sidebar_type_large ~ .o_action_manager,
-.mk_sidebar_type_small ~ .o_action_manager {
-    width: 100% !important;
-    max-width: none !important;
-}
-
-/* Responsive adjustments for different screen sizes */
-@media (min-width: 1200px) {
-    .o_vehicle_form .o_form_sheet {
-        max-width: 1400px !important;
-        padding: 32px 40px !important;
-    }
-}
-
-@media (max-width: 991px) {
-    .o_vehicle_form .o_form_sheet {
-        padding: 20px 16px !important;
-        min-width: 600px !important;
-    }
-}
-
+/* Responsive design for smaller screens */
 @media (max-width: 768px) {
-    .o_vehicle_form {
-        min-width: 100% !important;
-    }
-    
-    .o_vehicle_form .o_form_sheet {
-        padding: 16px 12px !important;
-        min-width: 320px !important;
+    .o_vehicle_form .o_form_sheet_bg {
+        margin-left: 0 !important;
+        width: 100% !important;
     }
 }
 
-/* Fix any potential overflow issues */
-.o_web_client .o_action_manager {
-    overflow-x: auto !important;
+/* Special handling for MuK Web Appsbar */
+.o_muk_web_appsbar ~ .o_action_manager .o_vehicle_form .o_form_sheet_bg {
+    margin-left: 64px !important; /* MuK appsbar specific width */
+    width: calc(100% - 64px) !important;
 }
 
-/* Ensure proper scrolling behavior for the form */
-.o_form_view .o_content {
-    overflow-y: auto !important;
-    height: 100% !important;
+/* Improve form field styling */
+.o_vehicle_form .o_field_widget input,
+.o_vehicle_form .o_field_widget select,
+.o_vehicle_form .o_field_widget textarea {
+    border-radius: 4px !important;
+    border: 1px solid #ced4da !important;
+    padding: 8px 12px !important;
 }
 
-/* Classes added by JavaScript for appsbar integration */
-.mk-appsbar-layout .o_action_manager {
-    padding-left: 8px !important;
+.o_vehicle_form .o_field_widget input:focus,
+.o_vehicle_form .o_field_widget select:focus,
+.o_vehicle_form .o_field_widget textarea:focus {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
 }
 
-.mk-appsbar-adjusted.o_form_view {
+/* Status bar styling */
+.o_vehicle_form .o_statusbar_status {
+    background-color: #f8f9fa !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+}
+
+/* Button styling */
+.o_vehicle_form .btn-success,
+.o_vehicle_form .btn-warning,
+.o_vehicle_form .btn-info {
+    border-radius: 4px !important;
+    padding: 6px 12px !important;
+    font-weight: 500 !important;
     margin-right: 8px !important;
 }
 
-.mk-appsbar-adjusted .o_vehicle_form .o_form_sheet {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    border-radius: 8px !important;
-    background: white !important;
+/* Full width form improvements */
+.o_vehicle_form .o_group {
+    margin-bottom: 20px !important;
 }
 
-/* Ensure header buttons are properly positioned with appsbar */
-.mk-appsbar-adjusted .o_form_view .o_form_statusbar {
-    margin-right: 0 !important;
+.o_vehicle_form .o_notebook {
+    margin-top: 24px !important;
 }
 
-/* Better responsive behavior for title section */
-.o_vehicle_form .oe_title h1 {
-    margin-bottom: 16px !important;
-    font-size: 1.5rem !important;
+.o_vehicle_form .tab-content {
+    padding: 20px !important;
+    background: #f8f9fa !important;
+    border-radius: 0 0 8px 8px !important;
+}
+
+/* Ensure proper spacing between form groups */
+.o_vehicle_form .o_group .o_group {
+    margin-right: 32px !important;
+}
+
+/* Make the form more spacious */
+.o_vehicle_form .o_field_widget {
+    margin-bottom: 12px !important;
+}
+
+/* Improve the overall form container */
+.o_vehicle_form .o_form_view {
+    background: #f8f9fa !important;
+}
+
+/* Better group title styling */
+.o_vehicle_form .o_horizontal_separator {
+    margin: 16px 0 12px 0 !important;
+    font-size: 1.1rem !important;
     font-weight: 600 !important;
+    color: #495057 !important;
 }
 
-/* Improve button box spacing */
-.o_vehicle_form .oe_button_box {
-    margin-bottom: 16px !important;
+/* Make oe_inline fields compact like mileage field */
+.o_action[data-res-model="vehicle.vehicle"] .o_field_widget.oe_inline {
+    width: auto !important;
+    max-width: 200px !important;
+    min-width: auto !important;
+    display: inline-block !important;
 }
 
-/* Additional safety measure - detect if grid layout is being used */
-.o_web_client[style*="grid-template"] .o_action_manager {
-    padding: 0 16px !important;
+/* Make sure the input elements inside oe_inline fields are also compact */
+.o_action[data-res-model="vehicle.vehicle"] .o_field_widget.oe_inline input,
+.o_action[data-res-model="vehicle.vehicle"] .o_field_widget.oe_inline select {
+    width: auto !important;
+    max-width: 180px !important;
+    min-width: 120px !important;
 }
 
-.o_web_client[style*="grid-template"] .o_form_view .o_content {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+/* Ensure proper spacing for oe_inline fields */
+.o_action[data-res-model="vehicle.vehicle"] .o_field_widget.oe_inline {
+    margin-right: 8px !important;
+    margin-bottom: 8px !important;
 }
 
-/* Force proper layout when MuK sidebar classes are present */
-.mk_sidebar_type_large,
-.mk_sidebar_type_small {
-    .o_action_manager {
-        padding: 0 20px 0 8px !important;
-    }
-    
-    .o_form_view .o_content {
-        margin: 0 !important;
-        padding: 20px !important;
-    }
+/* Reduce spacing between form groups to eliminate large gaps */
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet > .o_group {
+    margin-bottom: 8px !important;
+}
+
+/* Reduce top margin for group sections */
+.o_action[data-res-model="vehicle.vehicle"] .o_group + .o_group {
+    margin-top: 8px !important;
+}
+
+/* Ensure consistent spacing within groups */
+.o_action[data-res-model="vehicle.vehicle"] .o_group .o_group {
+    margin-bottom: 0 !important;
 }

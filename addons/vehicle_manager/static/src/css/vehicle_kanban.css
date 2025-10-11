@@ -1,0 +1,299 @@
+/* Vehicle Manager Kanban Styles */
+
+/* Status Tabs */
+.status-tabs {
+    border-bottom: 2px solid #dee2e6;
+    margin-bottom: 1rem;
+    background: #f8f9fa;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.status-tab {
+    color: #6c757d;
+    border: 1px solid transparent;
+    border-radius: 0.375rem 0.375rem 0 0;
+    padding: 0.75rem 1.5rem;
+    margin-right: 0.25rem;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-tab:hover {
+    color: #495057;
+    background-color: rgba(0, 123, 255, 0.1);
+    text-decoration: none;
+}
+
+.status-tab.active {
+    color: #007bff;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+    border-bottom: 2px solid #fff;
+    margin-bottom: -2px;
+    font-weight: 600;
+}
+
+.status-tab .badge {
+    background-color: #6c757d;
+    color: white;
+    border-radius: 10px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status-tab.active .badge {
+    background-color: #007bff;
+}
+
+/* Status specific styling */
+.status-tab[data-status="available"] .status-icon {
+    color: #28a745;
+}
+
+.status-tab[data-status="reserved"] .status-icon {
+    color: #ffc107;
+}
+
+.status-tab[data-status="maintenance"] .status-icon {
+    color: #dc3545;
+}
+
+/* Vehicle Cards */
+.o_kanban_view .o_kanban_record.o_vehicle_card {
+    margin: 0 0 1rem 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    background: white;
+    border: 1px solid #e9ecef;
+}
+
+.o_vehicle_card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+
+.o_vehicle_card .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.o_vehicle_card .card-body {
+    padding: 1rem;
+}
+
+.vehicle-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #212529;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.available {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-badge.reserved {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.status-badge.maintenance {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.vehicle-info {
+    margin: 0.75rem 0;
+}
+
+.vehicle-info .info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.vehicle-info .info-item:last-child {
+    border-bottom: none;
+}
+
+.vehicle-info .info-label {
+    font-weight: 500;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.vehicle-info .info-value {
+    color: #212529;
+    font-weight: 400;
+}
+
+/* Action Dropdown */
+.vehicle-actions .dropdown-toggle {
+    background: #007bff;
+    border: 1px solid #007bff;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.vehicle-actions .dropdown-toggle:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,123,255,0.3);
+}
+
+.vehicle-actions .dropdown-menu {
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    min-width: 200px;
+}
+
+.vehicle-actions .dropdown-item {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: #212529;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.vehicle-actions .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.vehicle-actions .dropdown-item.text-success:hover {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.vehicle-actions .dropdown-item.text-warning:hover {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.vehicle-actions .dropdown-item.text-danger:hover {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.vehicle-actions .dropdown-divider {
+    margin: 0.25rem 0;
+}
+
+/* Empty State */
+.empty-status-message {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.empty-status-message .empty-icon {
+    font-size: 3rem;
+    color: #dee2e6;
+    margin-bottom: 1rem;
+}
+
+.empty-status-message h5 {
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.empty-status-message p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .status-tabs {
+        padding: 0.25rem 0.5rem;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .status-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .o_vehicle_card .card-header,
+    .o_vehicle_card .card-body {
+        padding: 0.75rem;
+    }
+    
+    .vehicle-title {
+        font-size: 1rem;
+    }
+    
+    .vehicle-info .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+}
+
+/* Animation for tab switching */
+.o_vehicle_card {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading state */
+.vehicle-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.vehicle-loading .spinner-border {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+}

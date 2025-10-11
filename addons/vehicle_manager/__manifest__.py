@@ -35,7 +35,10 @@ Features:
     'data': [
         'security/ir.model.access.csv',
         'data/vehicle_data.xml',
+        'data/update_sequence.xml',
         'views/vehicle_views.xml',
+        'views/car_intervention_history_views.xml',
+        'views/vehicle_maintenance_wizard_views.xml',
         'views/vehicle_import_wizard_views.xml',
         'views/vehicle_delete_wizard_views.xml',
         'views/menus.xml',
@@ -43,9 +46,10 @@ Features:
     'assets': {
         'web.assets_backend': [
             'vehicle_manager/static/src/css/vehicle_manager.css',
+            'vehicle_manager/static/src/css/vehicle_kanban.css',
             'vehicle_manager/static/src/js/vehicle_delete_button.js',
-            'vehicle_manager/static/src/js/vehicle_kanban.js',
-            'vehicle_manager/static/src/js/vehicle_appsbar_integration.js',
+            'vehicle_manager/static/src/js/vehicle_kanban_override.js',
+            'vehicle_manager/static/src/js/vehicle_button_controller.js',
         ],
     },
     'installable': True,

@@ -8,7 +8,7 @@
 
     <!-- Main Vehicles Action -->
     <record id="action_vehicle_vehicle" model="ir.actions.act_window">
-        <field name="name">Vehicles</field>
+        <field name="name">Fleet Overview</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">vehicle.vehicle</field>
         <field name="view_mode">kanban,list,form</field>
@@ -54,7 +54,12 @@
               action="action_vehicle_vehicle" 
               sequence="10"/>
 
-
+    <!-- Intervention History Menu -->
+    <menuitem id="menu_car_intervention_history" 
+              name="Intervention History" 
+              parent="menu_vehicle_management_root"
+              action="action_car_intervention_history" 
+              sequence="20"/>
 
     <!-- Import Menu -->
     <menuitem id="menu_vehicle_import" 
