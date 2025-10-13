@@ -39,6 +39,7 @@
             <field name="model">via.verde.line</field>
             <field name="arch" type="xml">
                 <list string="Via Verde Lines" editable="bottom" multi_edit="1" create="1" delete="1" sample="1">
+                    <field name="sheet_id" optional="hide"/>
                     <field name="vehicle_id" optional="show" widget="many2one_avatar"/>
                     <field name="license_plate"/>
                     <field name="entry_datetime"/>
@@ -74,6 +75,7 @@
                 <search string="Search Via Verde Lines">
                     <field name="license_plate"/>
                     <field name="vehicle_id"/>
+                    <field name="sheet_id" string="Statement"/>
                     <filter name="unpaid" string="Pending Payment" domain="[('is_paid', '=', False)]"/>
                     <filter name="paid" string="Paid" domain="[('is_paid', '=', True)]"/>
                     <filter name="entry_date" date="entry_datetime"/>
@@ -140,7 +142,7 @@
             <field name="arch" type="xml">
                 <form string="Via Verde Statement">
                     <header>
-                        <button string="Mark All Paid" type="object" name="action_mark_paid" class="btn-primary" attrs="{'invisible': [('total_outstanding_amount', '=', 0)]}"/>
+                        <button string="Mark All Paid" type="object" name="action_mark_paid" class="btn-primary" visible="total_outstanding_amount != 0"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -154,34 +156,7 @@
                             <field name="total_liquid_amount" widget="monetary" readonly="1"/>
                             <field name="total_outstanding_amount" widget="monetary" readonly="1"/>
                         </group>
-                        <field name="line_ids" mode="tree,form">
-                            <tree editable="bottom" multi_edit="1">
-                                <field name="vehicle_id" optional="show" widget="many2one_avatar"/>
-                                <field name="license_plate"/>
-                                <field name="entry_datetime"/>
-                                <field name="exit_datetime" optional="show"/>
-                                <field name="entry_point" optional="show"/>
-                                <field name="exit_point" optional="show"/>
-                                <field name="liquid_amount" widget="monetary"/>
-                                <field name="is_paid" widget="boolean_toggle" optional="show"/>
-                                <field name="amount_due" widget="monetary" optional="show"/>
-                                <field name="service" optional="hide"/>
-                                <field name="service_description" optional="hide"/>
-                                <field name="market" optional="hide"/>
-                                <field name="market_description" optional="hide"/>
-                                <field name="amount" widget="monetary" optional="hide"/>
-                                <field name="discount_amount" widget="monetary" optional="hide"/>
-                                <field name="discount_percentage" optional="hide"/>
-                                <field name="discount_balance" widget="monetary" optional="hide"/>
-                                <field name="payment_date" optional="hide"/>
-                                <field name="payment_method" optional="hide"/>
-                                <field name="contract_number" optional="hide"/>
-                                <field name="mobility_account" optional="hide"/>
-                                <field name="iai" optional="hide"/>
-                                <field name="obu" optional="hide"/>
-                                <button name="action_view_details" type="object" icon="fa-plus" title="Show full details" string=""/>
-                            </tree>
-                        </field>
+                        <field name="line_ids" readonly="1"/>
                     </sheet>
                     <chatter/>
                 </form>
@@ -211,5 +186,6 @@
             <field name="view_id" ref="via_verde_line_view_tree"/>
             <field name="search_view_id" ref="via_verde_line_view_search"/>
         </record>
+
     </data>
 </odoo>

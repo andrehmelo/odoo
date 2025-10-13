@@ -1,0 +1,96 @@
+.o_mobility_cards_dashboard {
+    padding: 24px;
+
+    .o_mcd-header {
+        gap: 16px;
+    }
+
+    .o_mcd-tabs {
+        display: inline-flex;
+        gap: 8px;
+    }
+
+    .o_mcd-tab {
+        border: 1px solid var(--border-color, #d8dadd);
+        background-color: #fff;
+        padding: 8px 16px;
+        border-radius: 999px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: var(--o-brand-odoo, #1a1a1a);
+        transition: background-color 0.2s ease, color 0.2s ease;
+
+        &.o_mcd-tab-active {
+            background-color: var(--o-brand-primary, #1f77d0);
+            color: #fff;
+            border-color: transparent;
+        }
+    }
+
+    .o_mcd-actions .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    .o_mcd-table-wrapper {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .o_mcd-table {
+        margin-bottom: 0;
+
+        th {
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            background: #f3f4f6;
+            border-bottom: none;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+    }
+
+    .o_mcd-info-column {
+        width: 64px;
+        text-align: center;
+    }
+
+    .o_mcd-expanded-row td {
+        background: #f7f9fc;
+    }
+
+    .o_mcd-expanded-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px 24px;
+    }
+
+    .o_mcd-expanded-field {
+        .o-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #697076;
+            margin-right: 4px;
+        }
+        .o-value {
+            font-weight: 600;
+            color: #1f2933;
+        }
+    }
+
+    .o_mcd-empty {
+        padding: 32px;
+        text-align: center;
+        color: #667085;
+    }
+}

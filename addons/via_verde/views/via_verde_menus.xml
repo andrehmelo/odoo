@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="via_verde_action_dashboard" model="ir.actions.client">
+            <field name="name">Cards &amp; Tolls</field>
+            <field name="tag">via_verde_mobility_cards_dashboard</field>
+        </record>
+
         <record id="via_verde_menu_root" model="ir.ui.menu">
-            <field name="name">Via Verde</field>
-            <field name="parent_id" ref="fleet.fleet_menu_root"/>
+            <field name="name">Cards &amp; Tolls</field>
             <field name="sequence" eval="50"/>
+            <field name="action" ref="via_verde_action_dashboard"/>
         </record>
 
         <record id="via_verde_menu_sheet" model="ir.ui.menu">
@@ -15,9 +20,29 @@
         </record>
 
         <record id="via_verde_menu_lines" model="ir.ui.menu">
-            <field name="name">All Lines</field>
+            <field name="name">Transactions</field>
             <field name="parent_id" ref="via_verde_menu_root"/>
             <field name="action" ref="via_verde_action_lines"/>
+            <field name="sequence" eval="20"/>
+        </record>
+
+        <record id="gas_card_menu_root" model="ir.ui.menu">
+            <field name="name">Gas Cards</field>
+            <field name="parent_id" ref="via_verde_menu_root"/>
+            <field name="sequence" eval="20"/>
+        </record>
+
+        <record id="gas_card_menu_sheet" model="ir.ui.menu">
+            <field name="name">Statements</field>
+            <field name="parent_id" ref="gas_card_menu_root"/>
+            <field name="action" ref="gas_card_action_sheets"/>
+            <field name="sequence" eval="10"/>
+        </record>
+
+        <record id="gas_card_menu_lines" model="ir.ui.menu">
+            <field name="name">Transactions</field>
+            <field name="parent_id" ref="gas_card_menu_root"/>
+            <field name="action" ref="gas_card_action_lines"/>
             <field name="sequence" eval="20"/>
         </record>
     </data>

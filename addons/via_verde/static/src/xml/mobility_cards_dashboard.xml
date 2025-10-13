@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="via_verde.MobilityCardsDashboard">
+        <div class="o_mobility_cards_dashboard o-flex o-flex-column o-gap-3">
+            <div class="o_mcd-header o-flex o-justify-between o-align-center">
+                <div class="o_mcd-tabs">
+                    <t t-foreach="tabList" t-as="tab" t-key="tab.key">
+                        <button type="button"
+                                t-att-class="'o_mcd-tab' + (state.activeTab === tab.key ? ' o_mcd-tab-active' : '')"
+                                t-on-click="() => switchTab(tab.key)">
+                            <t t-esc="tab.label"/>
+                        </button>
+                    </t>
+                </div>
+                <div class="o_mcd-actions o-flex o-gap-2">
+                    <button type="button" class="btn btn-secondary" t-on-click="onImport">
+                        <i class="fa fa-upload" role="img" aria-hidden="true"/>
+                        <span>Import</span>
+                    </button>
+                    <button type="button" class="btn btn-primary" t-on-click="onNewRecord">
+                        <i class="fa fa-plus" role="img" aria-hidden="true"/>
+                        <span>New</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="o_mcd-table-wrapper">
+                <t t-if="state.loading">
+                    <div class="o_mcd-empty">Loading...</div>
+                </t>
+                <t t-else="">
+                    <t t-if="!state.rows.length">
+                        <div class="o_mcd-empty">
+                            <span>No records yet. Use New or Import to get started.</span>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <table class="o_mcd-table table table-striped">
+                            <thead>
+                                <tr>
+                                    <t t-foreach="activeConfig.primaryFields" t-as="field" t-key="field.name">
+                                        <th>
+                                            <t t-esc="field.label"/>
+                                        </th>
+                                    </t>
+                                    <th class="o_mcd-info-column">Info</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="state.rows" t-as="row" t-key="row.id">
+                                    <tr>
+                                        <t t-foreach="activeConfig.primaryFields" t-as="field" t-key="field.name">
+                                            <td>
+                                                <t t-if="field.type == 'boolean'">
+                                                    <span t-att-class="'badge ' + (row[field.name] ? 'text-bg-success' : 'text-bg-secondary')">
+                                                        <t t-esc="field.type == 'boolean' ? (row[field.name] ? '✓' : '✕') : ''"/>
+                                                    </span>
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-esc="formatField(field, row)"/>
+                                                </t>
+                                            </td>
+                                        </t>
+                                        <td class="o_mcd-info-column">
+                                            <button type="button" class="btn btn-light btn-sm"
+                                                    t-on-click="() => onToggleDetails(row)">
+                                                <i t-att-class="state.expanded[row.id] ? 'fa fa-minus' : 'fa fa-plus'" role="img" aria-hidden="true"/>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr t-if="state.expanded[row.id]" class="o_mcd-expanded-row" t-key="row.id + '-details'">
+                                        <td t-att-colspan="activeConfig.primaryFields.length + 1">
+                                            <div class="o_mcd-expanded-grid">
+                                                <t t-foreach="activeConfig.secondaryFields" t-as="field" t-key="field.name">
+                                                    <div class="o_mcd-expanded-field">
+                                                        <span class="o-label"><t t-esc="field.label"/>:</span>
+                                                        <span class="o-value"><t t-esc="formatField(field, row)"/></span>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

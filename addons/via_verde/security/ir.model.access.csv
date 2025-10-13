@@ -1,3 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "via_verde_sheet_access_user","via.verde.sheet access","model_via_verde_sheet","base.group_user",1,1,1,1
 "via_verde_line_access_user","via.verde.line access","model_via_verde_line","base.group_user",1,1,1,1
+"gas_card_sheet_access_user","gas.card.sheet access","model_gas_card_sheet","base.group_user",1,1,1,1
+"gas_card_line_access_user","gas.card.line access","model_gas_card_line","base.group_user",1,1,1,1
