@@ -191,7 +191,7 @@
         <field name="name">vehicle.vehicle.kanban</field>
         <field name="model">vehicle.vehicle</field>
         <field name="arch" type="xml">
-            <kanban class="o_vehicle_kanban_view" default_order="sequence, name desc, id desc" records_draggable="false">
+            <kanban class="o_vehicle_kanban_view" default_order="sequence, name desc, id desc" records_draggable="false" group_create="false" quick_create="false">
                 <field name="sequence"/>
                 <field name="id"/>
                 <field name="name"/>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 from datetime import date
 
 
@@ -100,39 +101,79 @@ class CarInterventionHistory(models.Model):
         for record in self:
             record.is_active_intervention = not bool(record.exit_date)
 
-    @api.onchange('exit_date')
-    def _onchange_exit_date(self):
-        """Update state when exit date is set"""
-        for record in self:
-            if record.exit_date:
-                record.state = 'completed'
-            else:
-                record.state = 'in_maintenance'
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        """Override create to handle vehicle state change"""
-        interventions = super().create(vals_list)
-        # When creating a new intervention, update vehicle state to maintenance
-        for intervention in interventions:
-            if intervention.vehicle_id:
-                intervention.vehicle_id.status = 'maintenance'
-        return interventions
-
-    def write(self, vals):
-        """Override write to handle vehicle state changes"""
-        result = super().write(vals)
-        
-        # If exit_date is being set, update vehicle state to available
-        if 'exit_date' in vals and vals['exit_date']:
-            for record in self:
-                if record.vehicle_id:
-                    record.vehicle_id.status = 'available'
-                    
-        return result
-
     @api.constrains('entry_date', 'exit_date')
     def _check_dates(self):
         for record in self:
             if record.exit_date and record.entry_date and record.exit_date < record.entry_date:
-                raise ValueError("Exit date cannot be earlier than entry date.")
+                raise ValidationError("Exit date cannot be earlier than entry date.")
+
+    def action_create_intervention(self):
+        """Action for creating a new intervention from the form"""
+        self.ensure_one()
+        
+        # Validate required fields
+        if not self.vehicle_id or not self.entry_date or not self.location or not self.description:
+            raise ValidationError("All fields are required to send a vehicle to maintenance.")
+        
+        # Validate vehicle is available
+        if self.vehicle_id.status != 'available':
+            raise ValidationError("Vehicle must be available to send to maintenance.")
+        
+        # Check if vehicle already has an active intervention
+        active_intervention = self.vehicle_id.intervention_ids.filtered(
+            lambda i: i.state == 'in_maintenance' and not i.exit_date and i.id != self.id
+        )
+        if active_intervention:
+            raise ValidationError("Vehicle already has an active intervention in progress.")
+        
+        # If this is a new record (NewId), it needs to be created properly
+        if not self.id or isinstance(self.id, models.NewId):
+            # Create the intervention record
+            vals = {
+                'vehicle_id': self.vehicle_id.id,
+                'entry_date': self.entry_date,
+                'location': self.location,
+                'description': self.description,
+                'state': 'in_maintenance',
+            }
+            new_intervention = self.create(vals)
+            # Update vehicle status
+            new_intervention.vehicle_id.write({'status': 'maintenance'})
+        else:
+            # Update existing record
+            self.write({
+                'state': 'in_maintenance',
+            })
+            # Update vehicle status
+            self.vehicle_id.write({'status': 'maintenance'})
+        
+        # Return action to close form and go back to list
+        return {
+            'type': 'ir.actions.act_window_close',
+        }
+
+    def action_complete_intervention(self):
+        """Action for completing an active intervention from the form"""
+        self.ensure_one()
+        
+        # Validate exit date is set
+        if not self.exit_date:
+            raise ValidationError("Exit date is required to complete the maintenance intervention.")
+        
+        # Validate exit date is not before entry date
+        if self.exit_date < self.entry_date:
+            raise ValidationError("Exit date cannot be earlier than entry date.")
+        
+        # Update record state
+        self.write({
+            'state': 'completed',
+        })
+        
+        # Update vehicle status
+        if self.vehicle_id:
+            self.vehicle_id.write({'status': 'available'})
+        
+        # Return action to close form and go back to list
+        return {
+            'type': 'ir.actions.act_window_close',
+        }

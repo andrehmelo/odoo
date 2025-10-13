@@ -6,9 +6,12 @@
         <field name="name">car.intervention.history.form</field>
         <field name="model">car.intervention.history</field>
         <field name="arch" type="xml">
-            <form string="Car Intervention">
+            <form string="Car Intervention" create="false">
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="in_maintenance,completed"/>
+                    <!-- Action buttons -->
+                    <button string="Send to Maintenance" name="action_create_intervention" type="object" class="btn-primary" invisible="id" data-hotkey="q"/>
+                    <button string="Complete Maintenance" name="action_complete_intervention" type="object" class="btn-primary" invisible="state != 'in_maintenance' or not id" data-hotkey="q"/>
+                    <field name="state" widget="statusbar" statusbar_visible="in_maintenance,completed" invisible="not id"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -17,23 +20,41 @@
                         </h1>
                     </div>
                     
+                    <!-- Alert for NEW interventions (Send to Maintenance) -->
+                    <div class="alert alert-info" role="alert" invisible="id">
+                        <strong>Send to Maintenance</strong><br/>
+                        Please fill in the maintenance details for this vehicle. All fields are required.
+                    </div>
+                    
+                    <!-- Alert for Active Interventions (Complete Maintenance) -->
+                    <div class="alert alert-info" role="alert" invisible="state != 'in_maintenance' or not id">
+                        <strong>Complete Maintenance</strong><br/>
+                        Complete the maintenance intervention for this vehicle.
+                    </div>
+                    
+                    <!-- Alert for Completed Interventions -->
+                    <div class="alert alert-success" role="alert" invisible="state != 'completed'">
+                        <strong>Completed Intervention</strong><br/>
+                        This maintenance intervention has been completed. All information is read-only.
+                    </div>
+                    
                     <group>
-                        <group name="basic_info" string="Basic Information">
-                            <field name="vehicle_id" options="{'no_create': True}"/>
+                        <group name="vehicle_info" string="VEHICLE INFORMATION">
+                            <field name="vehicle_id" readonly="id" options="{'no_create': True, 'no_open': True}" required="not id"/>
                             <field name="license_plate" readonly="1"/>
-                            <field name="location" placeholder="Maintenance workshop location"/>
+                            <field name="location" readonly="state == 'completed'" placeholder="e.g., Main Workshop, External Garage, etc." required="not id"/>
                         </group>
                         
-                        <group name="dates" string="Intervention Dates">
-                            <field name="entry_date"/>
-                            <field name="exit_date"/>
-                            <field name="days_in_maintenance" readonly="1"/>
+                        <group name="intervention_dates" string="INTERVENTION DATES">
+                            <field name="entry_date" readonly="id" required="not id"/>
+                            <field name="exit_date" readonly="state == 'completed'" invisible="not id" help="Setting this date will complete the maintenance intervention" required="state == 'in_maintenance'"/>
+                            <field name="days_in_maintenance" readonly="1" invisible="not id"/>
                             <field name="is_active_intervention" invisible="1"/>
                         </group>
                     </group>
                     
                     <group>
-                        <field name="description" placeholder="Describe the reason for maintenance, what needs to be fixed, or what was done..."/>
+                        <field name="description" string="Intervention Notes" readonly="state == 'completed'" placeholder="Describe the reason for maintenance, what needs to be fixed, what was done, parts replaced, etc..." required="not id"/>
                     </group>
                 </sheet>
             </form>
@@ -63,7 +84,7 @@
         <field name="name">car.intervention.history.kanban</field>
         <field name="model">car.intervention.history</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" class="o_kanban_small_column">
+            <kanban default_group_by="state" class="o_kanban_small_column" records_draggable="false" group_create="false" quick_create="false">
                 <field name="vehicle_id"/>
                 <field name="license_plate"/>
                 <field name="entry_date"/>
@@ -168,8 +189,8 @@
                 No intervention records found!
             </p>
             <p>
-                Car interventions are created automatically when you send a vehicle to maintenance.
-                You can also create manual intervention records to track maintenance history.
+                Car interventions are created automatically when you send a vehicle to maintenance from the Fleet Overview.
+                This view is for tracking and reviewing maintenance history only.
             </p>
         </field>
     </record>
