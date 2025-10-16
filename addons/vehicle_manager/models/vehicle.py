@@ -542,20 +542,37 @@ class Vehicle(models.Model):
         # Store vehicle info for the notification
         vehicle_name = self.display_name
         
-        # Send notification via bus before deleting
-        message = f'Vehicle {vehicle_name} has been deleted successfully.'
-        self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
-            'type': 'success',
-            'title': 'Success',
-            'message': message,
-            'sticky': False,
-        })
+        # Check if called from form view by checking if we have params with id
+        is_form_view = 'id' in self.env.context.get('params', {})
         
         # Delete the vehicle (cascade will handle related records)
         self.unlink()
         
-        # Return True to refresh the current view
-        return True
+        # Send notification and handle navigation
+        message = f'Vehicle {vehicle_name} has been deleted successfully.'
+        
+        if is_form_view:
+            # From form view - show notification and reload page
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Success',
+                    'message': message,
+                    'type': 'success',
+                    'sticky': False,
+                    'next': {'type': 'ir.actions.client', 'tag': 'reload'},
+                }
+            }
+        else:
+            # From kanban - send bus notification and refresh
+            self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+                'type': 'success',
+                'title': 'Success',
+                'message': message,
+                'sticky': False,
+            })
+            return True
 
     def action_remove_maintenance(self):
         """Action to remove current maintenance and set vehicle as available"""

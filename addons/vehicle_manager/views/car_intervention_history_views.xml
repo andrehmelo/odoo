@@ -11,6 +11,7 @@
                     <!-- Action buttons -->
                     <button string="Send to Maintenance" name="action_create_intervention" type="object" class="btn-primary" invisible="id" data-hotkey="q"/>
                     <button string="Complete Maintenance" name="action_complete_intervention" type="object" class="btn-primary" invisible="state != 'in_maintenance' or not id" data-hotkey="q"/>
+                    <button string="Delete Intervention" name="action_delete_intervention" type="object" class="btn-danger" invisible="not id" confirm="Are you sure you want to delete this intervention? This action cannot be undone." data-hotkey="x"/>
                     <field name="state" widget="statusbar" statusbar_visible="in_maintenance,completed" invisible="not id"/>
                 </header>
                 <sheet>
@@ -47,7 +48,7 @@
                         
                         <group name="intervention_dates" string="INTERVENTION DATES">
                             <field name="entry_date" readonly="id" required="not id"/>
-                            <field name="exit_date" readonly="state == 'completed'" invisible="not id" help="Setting this date will complete the maintenance intervention" required="state == 'in_maintenance'"/>
+                            <field name="exit_date" readonly="state == 'completed'" invisible="not id" help="Setting this date will complete the maintenance intervention"/>
                             <field name="days_in_maintenance" readonly="1" invisible="not id"/>
                             <field name="is_active_intervention" invisible="1"/>
                         </group>

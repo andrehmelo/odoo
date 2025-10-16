@@ -219,6 +219,30 @@ class CarInterventionHistory(models.Model):
             'type': 'ir.actions.act_window_close',
         }
 
+    def action_delete_intervention(self):
+        """Delete the intervention record and update vehicle status"""
+        self.ensure_one()
+        
+        # Store info for notification
+        intervention_name = self.display_name
+        vehicle_name = self.vehicle_id.display_name if self.vehicle_id else "Unknown"
+        
+        # Delete the intervention (unlink will handle vehicle status update)
+        self.unlink()
+        
+        # Show notification and reload page
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': f'Intervention {intervention_name} has been deleted. Vehicle {vehicle_name} is now available.',
+                'type': 'success',
+                'sticky': False,
+                'next': {'type': 'ir.actions.client', 'tag': 'reload'},
+            }
+        }
+
     def unlink(self):
         """Override unlink to update vehicle status when deleting active intervention"""
         for record in self:
