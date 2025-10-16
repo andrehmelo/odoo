@@ -75,7 +75,7 @@
                     <div class="oe_title">
                         <label for="name" string="Car Name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" class="oe_inline" placeholder="Enter vehicle name..."/>
+                            <field name="name" placeholder="Enter vehicle name..."/>
                         </h1>
                     </div>
                     
@@ -84,44 +84,41 @@
                             <field name="make" placeholder="e.g. Toyota, BMW, Ford..."/>
                             <field name="model" placeholder="e.g. Camry, 320i, F-150..."/>
                             <field name="vin" placeholder="Vehicle Identification Number"/>
-                            <field name="license_plate" class="oe_inline" placeholder="License Plate"/>
-                            <field name="color" class="oe_inline" placeholder="e.g. Blue, Red, Silver..."/>
-                            <field name="year" class="oe_inline"/>
+                            <field name="license_plate" placeholder="License Plate"/>
+                            <field name="color" placeholder="e.g. Blue, Red, Silver..."/>
+                            <field name="year"/>
                         </group>
                         
                         <group name="driver_fees" string="Driver Fees">
-                            <field name="weekly_rent" class="oe_inline" placeholder="0.00"/>
-                            <field name="entry_deposit" class="oe_inline" placeholder="0.00"/>
-                            <field name="reserve_fee" class="oe_inline" placeholder="0.00"/>
-                            <field name="reserve_fee_max" class="oe_inline" placeholder="0.00"/>
+                            <field name="weekly_rent" placeholder="0.00"/>
+                            <field name="entry_deposit" placeholder="0.00"/>
+                            <field name="reserve_fee" placeholder="0.00"/>
+                            <field name="reserve_fee_max" placeholder="0.00"/>
                         </group>
                     </group>
                     
                     <group>
                         <group name="financial" string="Financial Information">
-                            <field name="purchase_price" class="oe_inline" placeholder="0.00"/>
-                            <field name="current_value" class="oe_inline" placeholder="0.00"/>
-                            <field name="purchase_date" class="oe_inline"/>
+                            <field name="purchase_price" placeholder="0.00"/>
+                            <field name="current_value" placeholder="0.00"/>
+                            <field name="purchase_date"/>
                         </group>
                         
-                                                <group name="physical" string="Car Details">
-                            <field name="via_verde_card" class="oe_inline" placeholder="Via Verde card number"/>
-                            <field name="gas_card" class="oe_inline" placeholder="Gas payment card number"/>
-                            <field name="fire_extinguisher" class="oe_inline" placeholder="Fire extinguisher ID"/>
-                            <field name="insurance_date" class="oe_inline"/>
-                            <field name="ipo_date" class="oe_inline"/>
-                            <field name="condition" class="oe_inline"/>
-                            <field name="age" class="oe_inline" readonly="1"/>
+                        <group name="physical" string="Car Details">
+                            <field name="via_verde_card" placeholder="Via Verde card number"/>
+                            <field name="gas_card" placeholder="Gas payment card number"/>
+                            <field name="fire_extinguisher" placeholder="Fire extinguisher ID"/>
+                            <field name="insurance_date"/>
+                            <field name="ipo_date"/>
+                            <field name="condition"/>
+                            <field name="age" readonly="1"/>
                         </group>
                     </group>
                     
                     <group>
                         <group name="mileage_condition" string="Mileage &amp; Usage">
-                            <label for="mileage"/>
-                            <div class="o_row">
-                                <field name="mileage" class="oe_inline"/>
-                                <field name="mileage_unit" class="oe_inline" nolabel="1"/>
-                            </div>
+                            <field name="mileage"/>
+                            <field name="mileage_unit" nolabel="1"/>
                             <field name="location" placeholder="Current location or address"/>
                         </group>
                         

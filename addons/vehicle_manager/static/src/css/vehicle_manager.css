@@ -237,3 +237,48 @@
 .o_action[data-res-model="vehicle.vehicle"] .o_group .o_group {
     margin-bottom: 0 !important;
 }
+
+/* Vertically center labels with input fields */
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet .o_group .o_wrap_label {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet .o_group .o_wrap_label label {
+    margin-bottom: 0 !important;
+}
+
+/* Center label and field on the same row */
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet .o_group .o_row {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet .o_group .o_row > .o_wrap_label {
+    display: flex !important;
+    align-items: center !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Target Odoo's cell structure for proper label alignment */
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet .o_inner_group .o_row {
+    align-items: center !important;
+}
+
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet .o_inner_group .o_row > .o_cell {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet .o_inner_group .o_row > .o_cell.o_wrap_label {
+    align-items: center !important;
+    min-height: 38px !important;
+}
+
+.o_action[data-res-model="vehicle.vehicle"] .o_form_sheet .o_inner_group .o_row > .o_cell.o_wrap_label > label {
+    margin: 0 !important;
+    line-height: 38px !important;
+}
+
+
