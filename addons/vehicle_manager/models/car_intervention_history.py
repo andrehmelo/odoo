@@ -106,6 +106,47 @@ class CarInterventionHistory(models.Model):
         for record in self:
             if record.exit_date and record.entry_date and record.exit_date < record.entry_date:
                 raise ValidationError("Exit date cannot be earlier than entry date.")
+    
+    @api.constrains('vehicle_id', 'state')
+    def _check_duplicate_active_intervention(self):
+        """Prevent multiple active interventions for the same vehicle"""
+        for record in self:
+            if record.state == 'in_maintenance':
+                # Check if vehicle already has another active intervention
+                active_interventions = self.search([
+                    ('vehicle_id', '=', record.vehicle_id.id),
+                    ('state', '=', 'in_maintenance'),
+                    ('id', '!=', record.id)
+                ])
+                if active_interventions:
+                    raise ValidationError(
+                        f"Vehicle {record.vehicle_id.license_plate} already has an active intervention in progress. "
+                        f"Please complete the existing intervention before creating a new one."
+                    )
+    
+    @api.constrains('vehicle_id', 'state', 'entry_date')
+    def _check_vehicle_availability(self):
+        """Prevent creating interventions for vehicles that are not available"""
+        for record in self:
+            # Only check for new interventions that are in_maintenance state
+            if record.state == 'in_maintenance' and not record.exit_date:
+                # Skip if this is the vehicle's current active intervention
+                if record.vehicle_id.status == 'maintenance':
+                    current_intervention = self.search([
+                        ('vehicle_id', '=', record.vehicle_id.id),
+                        ('state', '=', 'in_maintenance'),
+                        ('exit_date', '=', False)
+                    ], limit=1)
+                    # If this is the current intervention, allow it
+                    if current_intervention and current_intervention.id == record.id:
+                        continue
+                
+                # For new interventions, vehicle must be available
+                if record.vehicle_id.status != 'available':
+                    raise ValidationError(
+                        f"Vehicle {record.vehicle_id.license_plate} is currently {record.vehicle_id.status}. "
+                        f"Only available vehicles can be sent to maintenance."
+                    )
 
     def action_create_intervention(self):
         """Action for creating a new intervention from the form"""
@@ -177,3 +218,11 @@ class CarInterventionHistory(models.Model):
         return {
             'type': 'ir.actions.act_window_close',
         }
+
+    def unlink(self):
+        """Override unlink to update vehicle status when deleting active intervention"""
+        for record in self:
+            # If deleting an active intervention, set vehicle back to available
+            if record.state == 'in_maintenance' and record.vehicle_id:
+                record.vehicle_id.write({'status': 'available'})
+        return super().unlink()

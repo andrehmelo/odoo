@@ -190,7 +190,37 @@ class Vehicle(models.Model):
         'car.intervention.history',
         string='Current Intervention',
         compute='_compute_current_intervention',
+        store=True,
         help="Current active intervention (if vehicle is in maintenance)"
+    )
+    
+    # Related fields from current intervention
+    current_intervention_entry_date = fields.Date(
+        string='Entry Date',
+        related='current_intervention_id.entry_date',
+        readonly=True,
+        help="Date when vehicle entered maintenance"
+    )
+    
+    current_intervention_days = fields.Integer(
+        string='Days in Maintenance',
+        related='current_intervention_id.days_in_maintenance',
+        readonly=True,
+        help="Number of days in maintenance"
+    )
+    
+    current_intervention_location = fields.Char(
+        string='Maintenance Location',
+        related='current_intervention_id.location',
+        readonly=True,
+        help="Where the vehicle is being maintained"
+    )
+    
+    current_intervention_notes = fields.Text(
+        string='Intervention Notes',
+        related='current_intervention_id.description',
+        readonly=True,
+        help="Details about the intervention"
     )
     
     # Computed fields
@@ -498,3 +528,56 @@ class Vehicle(models.Model):
             'views': [[False, 'form']],
             'target': 'current',
         }
+
+    def action_delete_vehicle(self):
+        """Action to delete the vehicle (only when available)"""
+        from odoo.exceptions import ValidationError
+        
+        self.ensure_one()
+        
+        # Validate vehicle is available
+        if self.status != 'available':
+            raise ValidationError("Only available vehicles can be deleted. Please set the vehicle as available first or remove the active maintenance.")
+        
+        # Store vehicle info for the notification
+        vehicle_name = self.display_name
+        
+        # Delete the vehicle (cascade will handle related records)
+        self.unlink()
+        
+        # Return to the fleet overview (kanban view) using the menu action
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Fleet Overview',
+            'res_model': 'vehicle.vehicle',
+            'view_mode': 'kanban,tree,form',
+            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
+            'target': 'current',
+            'domain': [],
+            'context': {}
+        }
+
+    def action_remove_maintenance(self):
+        """Action to remove current maintenance and set vehicle as available"""
+        from odoo.exceptions import ValidationError
+        
+        self.ensure_one()
+        
+        # Validate vehicle is in maintenance
+        if self.status != 'maintenance':
+            raise ValidationError("Vehicle is not in maintenance.")
+        
+        # Get the current active intervention
+        if not self.current_intervention_id:
+            raise ValidationError("No active intervention found for this vehicle.")
+        
+        intervention_name = self.current_intervention_id.display_name
+        
+        # Delete the intervention
+        self.current_intervention_id.unlink()
+        
+        # Set vehicle as available
+        self.write({'status': 'available'})
+        
+        # Return True to refresh the current view in place (like action_set_maintenance does)
+        return True

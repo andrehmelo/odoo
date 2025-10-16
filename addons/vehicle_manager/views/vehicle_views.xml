@@ -50,6 +50,24 @@
                             invisible="status != 'available'"
                             help="Send vehicle to maintenance workshop"/>
                     
+                    <button name="action_remove_maintenance" 
+                            string="Remove Maintenance" 
+                            type="object" 
+                            class="btn-warning"
+                            data-hotkey="r"
+                            invisible="status != 'maintenance'"
+                            confirm="Are you sure you want to remove this maintenance intervention? The vehicle will be set as available."
+                            help="Remove current maintenance intervention and set vehicle as available"/>
+                    
+                    <button name="action_delete_vehicle" 
+                            string="Delete Vehicle" 
+                            type="object" 
+                            class="btn-danger"
+                            data-hotkey="shift+d"
+                            invisible="status != 'available'"
+                            confirm="Are you sure you want to delete this vehicle? This action cannot be undone."
+                            help="Permanently delete this vehicle"/>
+                    
                     <field name="status" widget="statusbar" 
                            statusbar_visible="available,reserved,maintenance"/>
                 </header>
@@ -124,22 +142,10 @@
                         <field name="current_intervention_id" invisible="1"/>
                         <group name="intervention_details" string="Intervention Details" invisible="not current_intervention_id">
                             <field name="current_intervention_id" readonly="1" options="{'no_create': True}"/>
-                            <div class="row">
-                                <div class="col-6">
-                                    <label for="current_intervention_id" string="Entry Date"/>
-                                    <field name="current_intervention_id" widget="related" 
-                                           options="{'field': 'entry_date'}" readonly="1" nolabel="1"/>
-                                </div>
-                                <div class="col-6">
-                                    <label for="current_intervention_id" string="Days in Maintenance"/>
-                                    <field name="current_intervention_id" widget="related" 
-                                           options="{'field': 'days_in_maintenance'}" readonly="1" nolabel="1"/>
-                                </div>
-                            </div>
-                            <field name="current_intervention_id" widget="related" 
-                                   options="{'field': 'location'}" string="Maintenance Location" readonly="1"/>
-                            <field name="current_intervention_id" widget="related" 
-                                   options="{'field': 'description'}" string="Intervention Notes" readonly="1"/>
+                            <field name="current_intervention_entry_date" readonly="1"/>
+                            <field name="current_intervention_days" readonly="1"/>
+                            <field name="current_intervention_location" readonly="1"/>
+                            <field name="current_intervention_notes" readonly="1"/>
                         </group>
                         <div invisible="current_intervention_id" class="alert alert-info" role="alert">
                             <p>No active intervention found. This might indicate a data inconsistency.</p>
@@ -279,12 +285,29 @@
                                                 Complete Maintenance
                                             </button>
                                             
+                                            <button name="action_remove_maintenance" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'maintenance'"
+                                                    confirm="Are you sure you want to remove this maintenance intervention? The vehicle will be set as available.">
+                                                <i class="fa fa-trash text-warning me-2"/>
+                                                Remove Maintenance
+                                            </button>
+                                            
                                             <!-- Common Actions -->
                                             <div class="dropdown-divider"></div>
                                             <button name="open_form_view" type="object" 
                                                     class="dropdown-item btn-link text-start">
                                                 <i class="fa fa-eye text-primary me-2"/>
                                                 View Details
+                                            </button>
+                                            
+                                            <!-- Delete Vehicle (only when available) -->
+                                            <button name="action_delete_vehicle" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'available'"
+                                                    confirm="Are you sure you want to delete this vehicle? This action cannot be undone.">
+                                                <i class="fa fa-trash text-danger me-2"/>
+                                                Delete Vehicle
                                             </button>
                                         </div>
                                     </div>
