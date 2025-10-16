@@ -545,17 +545,8 @@ class Vehicle(models.Model):
         # Delete the vehicle (cascade will handle related records)
         self.unlink()
         
-        # Return to the fleet overview (kanban view) using the menu action
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Fleet Overview',
-            'res_model': 'vehicle.vehicle',
-            'view_mode': 'kanban,tree,form',
-            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
-            'target': 'current',
-            'domain': [],
-            'context': {}
-        }
+        # Return True to refresh the current view (like wizards)
+        return True
 
     def action_remove_maintenance(self):
         """Action to remove current maintenance and set vehicle as available"""
