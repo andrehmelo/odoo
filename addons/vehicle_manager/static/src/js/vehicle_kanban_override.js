@@ -14,76 +14,82 @@ patch(KanbanController.prototype, {
         if (this.model.root.resModel === 'vehicle.vehicle') {
             // Use setTimeout to ensure DOM is fully rendered
             setTimeout(() => {
-                this.setupVehicleKanban();
-            }, 0);
+                this.setupVehicleKanbanTabs();
+            }, 300); // Wait for kanban groups to render
         }
     },
 
-    setupVehicleKanban() {
-        console.log('Setting up Vehicle Kanban with tabs');
+    setupVehicleKanbanTabs() {
+        console.log('Setting up Vehicle Kanban with group tabs');
         
-        // Setup status tab navigation only
-        this.setupStatusTabs();
+        const buttons = this.rootRef.el.querySelectorAll(".o_vehicle_status_tabs .status-tab");
+        const columns = this.rootRef.el.querySelectorAll(".o_kanban_group");
         
-        // Filter cards initially (show available)
-        this.filterCardsByStatus('available');
-        
-        // Update status counts
-        this.updateStatusCounts();
-    },
+        if (!buttons.length || !columns.length) {
+            console.log('No tabs or columns found, retrying...');
+            setTimeout(() => this.setupVehicleKanbanTabs(), 500);
+            return;
+        }
 
-    setupStatusTabs() {
-        const tabs = this.rootRef.el.querySelectorAll('.status-tab');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', (e) => {
+        // Helper: hide all kanban columns
+        const hideAllColumns = () => {
+            columns.forEach(c => c.style.display = "none");
+        };
+
+        // Helper: show column matching status
+        const showColumnByStatus = (status) => {
+            hideAllColumns();
+            
+            // Map status to group title text
+            const statusMap = {
+                'available': 'available',
+                'reserved': 'reserved',
+                'maintenance': 'in maintenance'
+            };
+            
+            const targetStatus = statusMap[status] || status;
+            
+            // Find matching column by title
+            const group = Array.from(columns).find(c => {
+                const titleEl = c.querySelector(".o_column_title, .o_kanban_header_title");
+                if (!titleEl) return false;
+                const title = titleEl.textContent.trim().toLowerCase();
+                return title.includes(targetStatus);
+            });
+            
+            if (group) {
+                group.style.display = "block";
+                console.log(`Showing group for status: ${status}`);
+            } else {
+                console.log(`No group found for status: ${status}`);
+            }
+        };
+
+        // Setup click handlers for tabs
+        buttons.forEach(btn => {
+            btn.addEventListener("click", (e) => {
                 e.preventDefault();
-                const status = tab.dataset.status;
+                const status = btn.getAttribute("data-status");
                 
-                // Update active tab
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+                // Remove "active" style from all
+                buttons.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
                 
-                // Filter cards
-                this.filterCardsByStatus(status);
+                // Show only the selected group
+                showColumnByStatus(status);
                 this.currentStatusFilter = status;
             });
         });
+
+        // Start with first group visible (available)
+        hideAllColumns();
+        showColumnByStatus('available');
         
-        // Set initial active tab
-        const availableTab = this.rootRef.el.querySelector('.status-tab[data-status="available"]');
-        if (availableTab) {
-            availableTab.classList.add('active');
+        // Set first button as active
+        if (buttons[0]) {
+            buttons[0].classList.add("active");
         }
-    },
-
-    filterCardsByStatus(status) {
-        const allCards = this.rootRef.el.querySelectorAll('.o_vehicle_card');
-        allCards.forEach(card => {
-            if (card.dataset.status === status) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    },
-
-    updateStatusCounts() {
-        const allCards = this.rootRef.el.querySelectorAll('.o_vehicle_card');
-        const counts = { available: 0, reserved: 0, maintenance: 0 };
         
-        allCards.forEach(card => {
-            const status = card.dataset.status;
-            if (counts.hasOwnProperty(status)) {
-                counts[status]++;
-            }
-        });
-        
-        // Update badge counts
-        Object.keys(counts).forEach(status => {
-            const badge = this.rootRef.el.querySelector(`.status-tab[data-status="${status}"] .badge`);
-            if (badge) {
-                badge.textContent = counts[status];
-            }
-        });
+        console.log('Vehicle kanban tabs setup complete');
     }
 });

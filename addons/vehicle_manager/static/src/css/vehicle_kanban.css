@@ -297,3 +297,60 @@
     height: 2rem;
     margin-right: 0.5rem;
 }
+/* Full width kanban groups with 2 columns */
+.o_vehicle_kanban_view .o_kanban_group {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+}
+
+.o_vehicle_kanban_view .o_kanban_record {
+    width: calc(50% - 16px) !important;
+    margin: 8px !important;
+    display: inline-block !important;
+    vertical-align: top !important;
+    float: none !important;
+}
+
+/* VIN container - keep icon and text inline */
+.o_vehicle_card .vin-container {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+}
+
+/* VIN text styling - smaller and truncate if too long */
+.o_vehicle_card .vin-text {
+    font-size: 0.75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+
+/* Condition text - ensure it doesn't wrap */
+.o_vehicle_card .condition-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 200px;
+}
+
+/* Ensure cards fill their container */
+.o_vehicle_card {
+    width: 100%;
+    height: 100%;
+}
+
+/* Card body spacing */
+.o_vehicle_card .card-body {
+    padding: 0.75rem;
+}
+
+.o_vehicle_card .card-body p {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}

@@ -2,7 +2,30 @@
 <odoo>
     <template id="assets_backend" name="vehicle_manager assets" inherit_id="web.assets_backend">
         <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/vehicle_manager/static/src/css/vehicle_kanban.css"/>
             <script type="text/javascript" src="/vehicle_manager/static/src/js/vehicle_kanban.js"/>
+            
+            <!-- Sticky group headers for list view -->
+            <style>
+                /* Ensure scroll container allows sticky positioning */
+                .o_content { 
+                    overflow: auto; 
+                }
+
+                /* Make group headers sticky at the top when scrolling */
+                .o_list_view .o_group_header {
+                    position: sticky;
+                    top: 0;
+                    z-index: 2;
+                    background: white;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                /* Ensure nested groups work properly */
+                .o_list_view .o_group_header.o_group_open {
+                    background: #f8f9fa;
+                }
+            </style>
         </xpath>
     </template>
 </odoo>

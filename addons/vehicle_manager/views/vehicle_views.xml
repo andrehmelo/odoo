@@ -9,21 +9,16 @@
                 <field name="name" string="Vehicle"/>
                 <field name="make"/>
                 <field name="model"/>
-                <field name="year"/>
+                <field name="year" sum="" avg=""/>
                 <field name="vin"/>
                 <field name="license_plate"/>
-                <field name="color"/>
-                <field name="mileage"/>
-                <field name="mileage_unit"/>
+                <field name="mileage" sum="" avg=""/>
                 <field name="condition"/>
                 <field name="status" widget="badge" 
                        decoration-success="status in ['available']"
                        decoration-info="status in ['reserved']"
                        decoration-warning="status in ['maintenance']"/>
-                <field name="current_value"/>
-                <field name="location"/>
-                <field name="purchase_date"/>
-                <field name="age" string="Age (Years)"/>
+                <field name="age" string="Age (Years)" sum="" avg=""/>
             </list>
         </field>
     </record>
@@ -197,7 +192,7 @@
         <field name="name">vehicle.vehicle.kanban</field>
         <field name="model">vehicle.vehicle</field>
         <field name="arch" type="xml">
-            <kanban class="o_vehicle_kanban_view" default_order="sequence, name desc, id desc" records_draggable="false" group_create="false" quick_create="false">
+            <kanban class="o_vehicle_kanban_view" default_group_by="status" default_order="sequence, name desc, id desc" records_draggable="false" group_create="false" quick_create="false">
                 <field name="sequence"/>
                 <field name="id"/>
                 <field name="name"/>
@@ -205,11 +200,9 @@
                 <field name="model"/>
                 <field name="year"/>
                 <field name="status"/>
-                <field name="purchase_price"/>
-                <field name="mileage"/>
+                <field name="vin"/>
                 <field name="condition"/>
                 <field name="description"/>
-                <field name="current_value"/>
                 <field name="license_plate"/>
                 <field name="color"/>
                 
@@ -317,27 +310,26 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-7">
-                                            <p class="text-muted mb-1">
-                                                <strong><field name="make"/> <field name="model"/></strong> (<field name="year"/>)
-                                            </p>
-                                            <p class="text-muted mb-1">
+                                            <div class="text-muted mb-1">
+                                                <strong><field name="make"/> <field name="model"/></strong>
+                                            </div>
+                                            <div class="text-muted mb-1">
                                                 <i class="fa fa-car me-1" title="Condition"/>
-                                                Condition: <field name="condition"/>
-                                            </p>
-                                            <p class="text-muted mb-1">
-                                                <i class="fa fa-tachometer me-1" title="Mileage"/>
-                                                <field name="mileage"/> km
-                                            </p>
-                                            <p class="text-muted mb-0" t-if="record.license_plate.raw_value">
-                                                <i class="fa fa-id-card me-1" title="License Plate"/>
-                                                <field name="license_plate"/>
-                                            </p>
+                                                <field name="condition" class="condition-text"/>
+                                            </div>
+                                            <div class="text-muted mb-1">
+                                                <i class="fa fa-calendar me-1" title="Year"/>
+                                                <field name="year"/>
+                                            </div>
+                                            <div class="text-muted mb-0 vin-container" t-if="record.vin.raw_value">
+                                                <i class="fa fa-barcode me-1" title="VIN"/>
+                                                <field name="vin" class="vin-text" t-att-title="record.vin.raw_value"/>
+                                            </div>
                                         </div>
                                         <div class="col-5 text-end">
-                                            <h5 class="text-success mb-1">
-                                                €<field name="current_value" t-if="record.current_value.raw_value"/>
-                                                <span t-if="!record.current_value.raw_value">€<field name="purchase_price"/></span>
-                                            </h5>
+                                            <p class="text-muted mb-2" t-if="record.license_plate.raw_value">
+                                                <strong><field name="license_plate"/></strong>
+                                            </p>
                                             <div t-att-class="'badge ' + (record.status.raw_value == 'available' ? 'bg-success' : record.status.raw_value == 'reserved' ? 'bg-warning' : 'bg-danger')">
                                                 <field name="status"/>
                                             </div>
