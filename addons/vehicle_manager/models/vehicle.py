@@ -542,10 +542,19 @@ class Vehicle(models.Model):
         # Store vehicle info for the notification
         vehicle_name = self.display_name
         
+        # Send notification via bus before deleting
+        message = f'Vehicle {vehicle_name} has been deleted successfully.'
+        self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+            'type': 'success',
+            'title': 'Success',
+            'message': message,
+            'sticky': False,
+        })
+        
         # Delete the vehicle (cascade will handle related records)
         self.unlink()
         
-        # Return True to refresh the current view (like wizards)
+        # Return True to refresh the current view
         return True
 
     def action_remove_maintenance(self):
@@ -562,7 +571,17 @@ class Vehicle(models.Model):
         if not self.current_intervention_id:
             raise ValidationError("No active intervention found for this vehicle.")
         
+        vehicle_name = self.display_name
         intervention_name = self.current_intervention_id.display_name
+        
+        # Send notification via bus before making changes
+        message = f'Intervention {intervention_name} has been removed. Vehicle {vehicle_name} is now available.'
+        self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+            'type': 'success',
+            'title': 'Success',
+            'message': message,
+            'sticky': False,
+        })
         
         # Delete the intervention
         self.current_intervention_id.unlink()
@@ -570,5 +589,5 @@ class Vehicle(models.Model):
         # Set vehicle as available
         self.write({'status': 'available'})
         
-        # Return True to refresh the current view in place (like action_set_maintenance does)
+        # Return True to refresh the current view
         return True

@@ -77,7 +77,7 @@ class VehicleMaintenanceWizard(models.TransientModel):
         # Update vehicle status
         self.vehicle_id.write({'status': 'maintenance'})
         
-        # Show success message and close wizard
+        # Return True to refresh the current view and show notification via bus
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -86,6 +86,7 @@ class VehicleMaintenanceWizard(models.TransientModel):
                 'message': _('Vehicle %s has been sent to maintenance.') % self.vehicle_id.name,
                 'type': 'success',
                 'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
             }
         }
 
@@ -199,7 +200,7 @@ class VehicleAvailableWizard(models.TransientModel):
         # Update vehicle status
         self.vehicle_id.write({'status': 'available'})
         
-        # Show success message
+        # Return notification and close wizard
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -210,5 +211,6 @@ class VehicleAvailableWizard(models.TransientModel):
                 ),
                 'type': 'success',
                 'sticky': False,
+                'next': {'type': 'ir.actions.act_window_close'},
             }
         }
