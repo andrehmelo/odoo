@@ -9,7 +9,7 @@
                 <field name="name" string="Vehicle"/>
                 <field name="make"/>
                 <field name="model"/>
-                <field name="year" sum="" avg=""/>
+                <field name="year_display" string="Year"/>
                 <field name="vin"/>
                 <field name="license_plate"/>
                 <field name="mileage" sum="" avg=""/>
@@ -197,6 +197,7 @@
                 <field name="make"/>
                 <field name="model"/>
                 <field name="year"/>
+                <field name="year_display"/>
                 <field name="status"/>
                 <field name="vin"/>
                 <field name="condition"/>
@@ -317,7 +318,7 @@
                                             </div>
                                             <div class="text-muted mb-1">
                                                 <i class="fa fa-calendar me-1" title="Year"/>
-                                                <field name="year"/>
+                                                <field name="year_display"/>
                                             </div>
                                             <div class="text-muted mb-0 vin-container" t-if="record.vin.raw_value">
                                                 <i class="fa fa-barcode me-1" title="VIN"/>

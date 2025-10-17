@@ -35,6 +35,12 @@ class Vehicle(models.Model):
         required=True,
         help="Manufacturing year/month (select any date in the target year/month)"
     )
+    year_display = fields.Char(
+        string='Year',
+        compute='_compute_year_display',
+        store=False,
+        help="Display year only (computed from year field)"
+    )
     
     # Identification
     vin = fields.Char(
@@ -250,6 +256,16 @@ class Vehicle(models.Model):
                     vehicle.name = f"{vehicle.make} {vehicle.model}"
             else:
                 vehicle.name = "New Vehicle"
+    
+    @api.depends('year')
+    def _compute_year_display(self):
+        """Display month and year from the date field"""
+        for vehicle in self:
+            if vehicle.year:
+                # Format as "Month Year" (e.g., "May 2021" or "05/2021")
+                vehicle.year_display = vehicle.year.strftime('%m/%Y')
+            else:
+                vehicle.year_display = ''
     
     @api.depends('year')
     def _compute_age(self):
