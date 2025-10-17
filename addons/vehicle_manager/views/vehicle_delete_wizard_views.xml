@@ -5,17 +5,29 @@
         <field name="name">vehicle.delete.wizard.form</field>
         <field name="model">vehicle.delete.wizard</field>
         <field name="arch" type="xml">
-            <form string="Delete Vehicles">
+            <form string="Bulk Delete Operations">
                 <div class="alert alert-warning" role="alert">
-                    <strong>Warning!</strong> This action cannot be undone. Please be careful when deleting vehicles.
+                    <strong>Warning!</strong> These actions cannot be undone. Please review your selection carefully.
                 </div>
                 
                 <group>
                     <field name="delete_type" widget="radio"/>
-                    <field name="vehicle_count" readonly="1" 
-                           string="Vehicles that will be deleted" 
-                           class="oe_stat_value"/>
                 </group>
+                
+                <group>
+                    <label for="item_count" string="Impact:"/>
+                    <field name="item_count" readonly="1" class="text-primary fw-bold"/>
+                </group>
+                
+                <div class="alert alert-info" role="alert">
+                    <strong>Options explained:</strong>
+                    <ul class="mb-0">
+                        <li><strong>Delete All Vehicles:</strong> Removes all vehicles and all maintenance records (current and completed).</li>
+                        <li><strong>Remove Current Interventions:</strong> Removes active interventions, vehicles return to "Available" status.</li>
+                        <li><strong>Remove Completed Maintenances:</strong> Deletes all completed maintenance records from history.</li>
+                        <li><strong>Remove All Maintenances:</strong> Removes all maintenance records (current and completed), vehicles return to "Available".</li>
+                    </ul>
+                </div>
                 
                 <group>
                     <field name="confirm_delete" required="1"/>
@@ -23,10 +35,9 @@
                 
                 <footer>
                     <button name="action_delete_vehicles" 
-                            string="Delete Vehicles" 
+                            string="Execute" 
                             type="object" 
-                            class="btn-danger"
-                            confirm="Are you sure you want to delete these vehicles? This action cannot be undone!"/>
+                            class="btn-danger"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
@@ -35,7 +46,7 @@
 
     <!-- Delete Wizard Action -->
     <record id="action_vehicle_delete_wizard" model="ir.actions.act_window">
-        <field name="name">Delete Vehicles</field>
+        <field name="name">Bulk Delete Operations</field>
         <field name="res_model">vehicle.delete.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
@@ -44,7 +55,7 @@
 
     <!-- Server Action for Delete Button -->
     <record id="action_vehicle_delete_server" model="ir.actions.server">
-        <field name="name">Delete Vehicles</field>
+        <field name="name">Bulk Delete Operations</field>
         <field name="model_id" ref="model_vehicle_vehicle"/>
         <field name="binding_model_id" ref="model_vehicle_vehicle"/>
         <field name="binding_type">action</field>

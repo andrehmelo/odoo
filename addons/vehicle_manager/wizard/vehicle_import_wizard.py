@@ -541,20 +541,19 @@ class VehicleImportWizard(models.TransientModel):
         if error_count > 0:
             message += f" {error_count} error{'s' if error_count != 1 else ''} occurred."
         
-        # Get the vehicle list action to reload it
-        action = self.env.ref('vehicle_manager.action_vehicle_vehicle').read()[0]
+        # Send notification via bus and force page reload
+        notification_type = 'success' if error_count == 0 else 'warning'
+        self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+            'type': notification_type,
+            'title': _('Import Complete'),
+            'message': message,
+            'sticky': False,
+        })
         
-        # Return notification and then open vehicle list
+        # Return reload action to force refresh the current view
         return {
             'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': _('Import Complete'),
-                'message': message,
-                'type': 'success' if error_count == 0 else 'warning',
-                'sticky': False,
-                'next': action,
-            }
+            'tag': 'reload',
         }
     
     def action_discard_import(self):
