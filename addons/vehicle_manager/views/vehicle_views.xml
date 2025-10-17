@@ -28,7 +28,7 @@
         <field name="name">vehicle.vehicle.form</field>
         <field name="model">vehicle.vehicle</field>
         <field name="arch" type="xml">
-            <form string="Vehicle" class="o_vehicle_form">
+            <form string="Vehicle">
                 <header>
                     <!-- Status buttons -->
                     <button name="action_set_available" string="✅ Complete Maintenance" 
@@ -73,14 +73,14 @@
                     </div>
                     
                     <div class="oe_title">
-                        <label for="name" string="Car Name" class="oe_edit_only"/>
+                        <label for="name" string="Car Name"/>
                         <h1>
                             <field name="name" placeholder="Enter vehicle name..."/>
                         </h1>
                     </div>
                     
-                    <group>
-                        <group name="basic_info" string="Basic Information">
+                    <group col="2">
+                        <group string="Basic Information">
                             <field name="make" placeholder="e.g. Toyota, BMW, Ford..."/>
                             <field name="model" placeholder="e.g. Camry, 320i, F-150..."/>
                             <field name="vin" placeholder="Vehicle Identification Number"/>
@@ -89,7 +89,7 @@
                             <field name="year"/>
                         </group>
                         
-                        <group name="driver_fees" string="Driver Fees">
+                        <group string="Driver Fees">
                             <field name="weekly_rent" placeholder="0.00"/>
                             <field name="entry_deposit" placeholder="0.00"/>
                             <field name="reserve_fee" placeholder="0.00"/>
@@ -97,14 +97,14 @@
                         </group>
                     </group>
                     
-                    <group>
-                        <group name="financial" string="Financial Information">
+                    <group col="2">
+                        <group string="Financial Information">
                             <field name="purchase_price" placeholder="0.00"/>
                             <field name="current_value" placeholder="0.00"/>
                             <field name="purchase_date"/>
                         </group>
                         
-                        <group name="physical" string="Car Details">
+                        <group string="Car Details">
                             <field name="via_verde_card" placeholder="Via Verde card number"/>
                             <field name="gas_card" placeholder="Gas payment card number"/>
                             <field name="fire_extinguisher" placeholder="Fire extinguisher ID"/>
@@ -115,18 +115,19 @@
                         </group>
                     </group>
                     
-                    <group>
-                        <group name="mileage_condition" string="Mileage &amp; Usage">
-                            <field name="mileage"/>
-                            <field name="mileage_unit" nolabel="1"/>
+                    <group col="2">
+                        <group string="Mileage &amp; Usage">
+                            <label for="mileage"/>
+                            <div class="o_row">
+                                <field name="mileage"/>
+                                <field name="mileage_unit"/>
+                            </div>
                             <field name="location" placeholder="Current location or address"/>
                         </group>
                         
-                        <group></group>
-                    </group>
-                    
-                    <group name="contact" string="Contact Information">
-                        <field name="owner_id"/>
+                        <group string="Contact Information">
+                            <field name="owner_id"/>
+                        </group>
                     </group>
                     
                     <!-- Current Intervention Information (only visible when in maintenance) -->

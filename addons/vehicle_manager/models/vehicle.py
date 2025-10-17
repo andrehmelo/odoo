@@ -2,6 +2,7 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from datetime import date
 import re
 
 
@@ -29,10 +30,10 @@ class Vehicle(models.Model):
         required=True,
         help="Vehicle model (e.g., Camry, F-150, 3 Series)"
     )
-    year = fields.Integer(
+    year = fields.Date(
         string='Year', 
         required=True,
-        help="Manufacturing year"
+        help="Manufacturing year/month (select any date in the target year/month)"
     )
     
     # Identification
@@ -64,16 +65,19 @@ class Vehicle(models.Model):
     ], string='Mileage Unit', default='km')
     
     # Car Details & Equipment
-    via_verde_card = fields.Integer(
+    via_verde_card = fields.Char(
         string='Via Verde Card',
+        size=30,
         help="Via Verde card number for highway tolls and parking payments"
     )
-    gas_card = fields.Integer(
+    gas_card = fields.Char(
         string='Gas Card',
+        size=30,
         help="Gas payment card number associated with this vehicle"
     )
-    fire_extinguisher = fields.Integer(
+    fire_extinguisher = fields.Char(
         string='Fire Extinguisher ID',
+        size=30,
         help="Fire extinguisher identification number for this car"
     )
     insurance_date = fields.Date(
@@ -239,7 +243,9 @@ class Vehicle(models.Model):
         for vehicle in self:
             if vehicle.make and vehicle.model:
                 if vehicle.year:
-                    vehicle.name = f"{vehicle.year} {vehicle.make} {vehicle.model}"
+                    # Extract year from date field for display
+                    year_display = vehicle.year.year if isinstance(vehicle.year, date) else vehicle.year
+                    vehicle.name = f"{year_display} {vehicle.make} {vehicle.model}"
                 else:
                     vehicle.name = f"{vehicle.make} {vehicle.model}"
             else:
@@ -251,7 +257,9 @@ class Vehicle(models.Model):
         current_year = fields.Date.today().year
         for vehicle in self:
             if vehicle.year:
-                vehicle.age = max(0, current_year - vehicle.year)
+                # Extract year from date field
+                vehicle_year = vehicle.year.year if isinstance(vehicle.year, date) else vehicle.year
+                vehicle.age = max(0, current_year - vehicle_year)
             else:
                 vehicle.age = 0
     
@@ -294,11 +302,15 @@ class Vehicle(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-        """Override create to handle VIN normalization and set default year"""
+        """Override create to handle VIN and license plate normalization and set default year"""
         for vals in vals_list:
             # Handle VIN normalization
             if vals.get('vin'):
                 vals['vin'] = vals['vin'].upper()
+            
+            # Handle license plate normalization
+            if vals.get('license_plate'):
+                vals['license_plate'] = vals['license_plate'].upper()
                 
             # If no year is provided, try to extract from model or set default
             if not vals.get('year'):
@@ -332,13 +344,24 @@ class Vehicle(models.Model):
                 if existing:
                     raise ValidationError(_("VIN must be unique. This VIN already exists for vehicle: %s") % existing.name)
     
+    @api.constrains('license_plate')
+    def _check_license_plate(self):
+        """Validate license plate uniqueness"""
+        for vehicle in self:
+            if vehicle.license_plate:
+                # Check uniqueness
+                existing = self.search([('license_plate', '=', vehicle.license_plate), ('id', '!=', vehicle.id)])
+                if existing:
+                    raise ValidationError(_("License plate must be unique. This license plate already exists for vehicle: %s") % existing.name)
+    
     @api.constrains('year')
     def _check_year(self):
         """Validate year is reasonable"""
         current_year = fields.Date.today().year
         for vehicle in self:
             if vehicle.year:
-                if vehicle.year < 1900 or vehicle.year > current_year + 1:
+                vehicle_year = vehicle.year.year if isinstance(vehicle.year, date) else vehicle.year
+                if vehicle_year < 1900 or vehicle_year > current_year + 1:
                     raise ValidationError(_("Year must be between 1900 and %s") % (current_year + 1))
     
     @api.constrains('mileage')

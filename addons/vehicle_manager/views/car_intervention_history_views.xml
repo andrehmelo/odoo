@@ -58,6 +58,10 @@
                         <field name="description" string="Intervention Notes" readonly="state == 'completed'" placeholder="Describe the reason for maintenance, what needs to be fixed, what was done, parts replaced, etc..." required="not id"/>
                     </group>
                 </sheet>
+                <footer invisible="not id">
+                    <button string="Save" class="btn-primary" special="save"/>
+                    <button string="Discard" class="btn-secondary" special="cancel"/>
+                </footer>
             </form>
         </field>
     </record>

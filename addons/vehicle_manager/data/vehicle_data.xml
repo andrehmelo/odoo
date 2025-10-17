@@ -5,7 +5,7 @@
         <record id="vehicle_001" model="vehicle.vehicle">
             <field name="make">Toyota</field>
             <field name="model">Camry</field>
-            <field name="year">2020</field>
+            <field name="year">2020-01-01</field>
             <field name="color">White</field>
             <field name="condition">excellent</field>
             <field name="purchase_price">25000.00</field>
@@ -21,7 +21,7 @@
         <record id="vehicle_002" model="vehicle.vehicle">
             <field name="make">Honda</field>
             <field name="model">Civic</field>
-            <field name="year">2019</field>
+            <field name="year">2019-01-01</field>
             <field name="color">Blue</field>
             <field name="condition">good</field>
             <field name="purchase_price">20000.00</field>
@@ -37,7 +37,7 @@
         <record id="vehicle_003" model="vehicle.vehicle">
             <field name="make">Tesla</field>
             <field name="model">Model 3</field>
-            <field name="year">2021</field>
+            <field name="year">2021-01-01</field>
             <field name="color">Black</field>
             <field name="condition">excellent</field>
             <field name="purchase_price">35000.00</field>
@@ -53,7 +53,7 @@
         <record id="vehicle_004" model="vehicle.vehicle">
             <field name="make">Ford</field>
             <field name="model">F-150</field>
-            <field name="year">2018</field>
+            <field name="year">2018-01-01</field>
             <field name="color">Red</field>
             <field name="condition">good</field>
             <field name="purchase_price">28000.00</field>
@@ -69,7 +69,7 @@
         <record id="vehicle_005" model="vehicle.vehicle">
             <field name="make">BMW</field>
             <field name="model">X5</field>
-            <field name="year">2020</field>
+            <field name="year">2020-01-01</field>
             <field name="color">Silver</field>
             <field name="condition">excellent</field>
             <field name="purchase_price">45000.00</field>

@@ -15,13 +15,18 @@
         <field name="model">vehicle.import.wizard</field>
         <field name="arch" type="xml">
             <form string="Import Vehicles">
+                <field name="state" invisible="1"/>
+                <field name="vehicle_data" invisible="1"/>
+                
                 <sheet>
                     <div class="oe_title">
-                        <h1>Import Vehicles from Excel/CSV</h1>
-                        <p>Upload an Excel (.xlsx) or CSV file to import vehicles into the system.</p>
+                        <h1 invisible="state != 'upload'">Import Vehicles from Excel/CSV</h1>
+                        <h1 invisible="state != 'preview'" class="text-success">✓ Import Preview - Review Before Saving</h1>
+                        <p invisible="state != 'upload'">Upload an Excel (.xlsx) or CSV file to import vehicles into the system.</p>
+                        <p invisible="state != 'preview'" class="text-info">Review the import results below. Click "Save" to import the vehicles or "Discard" to cancel.</p>
                     </div>
                     
-                    <group>
+                    <group invisible="state != 'upload'">
                         <group name="file_upload" string="File Upload">
                             <field name="file_data" filename="file_name"/>
                             <field name="file_name" invisible="1"/>
@@ -36,7 +41,7 @@
                     </group>
                     
                     <notebook>
-                        <page name="column_mapping" string="Column Mapping">
+                        <page name="column_mapping" string="Column Mapping" invisible="state != 'upload'">
                             <p class="text-muted">
                                 Map the columns in your file to vehicle fields. Leave blank to skip a field.
                                 Column names are case-insensitive and partial matches are supported.
@@ -46,59 +51,82 @@
                                 <group name="basic_mapping" string="Basic Information">
                                     <field name="col_make" placeholder="e.g., make, brand, manufacturer"/>
                                     <field name="col_model" placeholder="e.g., model, vehicle_model"/>
-                                    <field name="col_year" placeholder="e.g., year, model_year"/>
                                     <field name="col_vin" placeholder="e.g., vin, chassis"/>
                                     <field name="col_license_plate" placeholder="e.g., license_plate, plate, registration"/>
                                     <field name="col_color" placeholder="e.g., color, colour"/>
-                                    <field name="col_body_type" placeholder="e.g., body_type, type, category"/>
+                                    <field name="col_year" placeholder="e.g., year, model_year"/>
                                 </group>
                                 
-                                <group name="details_mapping" string="Vehicle Details">
-                                    <field name="col_doors" placeholder="e.g., doors, door_count"/>
-                                    <field name="col_seats" placeholder="e.g., seats, seating, capacity"/>
-                                    <field name="col_engine_size" placeholder="e.g., engine_size, displacement"/>
-                                    <field name="col_engine_type" placeholder="e.g., fuel_type, engine_type, fuel"/>
-                                    <field name="col_transmission" placeholder="e.g., transmission, gearbox"/>
-                                    <field name="col_drivetrain" placeholder="e.g., drivetrain, drive, 4wd"/>
+                                <group name="driver_fees_mapping" string="Driver Fees">
+                                    <field name="col_weekly_rent" placeholder="e.g., weekly_rent, rent"/>
+                                    <field name="col_entry_deposit" placeholder="e.g., entry_deposit, deposit"/>
+                                    <field name="col_reserve_fee" placeholder="e.g., reserve_fee, reservation"/>
+                                    <field name="col_reserve_fee_max" placeholder="e.g., reserve_fee_max, max_fee"/>
                                 </group>
                             </group>
                             
                             <group>
-                                <group name="condition_mapping" string="Condition &amp; Status">
-                                    <field name="col_mileage" placeholder="e.g., mileage, odometer, km"/>
-                                    <field name="col_mileage_unit" placeholder="e.g., unit, mileage_unit"/>
-                                    <field name="col_condition" placeholder="e.g., condition, state"/>
-                                    <field name="col_status" placeholder="e.g., status, availability"/>
-                                    <field name="col_location" placeholder="e.g., location, lot, parking"/>
-                                </group>
-                                
                                 <group name="financial_mapping" string="Financial Information">
                                     <field name="col_purchase_price" placeholder="e.g., purchase_price, cost"/>
                                     <field name="col_current_value" placeholder="e.g., current_value, market_value"/>
                                     <field name="col_purchase_date" placeholder="e.g., purchase_date, acquired_date"/>
                                 </group>
+                                
+                                <group name="car_details_mapping" string="Car Details">
+                                    <field name="col_via_verde_card" placeholder="e.g., via_verde, via_verde_card"/>
+                                    <field name="col_gas_card" placeholder="e.g., gas_card, fuel_card"/>
+                                    <field name="col_fire_extinguisher" placeholder="e.g., fire_extinguisher, extinguisher"/>
+                                    <field name="col_insurance_date" placeholder="e.g., insurance_date, insurance_expiry"/>
+                                    <field name="col_ipo_date" placeholder="e.g., ipo_date, ipo_expiry"/>
+                                    <field name="col_condition" placeholder="e.g., condition, state"/>
+                                </group>
                             </group>
                             
                             <group>
-                                <group name="notes_mapping" string="Additional Information">
+                                <group name="mileage_mapping" string="Mileage &amp; Usage">
+                                    <field name="col_mileage" placeholder="e.g., mileage, odometer, km"/>
+                                    <field name="col_mileage_unit" placeholder="e.g., unit, mileage_unit"/>
+                                    <field name="col_location" placeholder="e.g., location, current_location"/>
+                                </group>
+                                
+                                <group name="contact_mapping" string="Contact Information">
+                                    <field name="col_owner_id" placeholder="e.g., owner, contact, owner_name"/>
+                                </group>
+                            </group>
+                            
+                            <group>
+                                <group name="additional_mapping" string="Additional Information (Optional)">
+                                    <field name="col_status" placeholder="e.g., status, availability"/>
                                     <field name="col_features" placeholder="e.g., features, options, equipment"/>
                                     <field name="col_notes" placeholder="e.g., notes, comments, description"/>
                                 </group>
                             </group>
                         </page>
                         
-                        <page name="import_log" string="Import Results" invisible="not import_log">
+                        <page name="import_log" string="Import Preview" invisible="state != 'preview' or not import_log">
                             <field name="import_log" readonly="1" nolabel="1"/>
                         </page>
                     </notebook>
                 </sheet>
                 
                 <footer>
+                    <!-- Upload state buttons -->
                     <button name="action_import_vehicles" string="Import Vehicles" 
-                            type="object" class="btn-primary"/>
+                            type="object" class="btn-primary"
+                            invisible="state != 'upload'"/>
                     <button name="action_download_template" string="Download Template" 
-                            type="object" class="btn-secondary"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                            type="object" class="btn-secondary"
+                            invisible="state != 'upload'"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"
+                            invisible="state != 'upload'"/>
+                    
+                    <!-- Preview state buttons -->
+                    <button name="action_save_import" string="Apply Import" 
+                            type="object" class="btn-primary"
+                            invisible="state != 'preview'"/>
+                    <button name="action_discard_import" string="Discard" 
+                            type="object" class="btn-secondary"
+                            invisible="state != 'preview'"/>
                 </footer>
             </form>
         </field>
