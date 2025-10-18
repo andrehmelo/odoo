@@ -53,7 +53,8 @@
         <field name="view_id" ref="view_vehicle_delete_wizard_form"/>
     </record>
 
-    <!-- Server Action for Delete Button -->
+    <!-- Server Action for Delete Button - DISABLED (removed from action menu) -->
+    <!-- To re-enable, uncomment this record:
     <record id="action_vehicle_delete_server" model="ir.actions.server">
         <field name="name">Bulk Delete Operations</field>
         <field name="model_id" ref="model_vehicle_vehicle"/>
@@ -70,4 +71,5 @@ action = {
 }
         </field>
     </record>
+    -->
 </odoo>

@@ -5,7 +5,7 @@
         <field name="name">vehicle.vehicle.tree</field>
         <field name="model">vehicle.vehicle</field>
         <field name="arch" type="xml">
-            <list string="Vehicles" default_order="name desc">
+            <list string="Vehicles" default_order="name desc" import="false" export_xlsx="true" duplicate="false" delete="true">
                 <field name="name" string="Vehicle"/>
                 <field name="make"/>
                 <field name="model"/>
@@ -28,7 +28,7 @@
         <field name="name">vehicle.vehicle.form</field>
         <field name="model">vehicle.vehicle</field>
         <field name="arch" type="xml">
-            <form string="Vehicle">
+            <form string="Vehicle" duplicate="false">
                 <header>
                     <!-- Status buttons -->
                     <button name="action_set_available" string="✅ Complete Maintenance" 
@@ -175,7 +175,6 @@
                             <group>
                                 <group>
                                     <field name="id" string="Record ID" readonly="1"/>
-                                    <field name="active" readonly="1"/>
                                 </group>
                             </group>
                         </page>
@@ -190,7 +189,7 @@
         <field name="name">vehicle.vehicle.kanban</field>
         <field name="model">vehicle.vehicle</field>
         <field name="arch" type="xml">
-            <kanban class="o_vehicle_kanban_view" default_group_by="status" default_order="sequence, name desc, id desc" records_draggable="false" group_create="false" quick_create="false">
+            <kanban class="o_vehicle_kanban_view" default_group_by="status" default_order="sequence, name desc, id desc" records_draggable="false" group_create="false" quick_create="false" archivable="false" import="false" duplicate="false">
                 <field name="sequence"/>
                 <field name="id"/>
                 <field name="name"/>

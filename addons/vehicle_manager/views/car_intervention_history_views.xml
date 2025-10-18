@@ -6,7 +6,7 @@
         <field name="name">car.intervention.history.form</field>
         <field name="model">car.intervention.history</field>
         <field name="arch" type="xml">
-            <form string="Car Intervention" create="false">
+            <form string="Car Intervention" create="false" duplicate="false">
                 <header>
                     <!-- Action buttons -->
                     <button string="Send to Maintenance" name="action_create_intervention" type="object" class="btn-primary" invisible="id" data-hotkey="q"/>
@@ -71,7 +71,7 @@
         <field name="name">car.intervention.history.tree</field>
         <field name="model">car.intervention.history</field>
         <field name="arch" type="xml">
-            <list string="Car Intervention History" decoration-info="state=='in_maintenance'" decoration-muted="state=='completed'">
+            <list string="Car Intervention History" decoration-info="state=='in_maintenance'" decoration-muted="state=='completed'" import="false" export_xlsx="true" duplicate="false" delete="true">
                 <field name="license_plate"/>
                 <field name="vehicle_id"/>
                 <field name="entry_date"/>
@@ -89,7 +89,7 @@
         <field name="name">car.intervention.history.kanban</field>
         <field name="model">car.intervention.history</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" class="o_kanban_small_column" records_draggable="false" group_create="false" quick_create="false">
+            <kanban default_group_by="state" class="o_kanban_small_column" records_draggable="false" group_create="false" quick_create="false" archivable="false" import="false" duplicate="false">
                 <field name="vehicle_id"/>
                 <field name="license_plate"/>
                 <field name="entry_date"/>

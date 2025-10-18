@@ -36,7 +36,7 @@ class Vehicle(models.Model):
         help="Manufacturing year/month (select any date in the target year/month)"
     )
     year_display = fields.Char(
-        string='Year',
+        string='Year (MM/YYYY)',
         compute='_compute_year_display',
         store=False,
         help="Display year only (computed from year field)"
@@ -239,9 +239,6 @@ class Vehicle(models.Model):
         compute='_compute_age',
         help="Vehicle age in years"
     )
-    
-    # Active field for archiving
-    active = fields.Boolean(default=True)
     
     @api.depends('make', 'model', 'year')
     def _compute_name(self):
