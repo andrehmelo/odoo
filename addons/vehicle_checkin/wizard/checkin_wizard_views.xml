@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Check-In Wizard Form -->
+    <record id="view_vehicle_checkin_wizard_form" model="ir.ui.view">
+        <field name="name">vehicle.checkin.wizard.form</field>
+        <field name="model">vehicle.checkin.wizard</field>
+        <field name="arch" type="xml">
+            <form string="New Check-In">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="driver_id" options="{'no_create': True}"/>
+                            <field name="vehicle_id" options="{'no_create': True}"/>
+                        </group>
+                        <group>
+                            <field name="checkin_date"/>
+                            <field name="checkin_mileage"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1" placeholder="Enter any notes..."/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Confirm Check-In" name="action_confirm_checkin" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Check-In Wizard Action -->
+    <record id="action_vehicle_checkin_wizard" model="ir.actions.act_window">
+        <field name="name">New Check-In</field>
+        <field name="res_model">vehicle.checkin.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_vehicle_checkin_wizard_form"/>
+    </record>
+</odoo>

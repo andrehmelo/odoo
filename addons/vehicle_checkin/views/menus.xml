@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_vehicle_checkin_root" 
+              name="Vehicle Check-In" 
+              sequence="51"
+              web_icon="vehicle_checkin,static/description/icon.png"/>
+    
+    <!-- Check-Ins Menu -->
+    <menuitem id="menu_vehicle_checkin_list" 
+              name="Check-Ins" 
+              parent="menu_vehicle_checkin_root"
+              action="action_vehicle_checkin" 
+              sequence="10"/>
+    
+    <!-- New Check-In Menu -->
+    <menuitem id="menu_vehicle_checkin_new" 
+              name="New Check-In" 
+              parent="menu_vehicle_checkin_root"
+              action="action_vehicle_checkin_wizard" 
+              sequence="20"/>
+</odoo>
