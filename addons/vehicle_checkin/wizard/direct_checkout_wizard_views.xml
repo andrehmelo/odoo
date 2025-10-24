@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Direct Check-Out Wizard Form View -->
+    <record id="view_direct_checkout_wizard_form" model="ir.ui.view">
+        <field name="name">vehicle.direct.checkout.wizard.form</field>
+        <field name="model">vehicle.direct.checkout.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Check-Out Vehicle">
+                <group>
+                    <group string="Select Active Check-In">
+                        <field name="checkin_id" options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                </group>
+                
+                <group invisible="not checkin_id">
+                    <group string="Check-In Information">
+                        <field name="driver_id"/>
+                        <field name="vehicle_id"/>
+                        <field name="checkin_date"/>
+                        <field name="checkin_mileage"/>
+                    </group>
+                    
+                    <group string="Check-Out Information">
+                        <field name="checkout_date"/>
+                        <field name="checkout_mileage"/>
+                    </group>
+                </group>
+                
+                <group invisible="not checkin_id">
+                    <group string="Vehicle Condition">
+                        <field name="fuel_level"/>
+                        <field name="vehicle_condition"/>
+                    </group>
+                    <group string="Damage Report">
+                        <field name="damage_description" nolabel="1" placeholder="Describe any damage or issues..."/>
+                    </group>
+                </group>
+                
+                <group invisible="not checkin_id">
+                    <field name="notes" nolabel="1" placeholder="Additional check-out notes..."/>
+                </group>
+                
+                <footer>
+                    <button string="Confirm Check-Out" name="action_confirm_checkout" type="object" 
+                            class="btn-primary" invisible="not checkin_id"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Action for Direct Check-Out Wizard -->
+    <record id="action_direct_checkout_wizard" model="ir.actions.act_window">
+        <field name="name">Check-Out Vehicle</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">vehicle.direct.checkout.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+    </record>
+</odoo>

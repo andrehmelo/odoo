@@ -4,31 +4,46 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 
-class VehicleCheckoutWizard(models.TransientModel):
-    _name = 'vehicle.checkout.wizard'
-    _description = 'Vehicle Check-Out Wizard'
+class DirectCheckoutWizard(models.TransientModel):
+    _name = 'vehicle.direct.checkout.wizard'
+    _description = 'Direct Check-Out Wizard'
     
     checkin_id = fields.Many2one(
         'vehicle.checkin',
-        string='Check-In Record',
+        string='Active Check-In',
         required=True,
+        domain=[('state', '=', 'checked_in')],
+        help="Select the active check-in to complete"
+    )
+    
+    # Display fields from selected check-in
+    driver_id = fields.Many2one(
+        'res.partner',
+        string='Driver',
+        related='checkin_id.driver_id',
         readonly=True
     )
     
     vehicle_id = fields.Many2one(
         'vehicle.vehicle',
         string='Vehicle',
-        required=True,
+        related='checkin_id.vehicle_id',
         readonly=True
     )
     
-    driver_id = fields.Many2one(
-        'res.partner',
-        string='Driver',
-        required=True,
+    checkin_date = fields.Datetime(
+        string='Check-In Date',
+        related='checkin_id.checkin_date',
         readonly=True
     )
     
+    checkin_mileage = fields.Integer(
+        string='Check-In Mileage',
+        related='checkin_id.checkin_mileage',
+        readonly=True
+    )
+    
+    # Check-out fields
     checkout_date = fields.Datetime(
         string='Check-Out Date',
         required=True,
@@ -36,11 +51,11 @@ class VehicleCheckoutWizard(models.TransientModel):
     )
     
     checkout_mileage = fields.Integer(
-        string='Current Mileage',
+        string='Check-Out Mileage',
         help="Vehicle mileage at check-out"
     )
     
-    notes = fields.Text(string='Notes')
+    notes = fields.Text(string='Check-Out Notes')
     
     fuel_level = fields.Selection([
         ('empty', 'Empty'),
@@ -69,6 +84,14 @@ class VehicleCheckoutWizard(models.TransientModel):
         for record in self:
             if record.checkin_id and record.checkout_date < record.checkin_id.checkin_date:
                 raise ValidationError(_("Check-out date must be after check-in date!"))
+    
+    @api.constrains('checkout_mileage', 'checkin_mileage')
+    def _check_mileage(self):
+        """Validate checkout mileage"""
+        for record in self:
+            if record.checkout_mileage and record.checkin_mileage:
+                if record.checkout_mileage < record.checkin_mileage:
+                    raise ValidationError(_("Check-out mileage cannot be less than check-in mileage!"))
     
     def action_confirm_checkout(self):
         """Process check-out"""

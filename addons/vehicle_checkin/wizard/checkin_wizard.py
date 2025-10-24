@@ -49,7 +49,7 @@ class VehicleCheckinWizard(models.TransientModel):
             'state': 'checked_in',
         })
         
-        # Show success notification
+        # Show success notification and return to dashboard
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -60,12 +60,10 @@ class VehicleCheckinWizard(models.TransientModel):
                     self.driver_id.name
                 ),
                 'type': 'success',
+                'sticky': False,
                 'next': {
-                    'type': 'ir.actions.act_window',
-                    'res_model': 'vehicle.checkin',
-                    'res_id': checkin.id,
-                    'view_mode': 'form',
-                    'target': 'current',
+                    'type': 'ir.actions.client',
+                    'tag': 'vehicle_checkin_dashboard',
                 }
             }
         }

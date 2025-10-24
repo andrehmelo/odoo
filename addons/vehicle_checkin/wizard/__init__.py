@@ -2,3 +2,4 @@
 
 from . import checkin_wizard
 from . import checkout_wizard
+from . import direct_checkout_wizard

@@ -18,19 +18,26 @@ Vehicle Check-In/Check-Out Management
     'license': 'LGPL-3',
     'depends': [
         'base',
-        'mail',
         'vehicle_manager',  # CRITICAL: Dependency on vehicle_manager
     ],
     'data': [
         'security/ir.model.access.csv',
+        'views/vehicle_checkin_dashboard.xml',
         'views/vehicle_checkin_views.xml',
         'wizard/checkin_wizard_views.xml',
         'wizard/checkout_wizard_views.xml',
+        'wizard/direct_checkout_wizard_views.xml',
         'views/menus.xml',
     ],
     'demo': [
         'data/checkin_data.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'vehicle_checkin/static/src/js/dashboard.js',
+            'vehicle_checkin/static/src/xml/dashboard.xml',
+        ],
+    },
     'installable': True,
     'application': True,
     'auto_install': False,

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vehicle_checkin.Dashboard">
+        <div class="container-fluid p-5 h-100 d-flex align-items-center">
+            <!-- Main Action Buttons - Centered and Full Height -->
+            <div class="row g-4 w-100">
+                <!-- Check-In Button -->
+                <div class="col-12 col-md-6">
+                    <button t-on-click="openCheckInWizard" 
+                            class="btn btn-primary w-100 d-flex flex-column align-items-center justify-content-center"
+                            style="min-height: 400px; font-size: 1.5rem; border-radius: 15px;">
+                        <i class="fa fa-car fa-5x mb-4" style="opacity: 0.9;" title="Check-In Vehicle" aria-label="Check-In Vehicle" role="img"/>
+                        <h1 class="mb-3" style="font-size: 3rem; font-weight: bold;">Check-In</h1>
+                        <p class="mb-0" style="font-size: 1.3rem; opacity: 0.9;">Assign Vehicle to Driver</p>
+                    </button>
+                </div>
+                
+                <!-- Check-Out Button -->
+                <div class="col-12 col-md-6">
+                    <button t-on-click="openCheckOutWizard" 
+                            class="btn btn-success w-100 d-flex flex-column align-items-center justify-content-center"
+                            style="min-height: 400px; font-size: 1.5rem; border-radius: 15px;">
+                        <i class="fa fa-reply fa-5x mb-4" style="opacity: 0.9;" title="Check-Out Vehicle" aria-label="Check-Out Vehicle" role="img"/>
+                        <h1 class="mb-3" style="font-size: 3rem; font-weight: bold;">Check-Out</h1>
+                        <p class="mb-0" style="font-size: 1.3rem; opacity: 0.9;">Return Vehicle</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

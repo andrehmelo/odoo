@@ -8,7 +8,6 @@ from datetime import datetime
 class VehicleCheckin(models.Model):
     _name = 'vehicle.checkin'
     _description = 'Vehicle Check-In/Check-Out'
-    _inherit = ['mail.thread', 'mail.activity.mixin']  # Enables chatter
     _order = 'checkin_date desc'
     _rec_name = 'display_name'
     
@@ -24,7 +23,6 @@ class VehicleCheckin(models.Model):
         'res.partner',
         string='Driver',
         required=True,
-        tracking=True,
         domain=[('is_company', '=', False)],  # Only individuals, not companies
         help="Driver assigned to this vehicle"
     )
@@ -33,7 +31,6 @@ class VehicleCheckin(models.Model):
         'vehicle.vehicle',  # References vehicle_manager module
         string='Vehicle',
         required=True,
-        tracking=True,
         help="Vehicle assigned to the driver"
     )
     
@@ -42,13 +39,11 @@ class VehicleCheckin(models.Model):
         string='Check-In Date',
         required=True,
         default=fields.Datetime.now,
-        tracking=True,
         help="Date and time when driver checked in"
     )
     
     checkout_date = fields.Datetime(
         string='Check-Out Date',
-        tracking=True,
         help="Date and time when driver checked out"
     )
     
@@ -57,7 +52,7 @@ class VehicleCheckin(models.Model):
         ('checked_in', 'Checked In'),
         ('checked_out', 'Checked Out'),
         ('cancelled', 'Cancelled')
-    ], string='Status', default='checked_in', required=True, tracking=True)
+    ], string='Status', default='checked_in', required=True)
     
     # ========== COMPUTED FIELDS ==========
     duration_hours = fields.Float(
@@ -205,12 +200,6 @@ class VehicleCheckin(models.Model):
             if record.state == 'checked_in' and record.vehicle_id:
                 # Update vehicle status to reserved
                 record.vehicle_id.write({'status': 'reserved'})
-                
-                # Log message in chatter
-                record.message_post(
-                    body=_("Vehicle checked in by %s") % record.driver_id.name,
-                    message_type='notification'
-                )
         
         return records
     
@@ -223,12 +212,6 @@ class VehicleCheckin(models.Model):
             for record in self:
                 if record.state == 'checked_out' and record.vehicle_id:
                     record.vehicle_id.write({'status': 'available'})
-                    
-                    # Log message in chatter
-                    record.message_post(
-                        body=_("Vehicle checked out by %s") % record.driver_id.name,
-                        message_type='notification'
-                    )
         
         return res
     
@@ -273,11 +256,6 @@ class VehicleCheckin(models.Model):
         
         self.write({'state': 'cancelled'})
         
-        self.message_post(
-            body=_("Check-in cancelled"),
-            message_type='notification'
-        )
-        
         return True
     
     def action_view_vehicle(self):
@@ -291,6 +269,27 @@ class VehicleCheckin(models.Model):
             'res_id': self.vehicle_id.id,
             'view_mode': 'form',
             'target': 'current',
+        }
+    
+    @api.model
+    def action_open_dashboard(self):
+        """Open the dashboard - creates a temporary dummy record to display the form"""
+        # Return action to open the dashboard form view
+        # Using context to hide buttons and make it readonly
+        view_id = self.env.ref('vehicle_checkin.view_vehicle_checkin_dashboard').id
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'type': 'info',
+                'message': _('Dashboard is loading...'),
+                'next': {
+                    'type': 'ir.actions.act_url',
+                    'url': '/web#action=' + str(self.env.ref('vehicle_checkin.action_vehicle_checkin_dashboard').id),
+                    'target': 'self',
+                },
+            }
         }
 
 
