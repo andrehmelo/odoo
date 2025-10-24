@@ -5,7 +5,7 @@
         <field name="name">vehicle.checkin.form</field>
         <field name="model">vehicle.checkin</field>
         <field name="arch" type="xml">
-            <form string="Vehicle Check-In">
+            <form string="Vehicle Check-In" create="false">
                 <header>
                     <button name="action_checkout" string="Check-Out" type="object" 
                             class="oe_highlight" invisible="state != 'checked_in'"/>
@@ -29,10 +29,10 @@
                     
                     <group>
                         <group string="Driver Information">
-                            <field name="driver_id" options="{'no_create': True}"/>
+                            <field name="driver_id" readonly="1" options="{'no_create': True}"/>
                         </group>
                         <group string="Vehicle Information">
-                            <field name="vehicle_id" options="{'no_create': True}"/>
+                            <field name="vehicle_id" readonly="1" options="{'no_create': True}"/>
                             <field name="vehicle_license_plate"/>
                             <field name="vehicle_make"/>
                             <field name="vehicle_model"/>
@@ -41,12 +41,12 @@
                     
                     <group>
                         <group string="Check-In Details">
-                            <field name="checkin_date"/>
-                            <field name="checkin_mileage"/>
+                            <field name="checkin_date" readonly="1"/>
+                            <field name="checkin_mileage" readonly="1"/>
                         </group>
                         <group string="Check-Out Details">
-                            <field name="checkout_date"/>
-                            <field name="checkout_mileage"/>
+                            <field name="checkout_date" readonly="1"/>
+                            <field name="checkout_mileage" readonly="1"/>
                         </group>
                     </group>
                     
@@ -72,6 +72,8 @@
         <field name="model">vehicle.checkin</field>
         <field name="arch" type="xml">
             <list string="Vehicle Check-Ins" 
+                  js_class="checkin_list"
+                  create="0"
                   decoration-success="state=='checked_out'" 
                   decoration-info="state=='checked_in'"
                   decoration-muted="state=='cancelled'">
@@ -95,7 +97,7 @@
         <field name="name">vehicle.checkin.kanban</field>
         <field name="model">vehicle.checkin</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_mobile">
+            <kanban class="o_kanban_mobile" create="0" js_class="checkin_kanban">
                 <field name="driver_id"/>
                 <field name="vehicle_license_plate"/>
                 <field name="checkin_date"/>
@@ -162,7 +164,7 @@
                 No check-ins found!
             </p>
             <p>
-                Click "New" to assign a vehicle to a driver.
+                Click "New Check-In" button to assign a vehicle to a driver.
             </p>
         </field>
     </record>

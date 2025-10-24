@@ -25,7 +25,6 @@ Vehicle Check-In/Check-Out Management
         'views/vehicle_checkin_dashboard.xml',
         'views/vehicle_checkin_views.xml',
         'wizard/checkin_wizard_views.xml',
-        'wizard/checkout_wizard_views.xml',
         'wizard/direct_checkout_wizard_views.xml',
         'views/menus.xml',
     ],
@@ -36,6 +35,10 @@ Vehicle Check-In/Check-Out Management
         'web.assets_backend': [
             'vehicle_checkin/static/src/js/dashboard.js',
             'vehicle_checkin/static/src/xml/dashboard.xml',
+            'vehicle_checkin/static/src/js/checkin_list_controller.js',
+            'vehicle_checkin/static/src/xml/checkin_list_buttons.xml',
+            'vehicle_checkin/static/src/js/checkin_kanban_controller.js',
+            'vehicle_checkin/static/src/xml/checkin_kanban_buttons.xml',
         ],
     },
     'installable': True,

@@ -101,18 +101,21 @@ class VehicleCheckin(models.Model):
         help="Additional notes or observations"
     )
     
-    checkin_mileage = fields.Integer(
+    checkin_mileage = fields.Float(
         string='Check-In Mileage',
+        digits=(12, 1),
         help="Vehicle mileage at check-in"
     )
     
-    checkout_mileage = fields.Integer(
+    checkout_mileage = fields.Float(
         string='Check-Out Mileage',
+        digits=(12, 1),
         help="Vehicle mileage at check-out"
     )
     
-    distance_traveled = fields.Integer(
+    distance_traveled = fields.Float(
         string='Distance Traveled',
+        digits=(12, 1),
         compute='_compute_distance_traveled',
         store=True
     )
@@ -224,23 +227,24 @@ class VehicleCheckin(models.Model):
     
     # ========== ACTION METHODS ==========
     def action_checkout(self):
-        """Action to check out - opens wizard"""
+        """Action to check out - opens direct checkout wizard"""
         self.ensure_one()
         
         if self.state != 'checked_in':
             raise UserError(_("This record is not in checked-in state!"))
         
+        # Open the direct checkout wizard with this check-in pre-selected
+        wizard = self.env['vehicle.direct.checkout.wizard'].create({
+            'checkin_id': self.id,
+        })
+        
         return {
             'type': 'ir.actions.act_window',
             'name': _('Check-Out Vehicle'),
-            'res_model': 'vehicle.checkout.wizard',
+            'res_model': 'vehicle.direct.checkout.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'context': {
-                'default_checkin_id': self.id,
-                'default_vehicle_id': self.vehicle_id.id,
-                'default_driver_id': self.driver_id.id,
-            }
+            'res_id': wizard.id,
         }
     
     def action_cancel(self):
@@ -269,6 +273,18 @@ class VehicleCheckin(models.Model):
             'res_id': self.vehicle_id.id,
             'view_mode': 'form',
             'target': 'current',
+        }
+    
+    @api.model
+    def action_open_checkin_wizard(self):
+        """Open check-in wizard from list/kanban view"""
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('New Check-In'),
+            'res_model': 'vehicle.checkin.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'views': [(False, 'form')],
         }
     
     @api.model

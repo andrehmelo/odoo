@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="vehicle_checkin.ListController.Buttons" owl="1">
+        <button class="btn btn-primary" t-on-click="onClickNewCheckIn">New Check-In</button>
+    </t>
+</templates>

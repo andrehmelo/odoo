@@ -28,28 +28,40 @@ class VehicleCheckinWizard(models.TransientModel):
         default=fields.Datetime.now
     )
     
-    checkin_mileage = fields.Integer(
+    checkin_mileage = fields.Float(
         string='Current Mileage',
-        help="Vehicle mileage at check-in"
+        digits=(12, 1),
+        help="Vehicle mileage at check-in (from Fleet Manager)"
     )
     
     notes = fields.Text(string='Notes')
     
+    @api.onchange('vehicle_id')
+    def _onchange_vehicle_id(self):
+        """Auto-populate mileage from vehicle when selected"""
+        if self.vehicle_id:
+            self.checkin_mileage = self.vehicle_id.mileage or 0.0
+    
     def action_confirm_checkin(self):
         """Create check-in record and update vehicle status"""
         self.ensure_one()
+        
+        # Get mileage from vehicle if not set
+        mileage = self.checkin_mileage
+        if not mileage and self.vehicle_id:
+            mileage = self.vehicle_id.mileage or 0.0
         
         # Create check-in record
         checkin = self.env['vehicle.checkin'].create({
             'driver_id': self.driver_id.id,
             'vehicle_id': self.vehicle_id.id,
             'checkin_date': self.checkin_date,
-            'checkin_mileage': self.checkin_mileage,
+            'checkin_mileage': mileage,
             'notes': self.notes,
             'state': 'checked_in',
         })
         
-        # Show success notification and return to dashboard
+        # Show success notification and close wizard (refreshes current view)
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -61,9 +73,6 @@ class VehicleCheckinWizard(models.TransientModel):
                 ),
                 'type': 'success',
                 'sticky': False,
-                'next': {
-                    'type': 'ir.actions.client',
-                    'tag': 'vehicle_checkin_dashboard',
-                }
+                'next': {'type': 'ir.actions.act_window_close'},
             }
         }

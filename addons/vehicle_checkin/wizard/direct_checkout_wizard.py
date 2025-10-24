@@ -37,7 +37,7 @@ class DirectCheckoutWizard(models.TransientModel):
         readonly=True
     )
     
-    checkin_mileage = fields.Integer(
+    checkin_mileage = fields.Float(
         string='Check-In Mileage',
         related='checkin_id.checkin_mileage',
         readonly=True
@@ -50,8 +50,9 @@ class DirectCheckoutWizard(models.TransientModel):
         default=fields.Datetime.now
     )
     
-    checkout_mileage = fields.Integer(
+    checkout_mileage = fields.Float(
         string='Check-Out Mileage',
+        digits=(12, 1),
         help="Vehicle mileage at check-out"
     )
     
@@ -91,11 +92,18 @@ class DirectCheckoutWizard(models.TransientModel):
         for record in self:
             if record.checkout_mileage and record.checkin_mileage:
                 if record.checkout_mileage < record.checkin_mileage:
-                    raise ValidationError(_("Check-out mileage cannot be less than check-in mileage!"))
+                    raise ValidationError(
+                        _("Check-out mileage (%.1f) cannot be less than check-in mileage (%.1f)!") % 
+                        (record.checkout_mileage, record.checkin_mileage)
+                    )
     
     def action_confirm_checkout(self):
         """Process check-out"""
         self.ensure_one()
+        
+        # Validate required fields
+        if not self.checkout_mileage:
+            raise ValidationError(_("Check-out mileage is required!"))
         
         # Build notes with additional information
         checkout_notes = []
@@ -123,7 +131,13 @@ class DirectCheckoutWizard(models.TransientModel):
             'notes': combined_notes,
         })
         
-        # Show success notification and return to dashboard
+        # Update vehicle mileage in fleet manager
+        if self.checkout_mileage:
+            self.vehicle_id.write({
+                'mileage': self.checkout_mileage
+            })
+        
+        # Show success notification and close wizard (refreshes current view)
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -132,9 +146,6 @@ class DirectCheckoutWizard(models.TransientModel):
                 'message': _('Vehicle %s checked out successfully') % self.vehicle_id.license_plate,
                 'type': 'success',
                 'sticky': False,
-                'next': {
-                    'type': 'ir.actions.client',
-                    'tag': 'vehicle_checkin_dashboard',
-                }
+                'next': {'type': 'ir.actions.act_window_close'},
             }
         }
