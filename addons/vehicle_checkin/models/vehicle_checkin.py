@@ -31,6 +31,7 @@ class VehicleCheckin(models.Model):
         'vehicle.vehicle',  # References vehicle_manager module
         string='Vehicle',
         required=True,
+        ondelete='cascade',  # Delete check-ins when vehicle is deleted
         help="Vehicle assigned to the driver"
     )
     

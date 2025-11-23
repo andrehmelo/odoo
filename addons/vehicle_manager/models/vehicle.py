@@ -385,25 +385,82 @@ class Vehicle(models.Model):
                 raise ValidationError(_("Mileage cannot be negative."))
     
     def action_set_available(self):
-        """Open wizard to set vehicle status to available"""
+        """Open appropriate wizard to set vehicle status to available"""
         self.ensure_one()
         
-        # Check if vehicle is in maintenance
-        if self.status != 'maintenance':
-            raise ValidationError(_("Vehicle must be in maintenance to use this action."))
+        # From maintenance - use maintenance completion wizard
+        if self.status == 'maintenance':
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Complete Maintenance',
+                'res_model': 'vehicle.available.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'default_vehicle_id': self.id},
+            }
         
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Set Vehicle Available',
-            'res_model': 'vehicle.available.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context': {'default_vehicle_id': self.id},
-        }
+        # From reserved - use check-out wizard from vehicle_checkin module if installed
+        elif self.status == 'reserved':
+            # Check if vehicle_checkin module is installed
+            checkin_module = self.env['ir.module.module'].sudo().search([
+                ('name', '=', 'vehicle_checkin'),
+                ('state', '=', 'installed')
+            ], limit=1)
+            
+            if checkin_module:
+                # Find active check-in for this vehicle
+                active_checkin = self.env['vehicle.checkin'].search([
+                    ('vehicle_id', '=', self.id),
+                    ('state', '=', 'checked_in')
+                ], limit=1)
+                
+                if not active_checkin:
+                    raise ValidationError(_("No active check-in found for this vehicle. Please use the Check-In/Check-Out module to manage reservations."))
+                
+                return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Check-Out Vehicle',
+                    'res_model': 'vehicle.direct.checkout.wizard',
+                    'view_mode': 'form',
+                    'target': 'new',
+                    'context': {'default_checkin_id': active_checkin.id},
+                }
+            else:
+                # Fallback: directly set to available if vehicle_checkin not installed
+                self.write({'status': 'available'})
+                return True
+        
+        else:
+            raise ValidationError(_("Vehicle must be in maintenance or reserved to set as available."))
     
     def action_set_reserved(self):
-        """Set vehicle status to reserved"""
-        self.write({'status': 'reserved'})
+        """Open check-in wizard to reserve vehicle (if vehicle_checkin installed)"""
+        self.ensure_one()
+        
+        # Check if vehicle is available
+        if self.status != 'available':
+            raise ValidationError(_("Vehicle must be available to reserve."))
+        
+        # Check if vehicle_checkin module is installed
+        checkin_module = self.env['ir.module.module'].sudo().search([
+            ('name', '=', 'vehicle_checkin'),
+            ('state', '=', 'installed')
+        ], limit=1)
+        
+        if checkin_module:
+            # Use check-in wizard from vehicle_checkin module
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Check-In Vehicle',
+                'res_model': 'vehicle.checkin.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'default_vehicle_id': self.id},
+            }
+        else:
+            # Fallback: directly set to reserved if vehicle_checkin not installed
+            self.write({'status': 'reserved'})
+            return True
     
     def action_set_maintenance(self):
         """Open wizard to set vehicle status to maintenance"""
@@ -517,42 +574,7 @@ class Vehicle(models.Model):
             }
         }
 
-    def action_set_available(self):
-        """Action to set vehicle as available - shows wizard when coming from maintenance"""
-        if self.status == 'maintenance':
-            # Show wizard for maintenance to available transition
-            return {
-                'name': 'Set as Available',
-                'type': 'ir.actions.act_window',
-                'res_model': 'vehicle.available.wizard',
-                'view_mode': 'form',
-                'view_id': self.env.ref('vehicle_manager.view_vehicle_available_wizard_form').id,
-                'target': 'new',
-                'context': {
-                    'default_vehicle_id': self.id,
-                    'default_new_status': 'available',
-                }
-            }
-        else:
-            # Simple status change for other transitions
-            self.write({'status': 'available'})
-            return True
 
-    def action_set_reserved(self):
-        """Action to set vehicle as reserved - simple status change"""
-        if self.status == 'maintenance':
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'message': 'Vehicles in maintenance cannot be reserved directly. Please set as available first.',
-                    'type': 'warning',
-                    'sticky': False,
-                }
-            }
-        
-        self.write({'status': 'reserved'})
-        return True
 
     def open_form_view(self):
         """Action to open the vehicle form view"""

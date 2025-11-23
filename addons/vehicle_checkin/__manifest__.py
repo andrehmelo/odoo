@@ -24,6 +24,7 @@ Vehicle Check-In/Check-Out Management
         'security/ir.model.access.csv',
         'views/vehicle_checkin_dashboard.xml',
         'views/vehicle_checkin_views.xml',
+        'views/vehicle_vehicle_views.xml',
         'wizard/checkin_wizard_views.xml',
         'wizard/direct_checkout_wizard_views.xml',
         'views/menus.xml',
