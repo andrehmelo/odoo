@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Extend Vehicle Form to Add Current Check-In Section -->
+    <record id="view_vehicle_form_current_checkin" model="ir.ui.view">
+        <field name="name">vehicle.vehicle.form.current.checkin</field>
+        <field name="model">vehicle.vehicle</field>
+        <field name="inherit_id" ref="vehicle_manager.view_vehicle_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Current Check-In section after Current Intervention -->
+            <xpath expr="//group[@name='current_intervention']" position="after">
+                <group name="current_checkin" string="Current Driver Check-In" invisible="status != 'reserved'">
+                    <field name="current_checkin_id" invisible="1"/>
+                    <group name="checkin_details" string="Driver Information" invisible="not current_checkin_id">
+                        <field name="current_checkin_id" readonly="1" options="{'no_create': True}"/>
+                        <field name="current_checkin_driver_id" readonly="1" options="{'no_create': True}"/>
+                        <field name="current_checkin_date" readonly="1"/>
+                        <field name="current_checkin_mileage" readonly="1"/>
+                        <field name="current_checkin_duration_days" readonly="1"/>
+                    </group>
+                    <div invisible="current_checkin_id" class="alert alert-info" role="alert">
+                        <p>No active check-in found. This might indicate a data inconsistency.</p>
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Extend Vehicle Form to Add Driver History Tab -->
     <record id="view_vehicle_form_driver_history" model="ir.ui.view">
         <field name="name">vehicle.vehicle.form.driver.history</field>
