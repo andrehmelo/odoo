@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_drivers_root"
+              name="Drivers Management"
+              sequence="10"
+              groups="drivers_management.group_drivers_user"/>
+
+    <!-- DRIVERS SUBMENU -->
+    <menuitem id="menu_drivers_submenu"
+              name="Drivers"
+              parent="menu_drivers_root"
+              sequence="10"/>
+
+    <record id="action_all_drivers" model="ir.actions.act_window">
+        <field name="name">All Drivers</field>
+        <field name="res_model">drivers.management</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first driver
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_all_drivers"
+              name="All Drivers"
+              action="action_all_drivers"
+              parent="menu_drivers_submenu"
+              sequence="1"/>
+
+    <!-- Driver Leads -->
+    <record id="action_driver_leads" model="ir.actions.act_window">
+        <field name="name">Driver Leads</field>
+        <field name="res_model">drivers.management</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('status', '=', 'lead')]</field>
+        <field name="context">{'default_status': 'lead', 'search_default_filter_lead': 1}</field>
+    </record>
+
+    <menuitem id="menu_driver_leads"
+              name="Leads"
+              action="action_driver_leads"
+              parent="menu_drivers_submenu"
+              sequence="2"/>
+
+    <!-- Active Drivers -->
+    <record id="action_active_drivers" model="ir.actions.act_window">
+        <field name="name">Active Drivers</field>
+        <field name="res_model">drivers.management</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('status', '=', 'active')]</field>
+        <field name="context">{'default_status': 'active', 'search_default_filter_active': 1}</field>
+    </record>
+
+    <menuitem id="menu_active_drivers"
+              name="Active"
+              action="action_active_drivers"
+              parent="menu_drivers_submenu"
+              sequence="3"/>
+
+    <!-- Inactive Drivers -->
+    <record id="action_inactive_drivers" model="ir.actions.act_window">
+        <field name="name">Inactive Drivers</field>
+        <field name="res_model">drivers.management</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('status', '=', 'inactive')]</field>
+        <field name="context">{'default_status': 'inactive', 'search_default_filter_inactive': 1}</field>
+    </record>
+
+    <menuitem id="menu_inactive_drivers"
+              name="Inactive"
+              action="action_inactive_drivers"
+              parent="menu_drivers_submenu"
+              sequence="4"/>
+
+    <!-- INFORMATION SUBMENU -->
+    <menuitem id="menu_drivers_info"
+              name="Information"
+              parent="menu_drivers_root"
+              sequence="20"/>
+
+    <!-- Drivers Assigned to Vehicles -->
+    <record id="action_drivers_with_vehicles" model="ir.actions.act_window">
+        <field name="name">Drivers with Vehicles</field>
+        <field name="res_model">drivers.management</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('vehicle_id', '!=', False)]</field>
+        <field name="context">{'search_default_filter_vehicle': 1}</field>
+    </record>
+
+    <menuitem id="menu_drivers_vehicles"
+              name="Drivers &amp; Vehicles"
+              action="action_drivers_with_vehicles"
+              parent="menu_drivers_info"
+              sequence="1"/>
+
+    <!-- Uber Drivers -->
+    <record id="action_uber_drivers" model="ir.actions.act_window">
+        <field name="name">Uber Drivers</field>
+        <field name="res_model">drivers.management</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('id_uber', '!=', False)]</field>
+    </record>
+
+    <menuitem id="menu_uber_drivers"
+              name="Uber Platform"
+              action="action_uber_drivers"
+              parent="menu_drivers_info"
+              sequence="2"/>
+
+    <!-- Bolt Drivers -->
+    <record id="action_bolt_drivers" model="ir.actions.act_window">
+        <field name="name">Bolt Drivers</field>
+        <field name="res_model">drivers.management</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('id_bolt', '!=', False)]</field>
+    </record>
+
+    <menuitem id="menu_bolt_drivers"
+              name="Bolt Platform"
+              action="action_bolt_drivers"
+              parent="menu_drivers_info"
+              sequence="3"/>
+
+    <!-- CONFIGURATION SUBMENU -->
+    <menuitem id="menu_drivers_config"
+              name="Configuration"
+              parent="menu_drivers_root"
+              sequence="30"
+              groups="drivers_management.group_drivers_manager"/>
+</odoo>
