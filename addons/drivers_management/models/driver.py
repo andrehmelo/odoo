@@ -4,27 +4,26 @@ from odoo.exceptions import ValidationError
 class Driver(models.Model):
     _name = 'drivers.management'
     _description = 'Driver Management'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'priority desc, name'
 
     # Core Fields
-    name = fields.Char(string='Name', required=True, tracking=True, index='trigram')
+    name = fields.Char(string='Name', required=True, index='trigram')
     status = fields.Selection([
         ('lead', 'Lead'),
         ('active', 'Active'),
         ('inactive', 'Inactive'),
-    ], string='Status', default='lead', required=True, tracking=True, index=True)
+    ], string='Status', default='lead', required=True, index=True)
     priority = fields.Selection([
         ('0', 'Low'),
         ('1', 'Medium'),
         ('2', 'High'),
         ('3', 'Very High'),
-    ], string='Priority', default='1', tracking=True)
+    ], string='Priority', default='1')
 
     # Personal Information
-    email = fields.Char(string='Personal Email', tracking=True, index='trigram')
-    nr_telemovel = fields.Char(string='Phone Number', tracking=True)
-    nif = fields.Char(string='NIF', tracking=True)
+    email = fields.Char(string='Personal Email', index='trigram')
+    nr_telemovel = fields.Char(string='Phone Number')
+    nif = fields.Char(string='NIF')
     iban = fields.Char(string='IBAN')
 
     # Uber Platform
@@ -40,7 +39,7 @@ class Driver(models.Model):
     id_bolt = fields.Char(string='Bolt ID')
 
     # Vehicle Assignment
-    vehicle_id = fields.Many2one('fleet.vehicle', string='Assigned Vehicle', tracking=True, ondelete='set null')
+    vehicle_id = fields.Many2one('vehicle.vehicle', string='Assigned Vehicle', ondelete='set null')
 
     # Dates
     date_assigned = fields.Datetime('Assignment Date', readonly=True, copy=False)
@@ -49,7 +48,7 @@ class Driver(models.Model):
     # System Fields
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
-    user_id = fields.Many2one('res.users', string='Responsible', tracking=True)
+    user_id = fields.Many2one('res.users', string='Responsible')
     tag_ids = fields.Many2many('drivers.tag', string='Tags')
     color = fields.Integer('Color Index', default=0)
     description = fields.Html('Notes')

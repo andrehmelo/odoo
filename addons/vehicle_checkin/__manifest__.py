@@ -18,13 +18,15 @@ Vehicle Check-In/Check-Out Management
     'license': 'LGPL-3',
     'depends': [
         'base',
-        'vehicle_manager',  # CRITICAL: Dependency on vehicle_manager
+        'vehicle_manager',
+        'drivers_management',
     ],
     'data': [
         'security/ir.model.access.csv',
         'views/vehicle_checkin_dashboard.xml',
         'views/vehicle_checkin_views.xml',
         'views/vehicle_vehicle_views.xml',
+        'views/drivers_management_views.xml',
         'wizard/checkin_wizard_views.xml',
         'wizard/direct_checkout_wizard_views.xml',
         'views/menus.xml',

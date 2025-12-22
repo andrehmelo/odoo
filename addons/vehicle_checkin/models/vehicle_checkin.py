@@ -20,10 +20,9 @@ class VehicleCheckin(models.Model):
     
     # ========== RELATIONAL FIELDS ==========
     driver_id = fields.Many2one(
-        'res.partner',
+        'drivers.management',
         string='Driver',
         required=True,
-        domain=[('is_company', '=', False)],  # Only individuals, not companies
         help="Driver assigned to this vehicle"
     )
     

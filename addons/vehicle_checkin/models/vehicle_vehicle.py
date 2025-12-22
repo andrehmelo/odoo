@@ -25,8 +25,8 @@ class VehicleExtended(models.Model):
     
     # Related fields from current check-in
     current_checkin_driver_id = fields.Many2one(
-        'res.partner',
-        string='Current Driver',
+        'drivers.management',
+        string='Checked-In Driver',
         related='current_checkin_id.driver_id',
         readonly=True,
         help="Driver currently assigned to this vehicle"

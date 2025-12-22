@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_drivers_management_user,drivers.management.user,model_drivers_management,drivers_management.group_drivers_user,1,1,1,0
 access_drivers_management_manager,drivers.management.manager,model_drivers_management,drivers_management.group_drivers_manager,1,1,1,1
+access_drivers_tag_user,drivers.tag.user,model_drivers_tag,drivers_management.group_drivers_user,1,1,1,0
+access_drivers_tag_manager,drivers.tag.manager,model_drivers_tag,drivers_management.group_drivers_manager,1,1,1,1

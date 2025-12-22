@@ -9,10 +9,10 @@ class VehicleCheckinWizard(models.TransientModel):
     _description = 'Vehicle Check-In Wizard'
     
     driver_id = fields.Many2one(
-        'res.partner',
+        'drivers.management',
         string='Driver',
         required=True,
-        domain=[('is_company', '=', False)]
+        domain=[('status', '=', 'active')]  # Only active drivers
     )
     
     vehicle_id = fields.Many2one(

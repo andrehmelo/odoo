@@ -15,8 +15,7 @@
     """,
     'depends': [
         'base',
-        'mail',
-        'fleet',
+        'vehicle_manager',
     ],
     'data': [
         'security/drivers_security.xml',

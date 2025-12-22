@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend Driver Form to Add Check-In History Tab -->
+    <record id="view_driver_form_checkin_history" model="ir.ui.view">
+        <field name="name">drivers.management.form.checkin.history</field>
+        <field name="model">drivers.management</field>
+        <field name="inherit_id" ref="drivers_management.view_driver_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Check-In History page inside notebook -->
+            <notebook position="inside">
+                <page string="Check-In History">
+                    <field name="checkin_ids"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

@@ -18,7 +18,7 @@ class DirectCheckoutWizard(models.TransientModel):
     
     # Display fields from selected check-in
     driver_id = fields.Many2one(
-        'res.partner',
+        'drivers.management',
         string='Driver',
         related='checkin_id.driver_id',
         readonly=True

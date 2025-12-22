@@ -23,7 +23,7 @@ class VehicleCheckoutWizard(models.TransientModel):
     )
     
     driver_id = fields.Many2one(
-        'res.partner',
+        'drivers.management',
         string='Driver',
         required=True,
         readonly=True
