@@ -5,3 +5,5 @@ access_drivers_tag_user,drivers.tag.user,model_drivers_tag,drivers_management.gr
 access_drivers_tag_manager,drivers.tag.manager,model_drivers_tag,drivers_management.group_drivers_manager,1,1,1,1
 access_drivers_register_wizard_user,drivers.register.wizard.user,model_drivers_register_wizard,drivers_management.group_drivers_user,1,1,1,1
 access_drivers_register_wizard_manager,drivers.register.wizard.manager,model_drivers_register_wizard,drivers_management.group_drivers_manager,1,1,1,1
+access_driver_delete_wizard_user,driver.delete.wizard.user,model_driver_delete_wizard,drivers_management.group_drivers_user,1,1,1,1
+access_driver_delete_wizard_manager,driver.delete.wizard.manager,model_driver_delete_wizard,drivers_management.group_drivers_manager,1,1,1,1

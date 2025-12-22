@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Delete Wizard Form View -->
+    <record id="view_driver_delete_wizard_form" model="ir.ui.view">
+        <field name="name">driver.delete.wizard.form</field>
+        <field name="model">driver.delete.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Delete Drivers">
+                <group>
+                    <group>
+                        <field name="delete_type" widget="radio"/>
+                    </group>
+                    <group>
+                        <div class="alert alert-info" role="alert">
+                            <strong>Items to be deleted:</strong>
+                            <field name="item_count" nolabel="1" class="ms-2"/>
+                        </div>
+                        <div class="alert alert-warning" role="alert" invisible="not warning_message">
+                            <field name="warning_message" nolabel="1"/>
+                        </div>
+                    </group>
+                </group>
+                <group>
+                    <field name="confirm_delete" widget="boolean_toggle"/>
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fa fa-exclamation-triangle" title="Warning"/> 
+                        <strong>Warning:</strong> This action cannot be undone!
+                    </div>
+                </group>
+                <footer>
+                    <button name="action_delete_drivers" 
+                            string="🗑️ Delete" 
+                            type="object" 
+                            class="btn-danger"
+                            confirm="Are you sure you want to delete the selected drivers? This action cannot be undone."/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action to open the wizard -->
+    <record id="action_driver_delete_wizard" model="ir.actions.act_window">
+        <field name="name">Delete Drivers</field>
+        <field name="res_model">driver.delete.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

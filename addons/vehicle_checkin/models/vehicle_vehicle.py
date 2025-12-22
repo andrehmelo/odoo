@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 
 
 class VehicleExtended(models.Model):
@@ -61,3 +61,24 @@ class VehicleExtended(models.Model):
                 lambda c: c.state == 'checked_in' and not c.checkout_date
             )
             vehicle.current_checkin_id = current_checkin[0] if current_checkin else False
+    
+    def unlink(self):
+        """Before deleting vehicles, clean up active check-ins and reset drivers"""
+        for vehicle in self:
+            # Find active check-ins for this vehicle
+            active_checkins = self.env['vehicle.checkin'].search([
+                ('vehicle_id', '=', vehicle.id),
+                ('state', '=', 'checked_in'),
+            ])
+            
+            for checkin in active_checkins:
+                # Reset driver to inactive and clear vehicle
+                if checkin.driver_id:
+                    checkin.driver_id.write({
+                        'status': 'inactive',
+                        'vehicle_id': False,
+                    })
+                # Cancel the check-in (don't delete, keep history)
+                checkin.write({'state': 'cancelled'})
+        
+        return super().unlink()

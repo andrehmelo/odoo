@@ -237,10 +237,11 @@ class VehicleCheckin(models.Model):
         return res
     
     def unlink(self):
-        """Prevent deletion of checked-in records"""
-        for record in self:
-            if record.state == 'checked_in':
-                raise UserError(_("Cannot delete a record that is currently checked in. Please check out first."))
+        """Prevent deletion of checked-in records unless force_delete context is set"""
+        if not self.env.context.get('force_delete'):
+            for record in self:
+                if record.state == 'checked_in':
+                    raise UserError(_("Cannot delete a record that is currently checked in. Please check out first."))
         return super().unlink()
     
     # ========== ACTION METHODS ==========

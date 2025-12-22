@@ -123,10 +123,18 @@
               parent="menu_drivers_info"
               sequence="3"/>
 
-    <!-- CONFIGURATION SUBMENU -->
-    <menuitem id="menu_drivers_config"
-              name="Configuration"
+    <!-- Delete Drivers Action -->
+    <record id="action_delete_drivers_button" model="ir.actions.act_window">
+        <field name="name">🗑️ Delete Drivers</field>
+        <field name="res_model">driver.delete.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Delete Drivers Menu (directly under root, like vehicle_manager) -->
+    <menuitem id="menu_delete_drivers"
+              name="🗑️ Delete Drivers"
               parent="menu_drivers_root"
-              sequence="30"
-              groups="drivers_management.group_drivers_manager"/>
+              action="action_delete_drivers_button"
+              sequence="40"/>
 </odoo>

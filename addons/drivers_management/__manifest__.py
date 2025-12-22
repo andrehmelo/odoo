@@ -21,6 +21,7 @@
         'security/drivers_security.xml',
         'security/ir.model.access.csv',
         'wizard/register_driver_wizard_views.xml',
+        'wizard/driver_delete_wizard_views.xml',
         'views/drivers_views.xml',
         'views/drivers_menus.xml',
         'data/drivers_data.xml',
