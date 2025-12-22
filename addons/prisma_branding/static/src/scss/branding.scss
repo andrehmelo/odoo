@@ -1,0 +1,67 @@
+$o-prisma-blue: #0f58a2;
+$o-prisma-purple: #473f7b;
+
+.o_web_client {
+    .o_main_navbar {
+        --o-navbar-height: 72px;
+        background: linear-gradient(90deg, $o-prisma-blue, $o-prisma-purple);
+
+        .o_menu_brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 18px;
+            color: #fff;
+            white-space: nowrap;
+            padding-right: 12px;
+            padding-left: 12px;
+
+            &::before {
+                content: "";
+                width: 56px;
+                height: 56px;
+                background-image: url('/prisma_branding/static/src/img/prisma_logo.png');
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+
+            .o_menu_brand_title {
+                display: flex;
+                flex-direction: column-reverse;
+                line-height: 1;
+                justify-content: flex-end;
+                align-items: flex-start;
+                text-align: left;
+                margin-left: 16px;
+                padding-left: 0;
+                width: max-content;
+            }
+
+            .o_menu_brand_prisma {
+                font-weight: 900;
+                font-size: 2rem;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                display: inline-block;
+                transform-origin: left center;
+                transform: scaleX(1.18) scaleY(1.04);
+                text-shadow:
+                    -1px 0 0 rgba(255, 255, 255, 0.85),
+                    1px 0 0 rgba(255, 255, 255, 0.85);
+            }
+
+            .o_menu_brand_fleet {
+                font-size: 0.7rem;
+                font-weight: 600;
+                letter-spacing: 0.32em;
+                text-transform: uppercase;
+                opacity: 0.85;
+                margin-bottom: -4px;
+            }
+        }
+
+        .o_menu_sections {
+            display: none !important;
+        }
+    }
+}

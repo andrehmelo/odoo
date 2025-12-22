@@ -3,23 +3,28 @@
 
   <t t-name="web.NavBar">
     <header class="o_navbar" t-ref="root">
+      <t t-set="navbarApps" t-value="menuService.getApps()" />
       <nav
         class="o_main_navbar d-print-none"
         data-command-category="disabled"
       >
         <!-- Apps Menu -->
-        <t t-call="web.NavBar.AppsMenu">
+        <t t-if="env.isSmall" t-call="web.NavBar.AppsMenu">
           <t t-set="apps" t-value="menuService.getApps()" />
         </t>
 
         <!-- App Brand -->
         <DropdownItem
           t-if="!env.isSmall and currentApp"
-          t-esc="currentApp.name"
           class="'o_menu_brand d-flex'"
           onSelected="() => this.onNavBarDropdownItemSelection(currentApp)"
           attrs="{ href: getMenuItemHref(currentApp), 'data-menu-xmlid': currentApp.xmlid, 'data-section': currentApp.id }"
-        />
+        >
+          <span class="o_menu_brand_title">
+            <span class="o_menu_brand_prisma">Prisma</span>
+            <span class="o_menu_brand_fleet">Fleet</span>
+          </span>
+        </DropdownItem>
 
         <div class="o_navbar_breadcrumbs d-contents"/>
 
@@ -41,6 +46,33 @@
           </t>
         </div>
       </nav>
+      <div
+        t-if="!env.isSmall and navbarApps.length"
+        class="o_prisma_app_strip d-print-none"
+        role="navigation"
+        aria-label="App shortcuts"
+      >
+        <button
+          t-foreach="navbarApps"
+          t-as="app"
+          t-key="app.id"
+          class="o_prisma_app_strip_button"
+          t-att-class="{'active': menuService.getCurrentApp() === app}"
+          t-att-data-menu-xmlid="app.xmlid"
+          t-att-data-section="app.id"
+          t-on-click="() => this.onNavBarDropdownItemSelection(app)"
+        >
+          <span class="o_prisma_app_strip_button_inner">
+            <span
+              t-if="app.webIconData"
+              class="o_prisma_app_strip_icon"
+              role="presentation"
+              t-attf-style="background-image: url('{{app.webIconData}}');"
+            />
+            <span class="o_prisma_app_strip_label" t-esc="app.name" />
+          </span>
+        </button>
+      </div>
     </header>
   </t>
 

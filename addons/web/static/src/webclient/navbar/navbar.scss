@@ -1,17 +1,24 @@
 
+// Custom constants
+// ----------------------------------------------------------------------------
+$o-prisma-app-strip-width: 140px;
+
 // = Main Navbar
 // ============================================================================
 .o_main_navbar {
     @include print-variable(o-navbar-height, $o-navbar-height);
 
     --Dropdown_menu-margin-y: 0;
+    --o-navbar-height: 72px;
 
+    position: relative;
+    z-index: 1030;
     display: flex;
     height: var(--o-navbar-height);
     padding-top: $o-navbar-padding-v;
     padding-bottom: $o-navbar-padding-v;
     border-bottom: $o-navbar-border-bottom;
-    background: $o-navbar-background;
+    background: linear-gradient(90deg, #0f58a2 0%, #473f7b 100%);
     font-size: $o-navbar-font-size;
 
     @include media-breakpoint-up(md) {
@@ -193,6 +200,10 @@
 
     // = Navbar Sections & Children
     // --------------------------------------------------------------------------
+    .o_navbar_apps_menu {
+        display: none !important;
+    }
+
     .o_navbar_apps_menu .dropdown-toggle {
         --NavBar-entry-padding-left: #{$o-horizontal-padding};
 
@@ -203,15 +214,73 @@
     .o_menu_brand {
         @extend %-main-navbar-entry-base;
         @extend %-main-navbar-entry-spacing;
-        padding-left: 0;
+        padding-left: map-get($spacers, 2);
         font-size: $o-navbar-brand-font-size;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 18px;
+        color: #fff;
+        white-space: nowrap;
+        padding-right: 12px;
 
         &:hover {
             background: none;
+            color: #fff;
+        }
+
+        &::before {
+            content: "";
+            width: 56px;
+            height: 56px;
+            margin-left: 17px;
+            background-image: url('/web/static/img/prisma.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+
+        .o_menu_brand_title {
+            display: flex;
+            flex-direction: column-reverse;
+            line-height: 1;
+            justify-content: flex-end;
+            align-items: flex-start;
+            text-align: left;
+            margin-left: map-get($spacers, 3);
+            padding-left: 0;
+            width: max-content;
+        }
+
+        .o_menu_brand_prisma {
+            font-weight: 900;
+            font-size: 2rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            display: inline-block;
+            transform-origin: left center;
+            transform: scaleX(1.18) scaleY(1.04);
+            text-shadow:
+                -1px 0 0 rgba(255, 255, 255, 0.85),
+                1px 0 0 rgba(255, 255, 255, 0.85);
+        }
+
+        .o_menu_brand_fleet {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+            opacity: 0.85;
+            margin-bottom: -4px;
         }
     }
 
-    .o_menu_brand, .o_navbar_breadcrumbs, .o_navbar_breadcrumbs .btn {
+    .o_menu_sections {
+        display: none !important;
+    }
+
+    .o_navbar_breadcrumbs,
+    .o_navbar_breadcrumbs .btn {
         color: var(--NavBar-brand-color, #{$o-navbar-brand-color});
     }
 
@@ -249,4 +318,80 @@
 body.o_is_superuser .o_menu_systray {
     border-image: repeating-linear-gradient(135deg, #d9b904, #d9b904 10px, #373435 10px, #373435 20px) 2;
     border-image-width: map-get($border-widths, 2);
+}
+
+// = Prisma Apps Strip
+// ============================================================================
+.o_prisma_app_strip {
+    position: fixed;
+    top: var(--o-navbar-height, 72px);
+    left: 0;
+    bottom: 0;
+    width: $o-prisma-app-strip-width;
+    padding: map-get($spacers, 2) map-get($spacers, 3) map-get($spacers, 4);
+    background: rgba(15, 88, 162, 0.95);
+    backdrop-filter: blur(4px);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.35);
+    z-index: 900;
+    display: none;
+    flex-direction: column;
+    gap: map-get($spacers, 2);
+
+    .o_prisma_app_strip_button {
+        border: 0;
+        padding: map-get($spacers, 2);
+        border-radius: $border-radius-lg;
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-align: left;
+        text-transform: capitalize;
+        transition: background .15s, transform .15s;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(4px);
+        }
+
+        &.active {
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
+        .o_prisma_app_strip_button_inner {
+            display: flex;
+            align-items: center;
+            gap: map-get($spacers, 2);
+        }
+
+        .o_prisma_app_strip_icon {
+            width: 24px;
+            height: 24px;
+            border-radius: $border-radius-lg;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            flex-shrink: 0;
+        }
+
+        .o_prisma_app_strip_label {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+@include media-breakpoint-up(lg) {
+    .o_prisma_app_strip {
+        display: flex;
+    }
+
+    .o_web_client .o_action_manager,
+    .o_web_client .o_main_components_container {
+        margin-left: $o-prisma-app-strip-width;
+    }
 }
