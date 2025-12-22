@@ -12,7 +12,7 @@ class VehicleCheckinWizard(models.TransientModel):
         'drivers.management',
         string='Driver',
         required=True,
-        domain=[('status', '=', 'active')]  # Only active drivers
+        domain=[('status', '=', 'inactive')]  # Only inactive (registered) drivers can check-in
     )
     
     vehicle_id = fields.Many2one(

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Register Driver Wizard Form -->
+    <record id="view_register_driver_wizard_form" model="ir.ui.view">
+        <field name="name">drivers.register.wizard.form</field>
+        <field name="model">drivers.register.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Register Driver">
+                <group>
+                    <group string="Driver Information" col="2">
+                        <field name="driver_id" invisible="1"/>
+                        <field name="driver_name"/>
+                        <field name="driver_email"/>
+                        <field name="driver_phone"/>
+                    </group>
+                    <group string="Legal &amp; Banking" col="2">
+                        <field name="nif" placeholder="Tax ID Number"/>
+                        <field name="iban" placeholder="Bank Account"/>
+                    </group>
+                </group>
+                
+                <separator string="Platform Registration"/>
+                
+                <group>
+                    <field name="platform" widget="radio" options="{'horizontal': true}"/>
+                </group>
+                
+                <!-- Uber Platform Fields -->
+                <group string="Uber Platform" invisible="platform == 'bolt'" col="2">
+                    <group>
+                        <field name="id_uber" required="platform in ('uber', 'both')" 
+                               placeholder="Required"/>
+                        <field name="nome_uber" required="platform in ('uber', 'both')"
+                               placeholder="Required"/>
+                    </group>
+                    <group>
+                        <field name="email_uber" required="platform in ('uber', 'both')"
+                               placeholder="Required"/>
+                        <field name="nr_telemovel_uber" required="platform in ('uber', 'both')"
+                               placeholder="Required"/>
+                    </group>
+                </group>
+                
+                <!-- Bolt Platform Fields -->
+                <group string="Bolt Platform" invisible="platform == 'uber'" col="2">
+                    <group>
+                        <field name="id_bolt" required="platform in ('bolt', 'both')"
+                               placeholder="Required"/>
+                        <field name="nome_bolt" required="platform in ('bolt', 'both')"
+                               placeholder="Required"/>
+                    </group>
+                    <group>
+                        <field name="email_bolt" required="platform in ('bolt', 'both')"
+                               placeholder="Required"/>
+                        <field name="nr_telemovel_bolt" required="platform in ('bolt', 'both')"
+                               placeholder="Required"/>
+                    </group>
+                </group>
+                
+                <footer>
+                    <button name="action_register_driver" string="✅ Complete Registration" 
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Wizard Action -->
+    <record id="action_register_driver_wizard" model="ir.actions.act_window">
+        <field name="name">Register Driver</field>
+        <field name="res_model">drivers.register.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

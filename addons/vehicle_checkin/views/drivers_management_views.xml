@@ -1,15 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Extend Driver Form to Add Check-In History Tab -->
+    <!-- Extend Driver Form to Add Check-In History Tab and Active Vehicle Info -->
     <record id="view_driver_form_checkin_history" model="ir.ui.view">
         <field name="name">drivers.management.form.checkin.history</field>
         <field name="model">drivers.management</field>
         <field name="inherit_id" ref="drivers_management.view_driver_form"/>
         <field name="arch" type="xml">
+            <!-- Add Current Vehicle info before notebook for active drivers -->
+            <notebook position="before">
+                <group invisible="status != 'active'" col="4">
+                    <group string="🚗 Current Assignment" colspan="2">
+                        <field name="vehicle_id" readonly="1" options="{'no_create': True, 'no_open': False}"/>
+                        <field name="date_assigned" readonly="1"/>
+                        <field name="days_since_assignment" readonly="1"/>
+                    </group>
+                </group>
+            </notebook>
+            
             <!-- Add Check-In History page inside notebook -->
             <notebook position="inside">
-                <page string="Check-In History">
-                    <field name="checkin_ids"/>
+                <page string="Check-In History" invisible="status == 'lead'">
+                    <field name="checkin_ids" readonly="1">
+                        <list>
+                            <field name="checkin_date"/>
+                            <field name="vehicle_id"/>
+                            <field name="checkin_mileage"/>
+                            <field name="checkout_date"/>
+                            <field name="checkout_mileage"/>
+                            <field name="state" widget="badge"
+                                   decoration-success="state == 'checked_in'"
+                                   decoration-muted="state == 'checked_out'"
+                                   decoration-danger="state == 'cancelled'"/>
+                        </list>
+                    </field>
                 </page>
             </notebook>
         </field>

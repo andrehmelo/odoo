@@ -5,11 +5,14 @@
         <field name="name">driver.list</field>
         <field name="model">drivers.management</field>
         <field name="arch" type="xml">
-            <list>
+            <list delete="true">
                 <field name="name"/>
                 <field name="email"/>
                 <field name="nr_telemovel"/>
-                <field name="status"/>
+                <field name="status" widget="badge"
+                       decoration-info="status == 'lead'"
+                       decoration-success="status == 'active'"
+                       decoration-muted="status == 'inactive'"/>
                 <field name="vehicle_id"/>
             </list>
         </field>
@@ -22,8 +25,46 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="status" widget="statusbar" options="{'clickable': '1'}" 
-                           statusbar_visible="lead,active,inactive"/>
+                    <!-- NEW (unsaved): Show "Save Lead" button -->
+                    <button name="action_save_lead" string="💾 Save Lead" 
+                            type="object" class="btn-success"
+                            invisible="id != False"
+                            help="Save this new lead"/>
+                    
+                    <!-- LEAD (saved): Show "Register Driver" to open wizard -->
+                    <button name="action_open_register_wizard" string="📋 Register Driver" 
+                            type="object" class="btn-primary"
+                            invisible="status != 'lead' or id == False"
+                            help="Open wizard to register this lead as a driver"/>
+                    
+                    <!-- INACTIVE: Show "Activate Driver" to start check-in -->
+                    <button name="action_activate_driver" string="✅ Activate Driver" 
+                            type="object" class="btn-success"
+                            invisible="status != 'inactive'"
+                            help="Open check-in wizard to assign a vehicle and activate driver"/>
+                    
+                    <!-- ACTIVE: Show "Deactivate" to checkout -->
+                    <button name="action_deactivate_driver" string="⏸️ Deactivate" 
+                            type="object" class="btn-warning"
+                            invisible="status != 'active'"
+                            help="Open checkout wizard to return vehicle and deactivate driver"/>
+                    
+                    <!-- INACTIVE only: Show "Back to Lead" (not for active) -->
+                    <button name="action_convert_to_lead" string="↩️ Back to Lead" 
+                            type="object" class="btn-secondary"
+                            invisible="status != 'inactive'"
+                            confirm="Convert this driver back to a lead? Platform information will be cleared."
+                            help="Convert back to lead status"/>
+                    
+                    <!-- Delete button - only for non-active drivers -->
+                    <button name="action_delete_driver" string="🗑️ Delete" 
+                            type="object" class="btn-danger"
+                            invisible="status == 'active' or id == False"
+                            confirm="Are you sure you want to delete this driver?"
+                            help="Delete this driver record"/>
+                    
+                    <field name="status" widget="statusbar" 
+                           statusbar_visible="lead,inactive,active"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -31,19 +72,36 @@
                             <field name="name" placeholder="Driver Name"/>
                         </h1>
                     </div>
-                    <notebook>
+                    
+                    <!-- Lead View: Simple contact info only -->
+                    <group invisible="status != 'lead'">
+                        <group string="Contact Information">
+                            <field name="email" placeholder="Email address"/>
+                            <field name="nr_telemovel" placeholder="Phone number"/>
+                        </group>
+                        <group string="Notes">
+                            <field name="description" nolabel="1" placeholder="Add notes about this lead..."/>
+                        </group>
+                    </group>
+                    
+                    <!-- Inactive/Active View: Full details with notebook -->
+                    <notebook invisible="status == 'lead'">
                         <!-- Personal Information Tab -->
                         <page string="Personal Information">
                             <group>
-                                <field name="email"/>
-                                <field name="nr_telemovel"/>
-                                <field name="nif"/>
-                                <field name="iban"/>
+                                <group string="Contact">
+                                    <field name="email"/>
+                                    <field name="nr_telemovel"/>
+                                </group>
+                                <group string="Legal &amp; Banking">
+                                    <field name="nif"/>
+                                    <field name="iban"/>
+                                </group>
                             </group>
                         </page>
 
                         <!-- Uber Platform Tab -->
-                        <page string="Uber Platform">
+                        <page string="Uber Platform" invisible="not id_uber">
                             <group>
                                 <group string="Uber Account">
                                     <field name="id_uber"/>
@@ -57,7 +115,7 @@
                         </page>
 
                         <!-- Bolt Platform Tab -->
-                        <page string="Bolt Platform">
+                        <page string="Bolt Platform" invisible="not id_bolt">
                             <group>
                                 <group string="Bolt Account">
                                     <field name="id_bolt"/>
@@ -67,13 +125,6 @@
                                     <field name="email_bolt"/>
                                     <field name="nr_telemovel_bolt"/>
                                 </group>
-                            </group>
-                        </page>
-
-                        <!-- Vehicle Tab -->
-                        <page string="Vehicle Assignment">
-                            <group>
-                                <field name="vehicle_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -92,11 +143,11 @@
                 <field name="email"/>
                 <field name="nr_telemovel"/>
                 <field name="nif"/>
-                <filter string="Lead" name="filter_lead" domain="[('status','=','lead')]"/>
-                <filter string="Active" name="filter_active" domain="[('status','=','active')]"/>
-                <filter string="Inactive" name="filter_inactive" domain="[('status','=','inactive')]"/>
+                <filter string="Leads" name="filter_lead" domain="[('status','=','lead')]"/>
+                <filter string="Active Drivers" name="filter_active" domain="[('status','=','active')]"/>
+                <filter string="Inactive Drivers" name="filter_inactive" domain="[('status','=','inactive')]"/>
                 <separator/>
-                <filter string="Assigned Vehicle" name="filter_vehicle" domain="[('vehicle_id','!=',False)]"/>
+                <filter string="With Vehicle" name="filter_vehicle" domain="[('vehicle_id','!=',False)]"/>
                 <separator/>
                 <group expand="0" string="Group By">
                     <filter string="Status" name="group_status" context="{'group_by':'status'}"/>
@@ -106,34 +157,123 @@
         </field>
     </record>
 
-    <!-- Kanban View -->
+    <!-- Kanban View (Same structure as Vehicle Kanban) -->
     <record id="view_driver_kanban" model="ir.ui.view">
         <field name="name">driver.kanban</field>
         <field name="model">drivers.management</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="status">
+            <kanban class="o_vehicle_kanban_view" default_group_by="status" default_order="priority desc, name" records_draggable="false" group_create="false" quick_create="false" archivable="false" import="false" duplicate="false">
                 <field name="id"/>
                 <field name="name"/>
                 <field name="email"/>
                 <field name="nr_telemovel"/>
+                <field name="nif"/>
                 <field name="status"/>
                 <field name="vehicle_id"/>
+                <field name="is_lead"/>
+                <field name="has_platform_info"/>
+                <field name="id_uber"/>
+                <field name="id_bolt"/>
+                <field name="priority"/>
+                
                 <templates>
+                    <!-- Driver Card Template -->
                     <t t-name="card">
-                        <div class="oe_kanban_global_click">
-                            <div class="oe_kanban_details">
-                                <strong class="o_kanban_record_title">
-                                    <field name="name"/>
-                                </strong>
-                                <div class="o_kanban_record_subtitle">
-                                    <field name="email"/>
-                                </div>
-                                <div class="o_kanban_record_bottom">
-                                    <div class="oe_kanban_bottom_left">
-                                        <field name="nr_telemovel"/>
+                        <div class="o_vehicle_card" t-att-data-status="record.status.raw_value">
+                            <div class="card h-100">
+                                <!-- Card Header -->
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h6 class="card-title mb-0 text-primary">
+                                        <field name="name"/>
+                                    </h6>
+                                    <!-- Action Buttons -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button" name="action_dropdown">
+                                            <i class="fa fa-cog" title="Actions"/>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end" role="menu">
+                                            <!-- Lead Status Actions -->
+                                            <button name="action_open_register_wizard" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'lead'">
+                                                <i class="fa fa-id-card text-primary me-2"/>
+                                                Register Driver
+                                            </button>
+                                            
+                                            <!-- Inactive Status Actions -->
+                                            <button name="action_activate_driver" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'inactive'">
+                                                <i class="fa fa-check-circle text-success me-2"/>
+                                                Check-In Driver
+                                            </button>
+                                            <button name="action_convert_to_lead" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'inactive'"
+                                                    confirm="Convert this driver back to a lead? Platform information will be cleared.">
+                                                <i class="fa fa-undo text-warning me-2"/>
+                                                Back to Lead
+                                            </button>
+                                            
+                                            <!-- Active Status Actions -->
+                                            <button name="action_deactivate_driver" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value == 'active'">
+                                                <i class="fa fa-sign-out text-warning me-2"/>
+                                                Check-Out Driver
+                                            </button>
+                                            
+                                            <!-- Common Actions -->
+                                            <div class="dropdown-divider"></div>
+                                            <a type="open" class="dropdown-item">
+                                                <i class="fa fa-eye text-primary me-2"/>
+                                                View Details
+                                            </a>
+                                            
+                                            <!-- Delete (for leads and inactive only) -->
+                                            <button name="action_delete_driver" type="object" 
+                                                    class="dropdown-item btn-link text-start"
+                                                    t-if="record.status.raw_value != 'active'"
+                                                    confirm="Are you sure you want to delete this driver? This action cannot be undone.">
+                                                <i class="fa fa-trash text-danger me-2"/>
+                                                Delete Driver
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="oe_kanban_bottom_right">
-                                        <field name="vehicle_id"/>
+                                </div>
+                                
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <div class="text-muted mb-1" t-if="record.nr_telemovel.raw_value">
+                                                <i class="fa fa-phone me-1" title="Phone"/>
+                                                <field name="nr_telemovel"/>
+                                            </div>
+                                            <div class="text-muted mb-1" t-if="record.email.raw_value">
+                                                <i class="fa fa-envelope me-1" title="Email"/>
+                                                <field name="email"/>
+                                            </div>
+                                            <div class="text-muted mb-1" t-if="record.nif.raw_value and record.status.raw_value != 'lead'">
+                                                <i class="fa fa-id-card-o me-1" title="NIF"/>
+                                                <field name="nif"/>
+                                            </div>
+                                            <div class="text-muted mb-0" t-if="record.status.raw_value != 'lead'">
+                                                <span t-if="record.id_uber.raw_value" class="badge bg-dark me-1">Uber</span>
+                                                <span t-if="record.id_bolt.raw_value" class="badge bg-success">Bolt</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-5 text-end">
+                                            <div t-att-class="'badge mb-2 ' + (record.status.raw_value == 'lead' ? 'bg-info' : record.status.raw_value == 'inactive' ? 'bg-secondary' : 'bg-success')">
+                                                <field name="status"/>
+                                            </div>
+                                            <div t-if="record.status.raw_value == 'active' and record.vehicle_id.raw_value">
+                                                <span class="badge bg-primary">
+                                                    <i class="fa fa-car me-1" title="Vehicle"/>
+                                                    <field name="vehicle_id"/>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

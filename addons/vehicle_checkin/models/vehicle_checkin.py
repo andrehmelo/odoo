@@ -196,13 +196,22 @@ class VehicleCheckin(models.Model):
     # ========== CRUD METHODS ==========
     @api.model_create_multi
     def create(self, vals_list):
-        """Override create to update vehicle status on check-in"""
+        """Override create to update vehicle and driver status on check-in"""
         records = super().create(vals_list)
         
         for record in records:
-            if record.state == 'checked_in' and record.vehicle_id:
+            if record.state == 'checked_in':
                 # Update vehicle status to reserved
-                record.vehicle_id.write({'status': 'reserved'})
+                if record.vehicle_id:
+                    record.vehicle_id.write({'status': 'reserved'})
+                
+                # Update driver status to active and assign vehicle
+                if record.driver_id:
+                    record.driver_id.write({
+                        'status': 'active',
+                        'vehicle_id': record.vehicle_id.id,
+                        'date_assigned': record.checkin_date or fields.Datetime.now(),
+                    })
         
         return records
     
@@ -210,11 +219,20 @@ class VehicleCheckin(models.Model):
         """Override write to handle status changes"""
         res = super().write(vals)
         
-        # If checking out, update vehicle status
+        # If checking out, update vehicle and driver status
         if vals.get('state') == 'checked_out' or vals.get('checkout_date'):
             for record in self:
-                if record.state == 'checked_out' and record.vehicle_id:
-                    record.vehicle_id.write({'status': 'available'})
+                if record.state == 'checked_out':
+                    # Update vehicle status to available
+                    if record.vehicle_id:
+                        record.vehicle_id.write({'status': 'available'})
+                    
+                    # Update driver status to inactive and clear vehicle
+                    if record.driver_id:
+                        record.driver_id.write({
+                            'status': 'inactive',
+                            'vehicle_id': False,
+                        })
         
         return res
     
@@ -254,9 +272,17 @@ class VehicleCheckin(models.Model):
         if self.state == 'checked_out':
             raise UserError(_("Cannot cancel a completed check-out!"))
         
-        # Make vehicle available again
-        if self.vehicle_id and self.state == 'checked_in':
-            self.vehicle_id.write({'status': 'available'})
+        if self.state == 'checked_in':
+            # Make vehicle available again
+            if self.vehicle_id:
+                self.vehicle_id.write({'status': 'available'})
+            
+            # Revert driver to inactive and clear vehicle assignment
+            if self.driver_id:
+                self.driver_id.write({
+                    'status': 'inactive',
+                    'vehicle_id': False,
+                })
         
         self.write({'state': 'cancelled'})
         

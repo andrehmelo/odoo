@@ -1,0 +1,11 @@
+/* Driver Kanban - Additional Styles */
+
+/* Uber badge - white text */
+.o_vehicle_card .badge.bg-dark {
+    color: #fff !important;
+}
+
+/* Bolt badge - white text */
+.o_vehicle_card .badge.bg-success {
+    color: #fff !important;
+}

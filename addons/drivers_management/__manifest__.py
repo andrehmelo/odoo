@@ -20,10 +20,16 @@
     'data': [
         'security/drivers_security.xml',
         'security/ir.model.access.csv',
+        'wizard/register_driver_wizard_views.xml',
         'views/drivers_views.xml',
         'views/drivers_menus.xml',
         'data/drivers_data.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'drivers_management/static/src/css/driver_kanban.css',
+        ],
+    },
     'demo': [],
     'application': True,
     'installable': True,
